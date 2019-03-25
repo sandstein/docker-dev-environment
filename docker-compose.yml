@@ -16,7 +16,7 @@ services:
         aliases:
           - mysql-57
     ports:
-      - 3057:3006
+      - 3357:3306
     volumes:
       - ./mysql-data-57:/bitnami/mysql/data
   
@@ -31,7 +31,7 @@ services:
         aliases:
           - mysql-80
     ports:
-      - 3080:3006
+      - 3380:3306
     volumes:
       - ./mysql-data-80:/binami/mysql/data
 
