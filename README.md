@@ -45,3 +45,16 @@ To SSH into a specific container, run
 All containers communicate on a single network layer.
 If you want to reach a container from another container, then the container name can be used as a host name.
 Docker automatically resolves those (container) host names to the corresponding container ip.
+
+## Apache Macros
+
+For each php version there is a single macro ready to be used in your vhosts.
+
+e.g.:
+```
+<VirtualHost "*:${HTTP_PORT}">
+    ServerName example.localhost
+    DocumentRoot "${VHOSTROOT}/example-project"
+    USE PHP73 "${VHOSTROOT}/example-project"
+</VirtualHost>
+```
