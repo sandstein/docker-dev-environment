@@ -18,7 +18,7 @@ services:
     ports:
       - 3357:3306
     volumes:
-      - ./mysql-data-57:/bitnami/mysql/data
+      - ./mysql-57-data:/bitnami/mysql/data
   
   mysql-80:
     container_name: mysql-80
@@ -33,7 +33,7 @@ services:
     ports:
       - 3380:3306
     volumes:
-      - ./mysql-data-80:/binami/mysql/data
+      - ./mysql-80-data:/binami/mysql/data
 
   php-fpm-56:
     container_name: php-fpm-56
@@ -120,8 +120,8 @@ services:
       - 8983:8983
     volumes:
       - ./vhosts:/var/www/vhosts
-      - ./solr-data-771:/bitnami
-  
+      - ./solr-771-data:/bitnami/solr/data
+      - ./solr-771-lib:/var/www/solr/lib
   apache:
     container_name: apache
     build:
