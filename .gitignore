@@ -2,3 +2,4 @@
 /mysql-data-80
 /vhosts
 /.docker/apache/conf/vhosts/*.conf
+/solr-data-771
