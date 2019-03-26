@@ -105,6 +105,22 @@ services:
     depends_on:
       - mysql-57
       - mysql-80
+
+  solr-771:
+    container_name: solr-771
+    env_file: .docker.env
+    build:
+      context: .
+      dockerfile: .docker/solr-771/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - solr-771
+    ports:
+      - 8983:8983
+    volumes:
+      - ./vhosts:/var/www/vhosts
+      - ./solr-data-771:/bitnami
   
   apache:
     container_name: apache
@@ -116,6 +132,7 @@ services:
       - php-fpm-71
       - php-fpm-72
       - php-fpm-73
+      - solr-771
     networks:
       app-tier:
         aliases:
