@@ -3,3 +3,4 @@
 /vhosts
 /.docker/apache/conf/vhosts/*.conf
 /solr-771-data
+/.idea

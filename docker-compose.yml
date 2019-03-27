@@ -33,7 +33,7 @@ services:
     ports:
       - 3380:3306
     volumes:
-      - ./mysql-80-data:/binami/mysql/data
+      - ./mysql-80-data:/bitnami/mysql/data
 
   php-fpm-56:
     container_name: php-fpm-56
