@@ -7,5 +7,14 @@ Acquire::http::No-Cache true; \n\
 Acquire::BrokenProxy    true; \n\
 " >  /etc/apt/apt.conf.d/99fixbadproxy && \
     apt-get update && \
-    apt-get install -y --no-install-recommends git zip unzip curl && \
-    curl --silent --show-error https://getcomposer.org/installer | php
+    apt-get install -y --no-install-recommends \
+      git \
+      zip \
+      unzip \
+      curl \
+      build-essential \
+      autoconf \
+      ca-certificates \
+      pkg-config && \
+    curl --silent --show-error https://getcomposer.org/installer | php && \
+    yes | pecl install xdebug
