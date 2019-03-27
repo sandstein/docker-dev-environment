@@ -123,7 +123,7 @@ services:
       - 9072:9000
     volumes:
       - ./vhosts:/var/www/vhosts
-      - .docker/php-fpm-73/etc/conf.d:/opt/bitnami/php/etc/conf.d
+      - .docker/php-fpm-72/etc/conf.d:/opt/bitnami/php/etc/conf.d
     depends_on:
       - mysql-57
       - mysql-80
