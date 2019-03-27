@@ -58,3 +58,8 @@ e.g.:
     USE PHP73 "${VHOSTROOT}/example-project"
 </VirtualHost>
 ```
+
+## Solr Cores
+
+To configure your own solr cores you can symlink your core config directories to `./solr-771-data/your_core`.
+On top of this symlink 
