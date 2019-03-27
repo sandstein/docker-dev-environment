@@ -19,7 +19,7 @@ services:
       - 3357:3306
     volumes:
       - ./mysql-57-data:/bitnami/mysql/data
-  
+
   mysql-80:
     container_name: mysql-80
     env_file: .docker.env
@@ -51,7 +51,7 @@ services:
       - ./vhosts:/var/www/vhosts
     depends_on:
       - mysql-57
-  
+
   php-fpm-71:
     container_name: php-fpm-71
     env_file: .docker.env
@@ -69,7 +69,7 @@ services:
     depends_on:
       - mysql-57
       - mysql-80
-  
+
   php-fpm-72:
     container_name: php-fpm-72
     env_file: .docker.env
@@ -87,7 +87,7 @@ services:
     depends_on:
       - mysql-57
       - mysql-80
-  
+
   php-fpm-73:
     container_name: php-fpm-73
     env_file: .docker.env
@@ -122,6 +122,23 @@ services:
       - ./vhosts:/var/www/vhosts
       - ./solr-771-data:/bitnami/solr/data
       - ./solr-771-lib:/var/www/solr/lib
+
+  tomcat-9:
+    container_name: tomcat-9
+    env_file: .docker.env
+    build:
+      context: .
+      dockerfile: .docker/tomcat-9/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - tomcat-9
+    ports:
+      - 8888:8080
+    volumes:
+      - ./tomcat-9-data:/bitnami
+      - ./vhosts:/var/www/vhosts
+
   apache:
     container_name: apache
     build:
@@ -133,6 +150,7 @@ services:
       - php-fpm-72
       - php-fpm-73
       - solr-771
+      - tomcat-9
     networks:
       app-tier:
         aliases:
