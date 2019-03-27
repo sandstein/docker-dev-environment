@@ -5,9 +5,7 @@ RUN echo " \n\
 Acquire::http::Pipeline-Depth 0; \n\
 Acquire::http::No-Cache true; \n\
 Acquire::BrokenProxy    true; \n\
-" >  /etc/apt/apt.conf.d/99fixbadproxy
-
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends git zip unzip curl
-
-RUN curl --silent --show-error https://getcomposer.org/installer | php
+" >  /etc/apt/apt.conf.d/99fixbadproxy && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends git zip unzip curl && \
+    curl --silent --show-error https://getcomposer.org/installer | php
