@@ -1,1 +1,2 @@
-FROM bitnami/apache:2.4-debian-9
+FROM webdevops/apache-dev:debian-9
+RUN a2enmod macro

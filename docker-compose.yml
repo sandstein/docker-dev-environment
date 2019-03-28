@@ -5,6 +5,37 @@ networks:
     driver: bridge
 
 services:
+
+  mysql-55:
+    container_name: mysql-55
+    env_file: .docker.env
+    build:
+      context: .
+      dockerfile: .docker/mysql-55/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - mysql-55
+    ports:
+      - 3355:3306
+    volumes:
+      - ./data/mysql-55:/var/lib/mysql
+
+  mysql-56:
+    container_name: mysql-56
+    env_file: .docker.env
+    build:
+      context: .
+      dockerfile: .docker/mysql-56/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - mysql-56
+    ports:
+      - 3356:3306
+    volumes:
+      - ./data/mysql-56:/var/lib/mysql
+
   mysql-57:
     container_name: mysql-57
     env_file: .docker.env
@@ -18,7 +49,7 @@ services:
     ports:
       - 3357:3306
     volumes:
-      - ./mysql-57-data:/bitnami/mysql/data
+      - ./data/mysql-57:/var/lib/mysql
 
   mysql-80:
     container_name: mysql-80
@@ -33,7 +64,142 @@ services:
     ports:
       - 3380:3306
     volumes:
-      - ./mysql-80-data:/bitnami/mysql/data
+      - ./data/mysql-80:/var/lib/mysql
+
+  percona-56:
+    container_name: percona-56
+    env_file: .docker.env
+    build:
+      context: .
+      dockerfile: .docker/percona-56/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - percona-56
+    ports:
+      - 3456:3306
+    volumes:
+      - ./data/percona-56:/var/lib/mysql
+
+  percona-57:
+    container_name: percona-57
+    env_file: .docker.env
+    build:
+      context: .
+      dockerfile: .docker/percona-57/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - percona-57
+    ports:
+      - 3457:3306
+    volumes:
+      - ./data/percona-57:/var/lib/mysql
+
+  percona-80:
+    container_name: percona-80
+    env_file: .docker.env
+    build:
+      context: .
+      dockerfile: .docker/percona-80/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - percona-80
+    ports:
+      - 3480:3306
+    volumes:
+      - ./data/percona-80:/var/lib/mysql
+
+  mariadb-55:
+    container_name: mariadb-55
+    env_file: .docker.env
+    build:
+      context: .
+      dockerfile: .docker/mariadb-55/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - mariadb-55
+    ports:
+      - 3555:3306
+    volumes:
+      - ./data/mariadb-55:/var/lib/mysql
+
+  mariadb-100:
+    container_name: mariadb-100
+    env_file: .docker.env
+    build:
+      context: .
+      dockerfile: .docker/mariadb-100/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - mariadb-100
+    ports:
+      - 3500:3306
+    volumes:
+      - ./data/mariadb-100:/var/lib/mysql
+
+  mariadb-101:
+    container_name: mariadb-101
+    env_file: .docker.env
+    build:
+      context: .
+      dockerfile: .docker/mariadb-101/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - mariadb-101
+    ports:
+      - 3501:3306
+    volumes:
+      - ./data/mariadb-101:/var/lib/mysql
+
+  mariadb-102:
+    container_name: mariadb-102
+    env_file: .docker.env
+    build:
+      context: .
+      dockerfile: .docker/mariadb-102/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - mariadb-102
+    ports:
+      - 3502:3306
+    volumes:
+      - ./data/mariadb-102:/var/lib/mysql
+
+  mariadb-103:
+    container_name: mariadb-103
+    env_file: .docker.env
+    build:
+      context: .
+      dockerfile: .docker/mariadb-103/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - mariadb-103
+    ports:
+      - 3503:3306
+    volumes:
+      - ./data/mariadb-103:/var/lib/mysql
+
+  mariadb-104:
+    container_name: mariadb-104
+    env_file: .docker.env
+    build:
+      context: .
+      dockerfile: .docker/mariadb-104/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - mariadb-104
+    ports:
+      - 3504:3306
+    volumes:
+      - ./data/mariadb-104:/var/lib/mysql
 
   php-fpm-56:
     container_name: php-fpm-56
@@ -49,23 +215,51 @@ services:
       - 9056:9000
     volumes:
       - ./vhosts:/var/www/vhosts
-      - .docker/php-fpm-56/etc/conf.d:/opt/bitnami/php/etc/conf.d
+      - .docker/php-fpm-56/etc/php.ini:/opt/docker/etc/php/php.ini
 
-  php-fpm-56-xdebug:
-    container_name: php-fpm-56-xdebug
+  php-cli-56:
+    container_name: php-cli-56
     env_file: .docker.env
     build:
       context: .
-      dockerfile: .docker/php-fpm-56-xdebug/Dockerfile
+      dockerfile: .docker/php-cli-56/Dockerfile
     networks:
       app-tier:
         aliases:
-          - php-fpm-56-xdebug
+          - php-cli-56
+    volumes:
+      - ./vhosts:/var/www/vhosts
+      - .docker/php-cli-56/etc/php.ini:/opt/docker/etc/php/php.ini
+
+  php-fpm-70:
+    container_name: php-fpm-70
+    env_file: .docker.env
+    build:
+      context: .
+      dockerfile: .docker/php-fpm-70/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - php-fpm-70
     ports:
       - 9156:9000
     volumes:
       - ./vhosts:/var/www/vhosts
-      - .docker/php-fpm-56-xdebug/etc/conf.d:/opt/bitnami/php/etc/conf.d
+      - .docker/php-fpm-70/etc/php.ini:/opt/docker/etc/php/php.ini
+
+  php-cli-70:
+    container_name: php-cli-70
+    env_file: .docker.env
+    build:
+      context: .
+      dockerfile: .docker/php-cli-70/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - php-cli-70
+    volumes:
+      - ./vhosts:/var/www/vhosts
+      - .docker/php-cli-70/etc/php.ini:/opt/docker/etc/php/php.ini
 
   php-fpm-71:
     container_name: php-fpm-71
@@ -81,23 +275,21 @@ services:
       - 9071:9000
     volumes:
       - ./vhosts:/var/www/vhosts
-      - .docker/php-fpm-71/etc/conf.d:/opt/bitnami/php/etc/conf.d
+      - .docker/php-fpm-71/etc/php.ini:/opt/docker/etc/php/php.ini
 
-  php-fpm-71-xdebug:
-    container_name: php-fpm-71-xdebug
+  php-cli-71:
+    container_name: php-cli-71
     env_file: .docker.env
     build:
       context: .
-      dockerfile: .docker/php-fpm-71-xdebug/Dockerfile
+      dockerfile: .docker/php-cli-71/Dockerfile
     networks:
       app-tier:
         aliases:
-          - php-fpm-71-xdebug
-    ports:
-      - 9171:9000
+          - php-cli-71
     volumes:
       - ./vhosts:/var/www/vhosts
-      - .docker/php-fpm-71-xdebug/etc/conf.d:/opt/bitnami/php/etc/conf.d
+      - .docker/php-cli-71/etc/php.ini:/opt/docker/etc/php/php.ini
 
   php-fpm-72:
     container_name: php-fpm-72
@@ -113,23 +305,21 @@ services:
       - 9072:9000
     volumes:
       - ./vhosts:/var/www/vhosts
-      - .docker/php-fpm-72/etc/conf.d:/opt/bitnami/php/etc/conf.d
+      - .docker/php-fpm-72/etc/php.ini:/opt/docker/etc/php/php.ini
 
-  php-fpm-72-xdebug:
-    container_name: php-fpm-72-xdebug
+  php-cli-72:
+    container_name: php-cli-72
     env_file: .docker.env
     build:
       context: .
-      dockerfile: .docker/php-fpm-72-xdebug/Dockerfile
+      dockerfile: .docker/php-cli-72/Dockerfile
     networks:
       app-tier:
         aliases:
-          - php-fpm-72-xdebug
-    ports:
-      - 9172:9000
+          - php-cli-72
     volumes:
       - ./vhosts:/var/www/vhosts
-      - .docker/php-fpm-72-xdebug/etc/conf.d:/opt/bitnami/php/etc/conf.d
+      - .docker/php-cli-72/etc/php.ini:/opt/docker/etc/php/php.ini
 
   php-fpm-73:
     container_name: php-fpm-73
@@ -145,29 +335,21 @@ services:
       - 9073:9000
     volumes:
       - ./vhosts:/var/www/vhosts
-      - .docker/php-fpm-73/etc/conf.d:/opt/bitnami/php/etc/conf.d
-    depends_on:
-      - mysql-57
-      - mysql-80
+      - .docker/php-fpm-73/etc/conf.d:/php.ini:/opt/docker/etc/php/php.ini
 
-  php-fpm-73-xdebug:
-    container_name: php-fpm-73-xdebug
+  php-cli-73:
+    container_name: php-cli-73
     env_file: .docker.env
     build:
       context: .
-      dockerfile: .docker/php-fpm-73-xdebug/Dockerfile
+      dockerfile: .docker/php-cli-73/Dockerfile
     networks:
       app-tier:
         aliases:
-          - php-fpm-73-xdebug
-    ports:
-      - 9173:9000
+          - php-cli-73
     volumes:
       - ./vhosts:/var/www/vhosts
-      - .docker/php-fpm-73-xdebug/etc/conf.d:/opt/bitnami/php/etc/conf.d
-    depends_on:
-      - mysql-57
-      - mysql-80
+      - .docker/php-cli-73/etc/php.ini:/opt/docker/etc/php/php.ini
 
   solr-771:
     container_name: solr-771
@@ -183,7 +365,7 @@ services:
       - 8983:8983
     volumes:
       - ./vhosts:/var/www/vhosts
-      - ./solr-771-data:/bitnami/solr/data
+      - ./data/solr-771:/bitnami/solr/data
       - ./solr-771-lib:/var/www/solr/lib
 
   tomcat-9:
@@ -199,7 +381,7 @@ services:
     ports:
       - 8888:8080
     volumes:
-      - ./tomcat-9-data:/bitnami
+      - ./data/tomcat-9:/bitnami
       - ./vhosts:/var/www/vhosts
 
   apache:
@@ -212,10 +394,10 @@ services:
         aliases:
           - apache
     ports:
-      - 80:8080
-      - 443:8443
+      - 80:80
+      - 443:443
     volumes:
-      - .docker/apache/conf/httpd.conf:/bitnami/apache/conf/httpd.conf
-      - .docker/apache/conf/macro.conf:/bitnami/apache/conf/macro.conf
-      - .docker/apache/conf/vhosts:/bitnami/apache/conf/vhosts-dev
+      - .docker/apache/conf/conf.d:/opt/docker/etc/httpd/conf.d
+      - .docker/apache/conf/vhost.common.d:/opt/docker/etc/httpd/vhost.common.d
+      - .docker/apache/app:/app
       - ./vhosts:/var/www/vhosts
