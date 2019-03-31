@@ -1,3 +1,8 @@
-FROM webdevops/php-dev:7.0
-ENV php.xdebug.idekey=XDEBUG_SESSION_START
-ENV php.xdebug.remote_host=172.18.0.1
+FROM sandstein/php:fpm-7.0
+
+ARG USER_ID=33
+ARG GROUP_ID=33
+RUN modify-user-ids www-data ${USER_ID} ${GROUP_ID}
+
+ARG DISABLED_PHP_FPM_MODULES
+RUN disable-php-modules ${DISABLED_PHP_FPM_MODULES}

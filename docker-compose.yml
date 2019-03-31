@@ -42,6 +42,9 @@ services:
     build:
       context: .
       dockerfile: .docker/mysql-57/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
     networks:
       app-tier:
         aliases:
@@ -207,6 +210,10 @@ services:
     build:
       context: .
       dockerfile: .docker/php-fpm-56/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES}
     networks:
       app-tier:
         aliases:
@@ -217,49 +224,25 @@ services:
       - ./vhosts:/var/www/vhosts
       - .docker/php-fpm-56/etc/php.ini:/opt/docker/etc/php/php.ini
 
-  php-cli-56:
-    container_name: php-cli-56
-    env_file: .docker.env
-    build:
-      context: .
-      dockerfile: .docker/php-cli-56/Dockerfile
-    networks:
-      app-tier:
-        aliases:
-          - php-cli-56
-    volumes:
-      - ./vhosts:/var/www/vhosts
-      - .docker/php-cli-56/etc/php.ini:/opt/docker/etc/php/php.ini
-
   php-fpm-70:
     container_name: php-fpm-70
     env_file: .docker.env
     build:
       context: .
       dockerfile: .docker/php-fpm-70/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES}
     networks:
       app-tier:
         aliases:
           - php-fpm-70
     ports:
-      - 9156:9000
+      - 9070:9000
     volumes:
       - ./vhosts:/var/www/vhosts
       - .docker/php-fpm-70/etc/php.ini:/opt/docker/etc/php/php.ini
-
-  php-cli-70:
-    container_name: php-cli-70
-    env_file: .docker.env
-    build:
-      context: .
-      dockerfile: .docker/php-cli-70/Dockerfile
-    networks:
-      app-tier:
-        aliases:
-          - php-cli-70
-    volumes:
-      - ./vhosts:/var/www/vhosts
-      - .docker/php-cli-70/etc/php.ini:/opt/docker/etc/php/php.ini
 
   php-fpm-71:
     container_name: php-fpm-71
@@ -267,6 +250,10 @@ services:
     build:
       context: .
       dockerfile: .docker/php-fpm-71/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES}
     networks:
       app-tier:
         aliases:
@@ -277,26 +264,16 @@ services:
       - ./vhosts:/var/www/vhosts
       - .docker/php-fpm-71/etc/php.ini:/opt/docker/etc/php/php.ini
 
-  php-cli-71:
-    container_name: php-cli-71
-    env_file: .docker.env
-    build:
-      context: .
-      dockerfile: .docker/php-cli-71/Dockerfile
-    networks:
-      app-tier:
-        aliases:
-          - php-cli-71
-    volumes:
-      - ./vhosts:/var/www/vhosts
-      - .docker/php-cli-71/etc/php.ini:/opt/docker/etc/php/php.ini
-
   php-fpm-72:
     container_name: php-fpm-72
     env_file: .docker.env
     build:
       context: .
       dockerfile: .docker/php-fpm-72/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES}
     networks:
       app-tier:
         aliases:
@@ -307,26 +284,16 @@ services:
       - ./vhosts:/var/www/vhosts
       - .docker/php-fpm-72/etc/php.ini:/opt/docker/etc/php/php.ini
 
-  php-cli-72:
-    container_name: php-cli-72
-    env_file: .docker.env
-    build:
-      context: .
-      dockerfile: .docker/php-cli-72/Dockerfile
-    networks:
-      app-tier:
-        aliases:
-          - php-cli-72
-    volumes:
-      - ./vhosts:/var/www/vhosts
-      - .docker/php-cli-72/etc/php.ini:/opt/docker/etc/php/php.ini
-
   php-fpm-73:
     container_name: php-fpm-73
     env_file: .docker.env
     build:
       context: .
       dockerfile: .docker/php-fpm-73/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES}
     networks:
       app-tier:
         aliases:
@@ -337,12 +304,102 @@ services:
       - ./vhosts:/var/www/vhosts
       - .docker/php-fpm-73/etc/conf.d:/php.ini:/opt/docker/etc/php/php.ini
 
+  php-cli-56:
+    container_name: php-cli-56
+    env_file: .docker.env
+    environment:
+      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+    build:
+      context: .
+      dockerfile: .docker/php-cli-56/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES}
+    networks:
+      app-tier:
+        aliases:
+          - php-cli-56
+    volumes:
+      - ./vhosts:/var/www/vhosts
+      - .docker/php-cli-56/etc/php.ini:/opt/docker/etc/php/php.ini
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+
+  php-cli-70:
+    container_name: php-cli-70
+    env_file: .docker.env
+    environment:
+      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+    build:
+      context: .
+      dockerfile: .docker/php-cli-70/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES}
+    networks:
+      app-tier:
+        aliases:
+          - php-cli-70
+    volumes:
+      - ./vhosts:/var/www/vhosts
+      - .docker/php-cli-70/etc/php.ini:/opt/docker/etc/php/php.ini
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+
+  php-cli-71:
+    container_name: php-cli-71
+    env_file: .docker.env
+    environment:
+      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+    build:
+      context: .
+      dockerfile: .docker/php-cli-71/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES}
+    networks:
+      app-tier:
+        aliases:
+          - php-cli-71
+    volumes:
+      - ./vhosts:/var/www/vhosts
+      - .docker/php-cli-71/etc/php.ini:/opt/docker/etc/php/php.ini
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+
+  php-cli-72:
+    container_name: php-cli-72
+    env_file: .docker.env
+    environment:
+      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+    build:
+      context: .
+      dockerfile: .docker/php-cli-72/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES}
+    networks:
+      app-tier:
+        aliases:
+          - php-cli-72
+    volumes:
+      - ./vhosts:/var/www/vhosts
+      - .docker/php-cli-72/etc/php.ini:/opt/docker/etc/php/php.ini
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+
   php-cli-73:
     container_name: php-cli-73
     env_file: .docker.env
+    environment:
+      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
     build:
       context: .
       dockerfile: .docker/php-cli-73/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES}
     networks:
       app-tier:
         aliases:
@@ -350,6 +407,7 @@ services:
     volumes:
       - ./vhosts:/var/www/vhosts
       - .docker/php-cli-73/etc/php.ini:/opt/docker/etc/php/php.ini
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
 
   solr-771:
     container_name: solr-771
@@ -401,3 +459,4 @@ services:
       - .docker/apache/conf/vhost.common.d:/opt/docker/etc/httpd/vhost.common.d
       - .docker/apache/app:/app
       - ./vhosts:/var/www/vhosts
+
