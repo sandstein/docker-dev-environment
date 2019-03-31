@@ -1,6 +1,5 @@
 /.idea
-/data/*/*
-!.gitkeep
+/.env
 /vhosts
 /.docker/apache/conf/*.conf
 !/.docker/apache/conf/httpd.conf
