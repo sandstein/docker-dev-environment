@@ -8,10 +8,10 @@ services:
 
   mysql-55:
     container_name: mysql-55
-    env_file: .docker.env
+    env_file: env/db.env
     build:
       context: .
-      dockerfile: .docker/mysql-55/Dockerfile
+      dockerfile: docker/mysql-55/Dockerfile
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -23,13 +23,14 @@ services:
       - 3355:3306
     volumes:
       - ./data/mysql-55:/var/lib/mysql
+      - ./config/mysql-55/etc:/etc/mysql/conf.d
 
   mysql-56:
     container_name: mysql-56
-    env_file: .docker.env
+    env_file: env/db.env
     build:
       context: .
-      dockerfile: .docker/mysql-56/Dockerfile
+      dockerfile: docker/mysql-56/Dockerfile
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -41,13 +42,14 @@ services:
       - 3356:3306
     volumes:
       - ./data/mysql-56:/var/lib/mysql
+      - ./config/mysql-56/etc:/etc/mysql/conf.d
 
   mysql-57:
     container_name: mysql-57
-    env_file: .docker.env
+    env_file: env/db.env
     build:
       context: .
-      dockerfile: .docker/mysql-57/Dockerfile
+      dockerfile: docker/mysql-57/Dockerfile
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -59,13 +61,14 @@ services:
       - 3357:3306
     volumes:
       - ./data/mysql-57:/var/lib/mysql
+      - ./config/mysql-57/etc:/etc/mysql/conf.d
 
   mysql-80:
     container_name: mysql-80
-    env_file: .docker.env
+    env_file: env/db.env
     build:
       context: .
-      dockerfile: .docker/mysql-80/Dockerfile
+      dockerfile: docker/mysql-80/Dockerfile
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -77,13 +80,14 @@ services:
       - 3380:3306
     volumes:
       - ./data/mysql-80:/var/lib/mysql
+      - ./config/mysql-80/etc:/etc/mysql/conf.d
 
   percona-56:
     container_name: percona-56
-    env_file: .docker.env
+    env_file: env/db.env
     build:
       context: .
-      dockerfile: .docker/percona-56/Dockerfile
+      dockerfile: docker/percona-56/Dockerfile
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -95,13 +99,14 @@ services:
       - 3456:3306
     volumes:
       - ./data/percona-56:/var/lib/mysql
+      - ./config/percona-56/etc:/etc/mysql/conf.d
 
   percona-57:
     container_name: percona-57
-    env_file: .docker.env
+    env_file: env/db.env
     build:
       context: .
-      dockerfile: .docker/percona-57/Dockerfile
+      dockerfile: docker/percona-57/Dockerfile
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -113,13 +118,14 @@ services:
       - 3457:3306
     volumes:
       - ./data/percona-57:/var/lib/mysql
+      - ./config/percona-57/etc:/etc/mysql/conf.d
 
   percona-80:
     container_name: percona-80
-    env_file: .docker.env
+    env_file: env/db.env
     build:
       context: .
-      dockerfile: .docker/percona-80/Dockerfile
+      dockerfile: docker/percona-80/Dockerfile
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -131,13 +137,14 @@ services:
       - 3480:3306
     volumes:
       - ./data/percona-80:/var/lib/mysql
+      - ./config/percona-80/etc:/etc/mysql/conf.d
 
   mariadb-55:
     container_name: mariadb-55
-    env_file: .docker.env
+    env_file: env/db.env
     build:
       context: .
-      dockerfile: .docker/mariadb-55/Dockerfile
+      dockerfile: docker/mariadb-55/Dockerfile
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -149,13 +156,14 @@ services:
       - 3555:3306
     volumes:
       - ./data/mariadb-55:/var/lib/mysql
+      - ./config/mariadb-55/etc:/etc/mysql/conf.d
 
   mariadb-100:
     container_name: mariadb-100
-    env_file: .docker.env
+    env_file: env/db.env
     build:
       context: .
-      dockerfile: .docker/mariadb-100/Dockerfile
+      dockerfile: docker/mariadb-100/Dockerfile
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -167,13 +175,14 @@ services:
       - 3500:3306
     volumes:
       - ./data/mariadb-100:/var/lib/mysql
+      - ./config/mariadb-100/etc:/etc/mysql/conf.d
 
   mariadb-101:
     container_name: mariadb-101
-    env_file: .docker.env
+    env_file: env/db.env
     build:
       context: .
-      dockerfile: .docker/mariadb-101/Dockerfile
+      dockerfile: docker/mariadb-101/Dockerfile
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -185,13 +194,14 @@ services:
       - 3501:3306
     volumes:
       - ./data/mariadb-101:/var/lib/mysql
+      - ./config/mariadb-100/etc:/etc/mysql/conf.d
 
   mariadb-102:
     container_name: mariadb-102
-    env_file: .docker.env
+    env_file: env/db.env
     build:
       context: .
-      dockerfile: .docker/mariadb-102/Dockerfile
+      dockerfile: docker/mariadb-102/Dockerfile
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -203,13 +213,14 @@ services:
       - 3502:3306
     volumes:
       - ./data/mariadb-102:/var/lib/mysql
+      - ./config/mariadb-100/etc:/etc/mysql/conf.d
 
   mariadb-103:
     container_name: mariadb-103
-    env_file: .docker.env
+    env_file: env/db.env
     build:
       context: .
-      dockerfile: .docker/mariadb-103/Dockerfile
+      dockerfile: docker/mariadb-103/Dockerfile
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -221,13 +232,14 @@ services:
       - 3503:3306
     volumes:
       - ./data/mariadb-103:/var/lib/mysql
+      - ./config/mariadb-100/etc:/etc/mysql/conf.d
 
   mariadb-104:
     container_name: mariadb-104
-    env_file: .docker.env
+    env_file: env/db.env
     build:
       context: .
-      dockerfile: .docker/mariadb-104/Dockerfile
+      dockerfile: docker/mariadb-104/Dockerfile
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -239,13 +251,13 @@ services:
       - 3504:3306
     volumes:
       - ./data/mariadb-104:/var/lib/mysql
+      - ./config/mariadb-100/etc:/etc/mysql/conf.d
 
   php-fpm-56:
     container_name: php-fpm-56
-    env_file: .docker.env
     build:
       context: .
-      dockerfile: .docker/php-fpm-56/Dockerfile
+      dockerfile: docker/php-fpm-56/Dockerfile
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -258,14 +270,13 @@ services:
       - 9056:9000
     volumes:
       - ./vhosts:/var/www/vhosts
-      - .docker/php-fpm-56/etc/php.ini:/opt/docker/etc/php/php.ini
+      - ./config/php-fpm-56/etc/php.ini:/usr/local/etc/php/php.ini
 
   php-fpm-70:
     container_name: php-fpm-70
-    env_file: .docker.env
     build:
       context: .
-      dockerfile: .docker/php-fpm-70/Dockerfile
+      dockerfile: docker/php-fpm-70/Dockerfile
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -278,14 +289,13 @@ services:
       - 9070:9000
     volumes:
       - ./vhosts:/var/www/vhosts
-      - .docker/php-fpm-70/etc/php.ini:/opt/docker/etc/php/php.ini
+      - ./config/php-fpm-70/etc/php.ini:/usr/local/etc/php/php.ini
 
   php-fpm-71:
     container_name: php-fpm-71
-    env_file: .docker.env
     build:
       context: .
-      dockerfile: .docker/php-fpm-71/Dockerfile
+      dockerfile: docker/php-fpm-71/Dockerfile
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -298,14 +308,13 @@ services:
       - 9071:9000
     volumes:
       - ./vhosts:/var/www/vhosts
-      - .docker/php-fpm-71/etc/php.ini:/opt/docker/etc/php/php.ini
+      - ./config/php-fpm-71/etc/php.ini:/usr/local/etc/php/php.ini
 
   php-fpm-72:
     container_name: php-fpm-72
-    env_file: .docker.env
     build:
       context: .
-      dockerfile: .docker/php-fpm-72/Dockerfile
+      dockerfile: docker/php-fpm-72/Dockerfile
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -318,14 +327,13 @@ services:
       - 9072:9000
     volumes:
       - ./vhosts:/var/www/vhosts
-      - .docker/php-fpm-72/etc/php.ini:/opt/docker/etc/php/php.ini
+      - ./config/php-fpm-72/etc/php.ini:/usr/local/etc/php/php.ini
 
   php-fpm-73:
     container_name: php-fpm-73
-    env_file: .docker.env
     build:
       context: .
-      dockerfile: .docker/php-fpm-73/Dockerfile
+      dockerfile: docker/php-fpm-73/Dockerfile
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -338,16 +346,15 @@ services:
       - 9073:9000
     volumes:
       - ./vhosts:/var/www/vhosts
-      - .docker/php-fpm-73/etc/conf.d:/php.ini:/opt/docker/etc/php/php.ini
+      - ./config/php-fpm-73/etc/php.ini:/usr/local/etc/php/php.ini
 
   php-cli-56:
     container_name: php-cli-56
-    env_file: .docker.env
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
     build:
       context: .
-      dockerfile: .docker/php-cli-56/Dockerfile
+      dockerfile: docker/php-cli-56/Dockerfile
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -358,17 +365,18 @@ services:
           - php-cli-56
     volumes:
       - ./vhosts:/var/www/vhosts
-      - .docker/php-cli-56/etc/php.ini:/opt/docker/etc/php/php.ini
+      - ./config/php-cli-56/etc/php.ini:/usr/local/etc/php/php.ini
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+      - $CONFIG_BASE:/home/phpcli/.config
+      - $SSH_BASE:/home/phpcli/.ssh
 
   php-cli-70:
     container_name: php-cli-70
-    env_file: .docker.env
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
     build:
       context: .
-      dockerfile: .docker/php-cli-70/Dockerfile
+      dockerfile: docker/php-cli-70/Dockerfile
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -379,17 +387,18 @@ services:
           - php-cli-70
     volumes:
       - ./vhosts:/var/www/vhosts
-      - .docker/php-cli-70/etc/php.ini:/opt/docker/etc/php/php.ini
+      - ./config/php-cli-70/etc/php.ini:/usr/local/etc/php/php.ini
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+      - $CONFIG_BASE:/home/phpcli/.config
+      - $SSH_BASE:/home/phpcli/.ssh
 
   php-cli-71:
     container_name: php-cli-71
-    env_file: .docker.env
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
     build:
       context: .
-      dockerfile: .docker/php-cli-71/Dockerfile
+      dockerfile: docker/php-cli-71/Dockerfile
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -400,17 +409,18 @@ services:
           - php-cli-71
     volumes:
       - ./vhosts:/var/www/vhosts
-      - .docker/php-cli-71/etc/php.ini:/opt/docker/etc/php/php.ini
+      - ./config/php-cli-71/etc/php.ini:/usr/local/etc/php/php.ini
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+      - $CONFIG_BASE:/home/phpcli/.config
+      - $SSH_BASE:/home/phpcli/.ssh
 
   php-cli-72:
     container_name: php-cli-72
-    env_file: .docker.env
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
     build:
       context: .
-      dockerfile: .docker/php-cli-72/Dockerfile
+      dockerfile: docker/php-cli-72/Dockerfile
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -421,17 +431,18 @@ services:
           - php-cli-72
     volumes:
       - ./vhosts:/var/www/vhosts
-      - .docker/php-cli-72/etc/php.ini:/opt/docker/etc/php/php.ini
+      - ./config/php-cli-72/etc/php.ini:/usr/local/etc/php/php.ini
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+      - $CONFIG_BASE:/home/phpcli/.config
+      - $SSH_BASE:/home/phpcli/.ssh
 
   php-cli-73:
     container_name: php-cli-73
-    env_file: .docker.env
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
     build:
       context: .
-      dockerfile: .docker/php-cli-73/Dockerfile
+      dockerfile: docker/php-cli-73/Dockerfile
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -442,15 +453,16 @@ services:
           - php-cli-73
     volumes:
       - ./vhosts:/var/www/vhosts
-      - .docker/php-cli-73/etc/php.ini:/opt/docker/etc/php/php.ini
+      - ./config/php-cli-73/etc/php.ini:/usr/local/etc/php/php.ini
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+      - $CONFIG_BASE:/home/phpcli/.config
+      - $SSH_BASE:/home/phpcli/.ssh
 
   solr-771:
     container_name: solr-771
-    env_file: .docker.env
     build:
       context: .
-      dockerfile: .docker/solr-771/Dockerfile
+      dockerfile: docker/solr-771/Dockerfile
     networks:
       app-tier:
         aliases:
@@ -464,10 +476,9 @@ services:
 
   tomcat-9:
     container_name: tomcat-9
-    env_file: .docker.env
     build:
       context: .
-      dockerfile: .docker/tomcat-9/Dockerfile
+      dockerfile: docker/tomcat-9/Dockerfile
     networks:
       app-tier:
         aliases:
@@ -478,21 +489,20 @@ services:
       - ./data/tomcat-9:/bitnami
       - ./vhosts:/var/www/vhosts
 
-  apache:
-    container_name: apache
+  apache-24:
+    container_name: apache-24
     build:
       context: .
-      dockerfile: .docker/apache/Dockerfile
+      dockerfile: docker/apache-24/Dockerfile
     networks:
       app-tier:
         aliases:
-          - apache
+          - apache-24
     ports:
       - 80:80
       - 443:443
     volumes:
-      - .docker/apache/conf/conf.d:/opt/docker/etc/httpd/conf.d
-      - .docker/apache/conf/vhost.common.d:/opt/docker/etc/httpd/vhost.common.d
-      - .docker/apache/app:/app
+      - ./config/apache-24/conf.d:/opt/docker/etc/httpd/conf.d
+      - ./config/apache-24/app:/app
       - ./vhosts:/var/www/vhosts
 
