@@ -6,13 +6,26 @@ Containers:
 * php-fpm-71
 * php-fpm-72
 * php-fpm-73
-* php-fpm-57-xdebug
-* php-fpm-71-xdebug
-* php-fpm-72-xdebug
-* php-fpm-73-xdebug
+* php-cli-57
+* php-cli-71
+* php-cli-72
+* php-cli-73
+* mysql-55
+* mysql-56
 * mysql-57
 * mysql-80
-* apache
+* mariadb-55
+* mariadb-100
+* mariadb-101
+* mariadb-102
+* mariadb-103
+* mariadb-104
+* percona-56
+* percona-57
+* peronca-80
+* apache-24
+* solr-771
+* tomcat-9
 
 Your local projects are mounted into the respective containers from the mount point
 `/path/to/this/repo/vhosts`
@@ -61,14 +74,6 @@ For each php version there is a single macro ready to be used in your vhosts, e.
 </VirtualHost>
 ```
 
-If you need to debug your container, you can switch to xdebug by adding `XDEBUG` to the `Use` statement, e.g.: 
-```
-<VirtualHost "*:${HTTP_PORT}">
-    ServerName example.localhost
-    DocumentRoot "${VHOSTROOT}/example-project"
-    Use PHP73XDEBUG "${VHOSTROOT}/example-project"
-</VirtualHost>
-```
 Be careful to have at least one line break after the last `</VirtualHost>` statement.
 
 ## Using xdebug under PHPStorm

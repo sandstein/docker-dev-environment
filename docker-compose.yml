@@ -5,12 +5,54 @@ networks:
     driver: bridge
 
 services:
-  mysql-57:
-    container_name: mysql-57
-    env_file: .docker.env
+
+  mysql-55:
+    container_name: mysql-55
+    env_file: env/db.env
     build:
       context: .
-      dockerfile: .docker/mysql-57/Dockerfile
+      dockerfile: docker/mysql-55/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - mysql-55
+    ports:
+      - 3355:3306
+    volumes:
+      - ./data/mysql-55:/var/lib/mysql
+      - ./config/mysql-55/etc:/etc/mysql/conf.d
+
+  mysql-56:
+    container_name: mysql-56
+    env_file: env/db.env
+    build:
+      context: .
+      dockerfile: docker/mysql-56/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - mysql-56
+    ports:
+      - 3356:3306
+    volumes:
+      - ./data/mysql-56:/var/lib/mysql
+      - ./config/mysql-56/etc:/etc/mysql/conf.d
+
+  mysql-57:
+    container_name: mysql-57
+    env_file: env/db.env
+    build:
+      context: .
+      dockerfile: docker/mysql-57/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
     networks:
       app-tier:
         aliases:
@@ -18,14 +60,18 @@ services:
     ports:
       - 3357:3306
     volumes:
-      - ./mysql-57-data:/bitnami/mysql/data
+      - ./data/mysql-57:/var/lib/mysql
+      - ./config/mysql-57/etc:/etc/mysql/conf.d
 
   mysql-80:
     container_name: mysql-80
-    env_file: .docker.env
+    env_file: env/db.env
     build:
       context: .
-      dockerfile: .docker/mysql-80/Dockerfile
+      dockerfile: docker/mysql-80/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
     networks:
       app-tier:
         aliases:
@@ -33,14 +79,189 @@ services:
     ports:
       - 3380:3306
     volumes:
-      - ./mysql-80-data:/bitnami/mysql/data
+      - ./data/mysql-80:/var/lib/mysql
+      - ./config/mysql-80/etc:/etc/mysql/conf.d
+
+  percona-56:
+    container_name: percona-56
+    env_file: env/db.env
+    build:
+      context: .
+      dockerfile: docker/percona-56/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - percona-56
+    ports:
+      - 3456:3306
+    volumes:
+      - ./data/percona-56:/var/lib/mysql
+      - ./config/percona-56/etc:/etc/mysql/conf.d
+
+  percona-57:
+    container_name: percona-57
+    env_file: env/db.env
+    build:
+      context: .
+      dockerfile: docker/percona-57/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - percona-57
+    ports:
+      - 3457:3306
+    volumes:
+      - ./data/percona-57:/var/lib/mysql
+      - ./config/percona-57/etc:/etc/mysql/conf.d
+
+  percona-80:
+    container_name: percona-80
+    env_file: env/db.env
+    build:
+      context: .
+      dockerfile: docker/percona-80/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - percona-80
+    ports:
+      - 3480:3306
+    volumes:
+      - ./data/percona-80:/var/lib/mysql
+      - ./config/percona-80/etc:/etc/mysql/conf.d
+
+  mariadb-55:
+    container_name: mariadb-55
+    env_file: env/db.env
+    build:
+      context: .
+      dockerfile: docker/mariadb-55/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - mariadb-55
+    ports:
+      - 3555:3306
+    volumes:
+      - ./data/mariadb-55:/var/lib/mysql
+      - ./config/mariadb-55/etc:/etc/mysql/conf.d
+
+  mariadb-100:
+    container_name: mariadb-100
+    env_file: env/db.env
+    build:
+      context: .
+      dockerfile: docker/mariadb-100/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - mariadb-100
+    ports:
+      - 3500:3306
+    volumes:
+      - ./data/mariadb-100:/var/lib/mysql
+      - ./config/mariadb-100/etc:/etc/mysql/conf.d
+
+  mariadb-101:
+    container_name: mariadb-101
+    env_file: env/db.env
+    build:
+      context: .
+      dockerfile: docker/mariadb-101/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - mariadb-101
+    ports:
+      - 3501:3306
+    volumes:
+      - ./data/mariadb-101:/var/lib/mysql
+      - ./config/mariadb-100/etc:/etc/mysql/conf.d
+
+  mariadb-102:
+    container_name: mariadb-102
+    env_file: env/db.env
+    build:
+      context: .
+      dockerfile: docker/mariadb-102/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - mariadb-102
+    ports:
+      - 3502:3306
+    volumes:
+      - ./data/mariadb-102:/var/lib/mysql
+      - ./config/mariadb-100/etc:/etc/mysql/conf.d
+
+  mariadb-103:
+    container_name: mariadb-103
+    env_file: env/db.env
+    build:
+      context: .
+      dockerfile: docker/mariadb-103/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - mariadb-103
+    ports:
+      - 3503:3306
+    volumes:
+      - ./data/mariadb-103:/var/lib/mysql
+      - ./config/mariadb-100/etc:/etc/mysql/conf.d
+
+  mariadb-104:
+    container_name: mariadb-104
+    env_file: env/db.env
+    build:
+      context: .
+      dockerfile: docker/mariadb-104/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - mariadb-104
+    ports:
+      - 3504:3306
+    volumes:
+      - ./data/mariadb-104:/var/lib/mysql
+      - ./config/mariadb-100/etc:/etc/mysql/conf.d
 
   php-fpm-56:
     container_name: php-fpm-56
-    env_file: .docker.env
     build:
       context: .
-      dockerfile: .docker/php-fpm-56/Dockerfile
+      dockerfile: docker/php-fpm-56/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES}
     networks:
       app-tier:
         aliases:
@@ -49,30 +270,36 @@ services:
       - 9056:9000
     volumes:
       - ./vhosts:/var/www/vhosts
-      - .docker/php-fpm-56/etc/conf.d:/opt/bitnami/php/etc/conf.d
+      - ./config/php-fpm-56/etc/php.ini:/usr/local/etc/php/php.ini
 
-  php-fpm-56-xdebug:
-    container_name: php-fpm-56-xdebug
-    env_file: .docker.env
+  php-fpm-70:
+    container_name: php-fpm-70
     build:
       context: .
-      dockerfile: .docker/php-fpm-56-xdebug/Dockerfile
+      dockerfile: docker/php-fpm-70/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES}
     networks:
       app-tier:
         aliases:
-          - php-fpm-56-xdebug
+          - php-fpm-70
     ports:
-      - 9156:9000
+      - 9070:9000
     volumes:
       - ./vhosts:/var/www/vhosts
-      - .docker/php-fpm-56-xdebug/etc/conf.d:/opt/bitnami/php/etc/conf.d
+      - ./config/php-fpm-70/etc/php.ini:/usr/local/etc/php/php.ini
 
   php-fpm-71:
     container_name: php-fpm-71
-    env_file: .docker.env
     build:
       context: .
-      dockerfile: .docker/php-fpm-71/Dockerfile
+      dockerfile: docker/php-fpm-71/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES}
     networks:
       app-tier:
         aliases:
@@ -81,30 +308,17 @@ services:
       - 9071:9000
     volumes:
       - ./vhosts:/var/www/vhosts
-      - .docker/php-fpm-71/etc/conf.d:/opt/bitnami/php/etc/conf.d
-
-  php-fpm-71-xdebug:
-    container_name: php-fpm-71-xdebug
-    env_file: .docker.env
-    build:
-      context: .
-      dockerfile: .docker/php-fpm-71-xdebug/Dockerfile
-    networks:
-      app-tier:
-        aliases:
-          - php-fpm-71-xdebug
-    ports:
-      - 9171:9000
-    volumes:
-      - ./vhosts:/var/www/vhosts
-      - .docker/php-fpm-71-xdebug/etc/conf.d:/opt/bitnami/php/etc/conf.d
+      - ./config/php-fpm-71/etc/php.ini:/usr/local/etc/php/php.ini
 
   php-fpm-72:
     container_name: php-fpm-72
-    env_file: .docker.env
     build:
       context: .
-      dockerfile: .docker/php-fpm-72/Dockerfile
+      dockerfile: docker/php-fpm-72/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES}
     networks:
       app-tier:
         aliases:
@@ -113,30 +327,17 @@ services:
       - 9072:9000
     volumes:
       - ./vhosts:/var/www/vhosts
-      - .docker/php-fpm-72/etc/conf.d:/opt/bitnami/php/etc/conf.d
-
-  php-fpm-72-xdebug:
-    container_name: php-fpm-72-xdebug
-    env_file: .docker.env
-    build:
-      context: .
-      dockerfile: .docker/php-fpm-72-xdebug/Dockerfile
-    networks:
-      app-tier:
-        aliases:
-          - php-fpm-72-xdebug
-    ports:
-      - 9172:9000
-    volumes:
-      - ./vhosts:/var/www/vhosts
-      - .docker/php-fpm-72-xdebug/etc/conf.d:/opt/bitnami/php/etc/conf.d
+      - ./config/php-fpm-72/etc/php.ini:/usr/local/etc/php/php.ini
 
   php-fpm-73:
     container_name: php-fpm-73
-    env_file: .docker.env
     build:
       context: .
-      dockerfile: .docker/php-fpm-73/Dockerfile
+      dockerfile: docker/php-fpm-73/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES}
     networks:
       app-tier:
         aliases:
@@ -145,36 +346,123 @@ services:
       - 9073:9000
     volumes:
       - ./vhosts:/var/www/vhosts
-      - .docker/php-fpm-73/etc/conf.d:/opt/bitnami/php/etc/conf.d
-    depends_on:
-      - mysql-57
-      - mysql-80
+      - ./config/php-fpm-73/etc/php.ini:/usr/local/etc/php/php.ini
 
-  php-fpm-73-xdebug:
-    container_name: php-fpm-73-xdebug
-    env_file: .docker.env
+  php-cli-56:
+    container_name: php-cli-56
+    environment:
+      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
     build:
       context: .
-      dockerfile: .docker/php-fpm-73-xdebug/Dockerfile
+      dockerfile: docker/php-cli-56/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES}
     networks:
       app-tier:
         aliases:
-          - php-fpm-73-xdebug
-    ports:
-      - 9173:9000
+          - php-cli-56
     volumes:
       - ./vhosts:/var/www/vhosts
-      - .docker/php-fpm-73-xdebug/etc/conf.d:/opt/bitnami/php/etc/conf.d
-    depends_on:
-      - mysql-57
-      - mysql-80
+      - ./config/php-cli-56/etc/php.ini:/usr/local/etc/php/php.ini
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+      - $CONFIG_BASE:/home/phpcli/.config
+      - $SSH_BASE:/home/phpcli/.ssh
+
+  php-cli-70:
+    container_name: php-cli-70
+    environment:
+      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+    build:
+      context: .
+      dockerfile: docker/php-cli-70/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES}
+    networks:
+      app-tier:
+        aliases:
+          - php-cli-70
+    volumes:
+      - ./vhosts:/var/www/vhosts
+      - ./config/php-cli-70/etc/php.ini:/usr/local/etc/php/php.ini
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+      - $CONFIG_BASE:/home/phpcli/.config
+      - $SSH_BASE:/home/phpcli/.ssh
+
+  php-cli-71:
+    container_name: php-cli-71
+    environment:
+      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+    build:
+      context: .
+      dockerfile: docker/php-cli-71/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES}
+    networks:
+      app-tier:
+        aliases:
+          - php-cli-71
+    volumes:
+      - ./vhosts:/var/www/vhosts
+      - ./config/php-cli-71/etc/php.ini:/usr/local/etc/php/php.ini
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+      - $CONFIG_BASE:/home/phpcli/.config
+      - $SSH_BASE:/home/phpcli/.ssh
+
+  php-cli-72:
+    container_name: php-cli-72
+    environment:
+      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+    build:
+      context: .
+      dockerfile: docker/php-cli-72/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES}
+    networks:
+      app-tier:
+        aliases:
+          - php-cli-72
+    volumes:
+      - ./vhosts:/var/www/vhosts
+      - ./config/php-cli-72/etc/php.ini:/usr/local/etc/php/php.ini
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+      - $CONFIG_BASE:/home/phpcli/.config
+      - $SSH_BASE:/home/phpcli/.ssh
+
+  php-cli-73:
+    container_name: php-cli-73
+    environment:
+      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+    build:
+      context: .
+      dockerfile: docker/php-cli-73/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES}
+    networks:
+      app-tier:
+        aliases:
+          - php-cli-73
+    volumes:
+      - ./vhosts:/var/www/vhosts
+      - ./config/php-cli-73/etc/php.ini:/usr/local/etc/php/php.ini
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+      - $CONFIG_BASE:/home/phpcli/.config
+      - $SSH_BASE:/home/phpcli/.ssh
 
   solr-771:
     container_name: solr-771
-    env_file: .docker.env
     build:
       context: .
-      dockerfile: .docker/solr-771/Dockerfile
+      dockerfile: docker/solr-771/Dockerfile
     networks:
       app-tier:
         aliases:
@@ -183,15 +471,14 @@ services:
       - 8983:8983
     volumes:
       - ./vhosts:/var/www/vhosts
-      - ./solr-771-data:/bitnami/solr/data
+      - ./data/solr-771:/bitnami/solr/data
       - ./solr-771-lib:/var/www/solr/lib
 
   tomcat-9:
     container_name: tomcat-9
-    env_file: .docker.env
     build:
       context: .
-      dockerfile: .docker/tomcat-9/Dockerfile
+      dockerfile: docker/tomcat-9/Dockerfile
     networks:
       app-tier:
         aliases:
@@ -199,23 +486,23 @@ services:
     ports:
       - 8888:8080
     volumes:
-      - ./tomcat-9-data:/bitnami
+      - ./data/tomcat-9:/bitnami
       - ./vhosts:/var/www/vhosts
 
-  apache:
-    container_name: apache
+  apache-24:
+    container_name: apache-24
     build:
       context: .
-      dockerfile: .docker/apache/Dockerfile
+      dockerfile: docker/apache-24/Dockerfile
     networks:
       app-tier:
         aliases:
-          - apache
+          - apache-24
     ports:
-      - 80:8080
-      - 443:8443
+      - 80:80
+      - 443:443
     volumes:
-      - .docker/apache/conf/httpd.conf:/bitnami/apache/conf/httpd.conf
-      - .docker/apache/conf/macro.conf:/bitnami/apache/conf/macro.conf
-      - .docker/apache/conf/vhosts:/bitnami/apache/conf/vhosts-dev
+      - ./config/apache-24/conf.d:/opt/docker/etc/httpd/conf.d
+      - ./config/apache-24/app:/app
       - ./vhosts:/var/www/vhosts
+
