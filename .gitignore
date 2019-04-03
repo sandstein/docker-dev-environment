@@ -1,7 +1,6 @@
 /.idea
-/mysql-57-data
-/mysql-80-data
+/.env
 /vhosts
-/.docker/apache/conf/vhosts/*.conf
-/solr-771-data
-/tomcat-9-data
+/.docker/apache/conf/*.conf
+!/.docker/apache/conf/httpd.conf
+!/.docker/apache/conf/macro.conf
