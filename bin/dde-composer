@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+MY_PATH=`dirname $(readlink -f "$0")`
+set -a
+. $MY_PATH/dde-defines
+set +a
+
+if [[ -n ${PHP_CLI_CONTAINER} ]]; then
+   ${MY_PATH}/dde-cli composer "$@" -d /var/www/vhosts/${PROJECT_ROOT}
+else
+    echo "No PHP_CLI_CONTAINER set, please do so in your projects .env file"
+fi
