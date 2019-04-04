@@ -1,6 +1,8 @@
 # Docker Development Environment
 
-Containers:
+## Possible containers
+
+Dockerfiles exist for the following
 
 * php-fpm-57
 * php-fpm-71
@@ -37,7 +39,51 @@ You can create a new `.conf` file per vhost. They are automatically loaded when 
 
 If you do not use .localhost under linux, remember to edit your local hosts file when adding new vhosts.
 
-## Startup
+## Initialisation and commands
+
+There are some commands which - together with .env files will facilate your work. Copy `.env.sample` to `.env` and possibly
+make changes according to your system.
+
+Copy `.env.project-sample` to your projects root file (if not under version control) and edit settings therein.
+
+The command `bin/dde-init` will set `DOCKER_DEV_ENVIRONMENT_HOME` in your .bashrc and add `${DOCKER_DEV_ENVIRONMENT_HOME}/bin`
+to your `${PATH}`.
+
+Then you can start all the needed containers by invoking
+```bash
+$ dde-start
+``` 
+in your project root dir, call
+```bash
+$ dde-cli [some-command]
+```
+to start a (php-)cli container and execute `[some-command]` inside the container. If you need to run some composer actions,
+there ist the command
+```bash
+$ dde-composer [commands and flags]
+```
+
+To rebuild all containers use
+```bash
+$ dde-rebuild
+```
+
+If you need to restart a single or multiple containers (e.g. your apache configuration or php-fpm configuration has 
+changed) you can use
+```bash
+$ dde-restart [service or services]
+```
+
+Finally, if all the work is done and you want to save resources, you can just use
+
+```bash
+$ dde-down
+```
+
+to stop all the containers.
+
+
+## Startup (old?)
 
 `docker-compose up`
 

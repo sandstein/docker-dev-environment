@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+MY_PATH=`dirname $(readlink -f "$0")`
+set -a
+. $MY_PATH/dde-defines
+set +a
+
+if [[ -n $1 ]]; then
+   docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml restart $1
+else
+    echo "No container given to restart, Usage: dde-restart <service>"
+fi

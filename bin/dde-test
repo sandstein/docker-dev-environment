@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+MY_PATH=`dirname $(readlink -f "$0")`
+set -a
+. $MY_PATH/dde-defines
+set +a
+
+echo "This Script is for testing only, it does nothing, except printing out this line :)"
