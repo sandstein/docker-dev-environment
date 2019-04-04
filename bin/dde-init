@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+MY_PATH=`dirname $(readlink -f "$0")`
+
+#
+# sets DOCKER_DEV_ENVIRONMENT_HOME
+#
+if [[ -z "${DOCKER_DEV_ENVIRONMENT_HOME+x}" ]]; then
+    DOCKER_DEV_ENVIRONMENT_HOME=$(readlink -f "${MY_PATH}/..")
+    BASHRC_FILE="${HOME}/.bashrc"
+    if [[ "$(grep -c "export DOCKER_DEV_ENVIRONMENT" ${BASHRC_FILE})" = "0" ]]; then
+        cat >> ${BASHRC_FILE} <<EOL
+#
+# initialising docker dev environment
+#
+export DOCKER_DEV_ENVIRONMENT_HOME="${DOCKER_DEV_ENVIRONMENT_HOME}"
+if [[ -d "\${DOCKER_DEV_ENVIRONMENT_HOME}/bin" ]]; then
+    PATH="\${DOCKER_DEV_ENVIRONMENT_HOME}/bin:\${PATH}"
+fi
+EOL
+    else
+        echo "docker dev environment already initialised"
+    fi
+fi
+
