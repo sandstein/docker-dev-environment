@@ -506,3 +506,14 @@ services:
       - ./config/apache-24/app:/app
       - ./vhosts:/var/www/vhosts
 
+  redis-5:
+    container_name: redis-5
+    build:
+      context: .
+      dockerfile: docker/redis-5/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - redis-5
+    ports:
+      - 6379:6379
