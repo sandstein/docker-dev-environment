@@ -494,6 +494,9 @@ services:
     build:
       context: .
       dockerfile: docker/apache-24/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
     networks:
       app-tier:
         aliases:
@@ -502,7 +505,17 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ./config/apache-24/conf.d:/opt/docker/etc/httpd/conf.d
-      - ./config/apache-24/app:/app
+      - ./config/apache-24/conf.d:/usr/local/apache2/conf/conf.d:ro
       - ./vhosts:/var/www/vhosts
 
+  redis-5:
+    container_name: redis-5
+    build:
+      context: .
+      dockerfile: docker/redis-5/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - redis-5
+    ports:
+      - 6379:6379

@@ -6,5 +6,3 @@ set -a
 set +a
 
 echo "This Script is for testing only, it does nothing, except printing out this line :)"
-
-touchConfigFile php-cli-56

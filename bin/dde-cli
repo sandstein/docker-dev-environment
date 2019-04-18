@@ -10,8 +10,8 @@ set +a
 
 if [[ -n ${PHP_CLI_CONTAINER} ]]; then
     if [[ -n $1 ]]; then
-        touch ${DOCKER_DEV_ENVIRONMENT_HOME}/conf/${PHP_CLI_CONTAINER}/etc/php.ini
-        docker-compose  -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml run -u ${USER_ID} -w /var/www/vhosts/${PROJECT_ROOT} ${PHP_CLI_CONTAINER} "$@"
+        touchConfigFile ${PHP_CLI_CONTAINER}
+        docker-compose  -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml run --rm -u ${USER_ID} -w /var/www/vhosts/${PROJECT_ROOT} ${PHP_CLI_CONTAINER} "$@"
     else
         echo "No command given, usage: $0 <command>"
     fi
