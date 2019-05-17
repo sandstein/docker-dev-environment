@@ -2,24 +2,53 @@
 
 MY_PATH=`dirname $(readlink -f "$0")`
 
+REQUESTED_DOCKER_DEV_ENVIRONMENT_HOME=$(readlink -f "${MY_PATH}/..")
 #
 # sets DOCKER_DEV_ENVIRONMENT_HOME
+# if it is no set or changed
 #
-if [[ -z "${DOCKER_DEV_ENVIRONMENT_HOME+x}" ]]; then
-    DOCKER_DEV_ENVIRONMENT_HOME=$(readlink -f "${MY_PATH}/..")
+if [[ -z "${DOCKER_DEV_ENVIRONMENT_HOME+x}" || "${REQUESTED_DOCKER_DEV_ENVIRONMENT_HOME}" != "${DOCKER_DEV_ENVIRONMENT_HOME}" ]]; then
+
     BASHRC_FILE="${HOME}/.bashrc"
-    if [[ "$(grep -c "export DOCKER_DEV_ENVIRONMENT" ${BASHRC_FILE})" = "0" ]]; then
-        cat >> ${BASHRC_FILE} <<EOL
+    #
+    # check if source command is included
+    #
+    if [[ "$(grep -c ".docker/.devenvrc" ${BASHRC_FILE})" = "0" ]]; then
+        cat >> ${BASHRC_FILE} <<EOL_BASH
 #
 # initialising docker dev environment
 #
-export DOCKER_DEV_ENVIRONMENT_HOME="${DOCKER_DEV_ENVIRONMENT_HOME}"
+source ~/.docker/.devenvrc
+EOL_BASH
+    fi
+
+    #
+    # check if .devenvrc file exists
+    #
+    if [[ ! -d ~/.docker ]]; then
+       mkdir ~/.docker
+    fi
+
+    if [[ ( ! -f ~/.docker/.devenvrc ) || "${REQUESTED_DOCKER_DEV_ENVIRONMENT_HOME}" != "${DOCKER_DEV_ENVIRONMENT_HOME}" ]]; then
+
+        cat > ~/.docker/.devenvrc <<EOL_DOCKER
+#
+# initialising docker dev environment
+#
+export DOCKER_DEV_ENVIRONMENT_HOME="${REQUESTED_DOCKER_DEV_ENVIRONMENT_HOME}"
 if [[ -d "\${DOCKER_DEV_ENVIRONMENT_HOME}/bin" ]]; then
     PATH="\${DOCKER_DEV_ENVIRONMENT_HOME}/bin:\${PATH}"
 fi
-EOL
-    else
-        echo "docker dev environment already initialised"
+EOL_DOCKER
     fi
+
+    echo "docker dev environment initialized or changed, please type"
+    echo "$ source ~/.bashrc "
+    echo "to see effects"
+else
+    echo "docker dev environment already initialised"
 fi
+
+
+
 

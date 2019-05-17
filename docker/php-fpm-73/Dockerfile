@@ -1,4 +1,4 @@
-FROM sandstein/php:fpm-7.2
+FROM sandstein/php:fpm-7.3
 
 ARG USER_ID=33
 ARG GROUP_ID=33
