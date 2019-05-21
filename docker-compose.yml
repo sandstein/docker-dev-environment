@@ -7,6 +7,7 @@ networks:
 services:
 
   mysql-55:
+    user: mysql
     container_name: mysql-55
     env_file: env/db.env
     build:
@@ -22,10 +23,11 @@ services:
     ports:
       - 3355:3306
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/mysql-55:/var/lib/mysql
+      - ${DOCKER_VOLUME_BASE_PATH}/data/mysql-55:/var/lib/mysql:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/mysql-55/etc:/etc/mysql/conf.d
 
   mysql-56:
+    user: mysql
     container_name: mysql-56
     env_file: env/db.env
     build:
@@ -41,10 +43,11 @@ services:
     ports:
       - 3356:3306
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/mysql-56:/var/lib/mysql
+      - ${DOCKER_VOLUME_BASE_PATH}/data/mysql-56:/var/lib/mysql:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/mysql-56/etc:/etc/mysql/conf.d
 
   mysql-57:
+    user: mysql
     container_name: mysql-57
     env_file: env/db.env
     build:
@@ -60,10 +63,11 @@ services:
     ports:
       - 3357:3306
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/mysql-57:/var/lib/mysql
+      - ${DOCKER_VOLUME_BASE_PATH}/data/mysql-57:/var/lib/mysql:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/mysql-57/etc:/etc/mysql/conf.d
 
   mysql-80:
+    user: mysql
     container_name: mysql-80
     env_file: env/db.env
     build:
@@ -79,10 +83,11 @@ services:
     ports:
       - 3380:3306
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/mysql-80:/var/lib/mysql
+      - ${DOCKER_VOLUME_BASE_PATH}/data/mysql-80:/var/lib/mysql:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/mysql-80/etc:/etc/mysql/conf.d
 
   percona-56:
+    user: mysql
     container_name: percona-56
     env_file: env/db.env
     build:
@@ -98,10 +103,11 @@ services:
     ports:
       - 3456:3306
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/percona-56:/var/lib/mysql
+      - ${DOCKER_VOLUME_BASE_PATH}/data/percona-56:/var/lib/mysql:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/percona-56/etc:/etc/mysql/conf.d
 
   percona-57:
+    user: mysql
     container_name: percona-57
     env_file: env/db.env
     build:
@@ -117,10 +123,11 @@ services:
     ports:
       - 3457:3306
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/percona-57:/var/lib/mysql
+      - ${DOCKER_VOLUME_BASE_PATH}/data/percona-57:/var/lib/mysql:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/percona-57/etc:/etc/mysql/conf.d
 
   percona-80:
+    user: mysql
     container_name: percona-80
     env_file: env/db.env
     build:
@@ -136,10 +143,11 @@ services:
     ports:
       - 3480:3306
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/percona-80:/var/lib/mysql
+      - ${DOCKER_VOLUME_BASE_PATH}/data/percona-80:/var/lib/mysql:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/percona-80/etc:/etc/mysql/conf.d
 
   mariadb-55:
+    user: mysql
     container_name: mariadb-55
     env_file: env/db.env
     build:
@@ -155,10 +163,11 @@ services:
     ports:
       - 3555:3306
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-55:/var/lib/mysql
+      - ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-55:/var/lib/mysql:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/mariadb-55/etc:/etc/mysql/conf.d
 
   mariadb-100:
+    user: mysql
     container_name: mariadb-100
     env_file: env/db.env
     build:
@@ -174,10 +183,11 @@ services:
     ports:
       - 3500:3306
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-100:/var/lib/mysql
+      - ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-100:/var/lib/mysql:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/mariadb-100/etc:/etc/mysql/conf.d
 
   mariadb-101:
+    user: mysql
     container_name: mariadb-101
     env_file: env/db.env
     build:
@@ -193,10 +203,11 @@ services:
     ports:
       - 3501:3306
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-101:/var/lib/mysql
+      - ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-101:/var/lib/mysql:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/mariadb-100/etc:/etc/mysql/conf.d
 
   mariadb-102:
+    user: mysql
     container_name: mariadb-102
     env_file: env/db.env
     build:
@@ -212,10 +223,11 @@ services:
     ports:
       - 3502:3306
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-102:/var/lib/mysql
+      - ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-102:/var/lib/mysql:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/mariadb-100/etc:/etc/mysql/conf.d
 
   mariadb-103:
+    user: mysql
     container_name: mariadb-103
     env_file: env/db.env
     build:
@@ -231,10 +243,11 @@ services:
     ports:
       - 3503:3306
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-103:/var/lib/mysql
+      - ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-103:/var/lib/mysql:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/mariadb-100/etc:/etc/mysql/conf.d
 
   mariadb-104:
+    user: mysql
     container_name: mariadb-104
     env_file: env/db.env
     build:
@@ -250,10 +263,11 @@ services:
     ports:
       - 3504:3306
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-104:/var/lib/mysql
+      - ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-104:/var/lib/mysql:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/mariadb-100/etc:/etc/mysql/conf.d
 
   php-fpm-56:
+    user: www-data
     container_name: php-fpm-56
     build:
       context: .
@@ -269,10 +283,11 @@ services:
     ports:
       - 9056:9000
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-56/etc/php.ini:/usr/local/etc/php/php.ini
 
   php-fpm-70:
+    user: www-data
     container_name: php-fpm-70
     build:
       context: .
@@ -288,10 +303,11 @@ services:
     ports:
       - 9070:9000
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-70/etc/php.ini:/usr/local/etc/php/php.ini
 
   php-fpm-71:
+    user: www-data
     container_name: php-fpm-71
     build:
       context: .
@@ -307,10 +323,11 @@ services:
     ports:
       - 9071:9000
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-71/etc/php.ini:/usr/local/etc/php/php.ini
 
   php-fpm-72:
+    user: www-data
     container_name: php-fpm-72
     build:
       context: .
@@ -326,10 +343,11 @@ services:
     ports:
       - 9072:9000
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-72/etc/php.ini:/usr/local/etc/php/php.ini
 
   php-fpm-73:
+    user: www-data
     container_name: php-fpm-73
     build:
       context: .
@@ -345,10 +363,11 @@ services:
     ports:
       - 9073:9000
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-73/etc/php.ini:/usr/local/etc/php/php.ini
 
   php-cli-56:
+    user: phpcli
     container_name: php-cli-56
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
@@ -364,13 +383,14 @@ services:
         aliases:
           - php-cli-56
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-56/etc/php.ini:/usr/local/etc/php/php.ini
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
       - $CONFIG_BASE:/home/phpcli/.config
       - $SSH_BASE:/home/phpcli/.ssh
 
   php-cli-70:
+    user: phpcli
     container_name: php-cli-70
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
@@ -386,13 +406,14 @@ services:
         aliases:
           - php-cli-70
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-70/etc/php.ini:/usr/local/etc/php/php.ini
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
       - $CONFIG_BASE:/home/phpcli/.config
       - $SSH_BASE:/home/phpcli/.ssh
 
   php-cli-71:
+    user: phpcli
     container_name: php-cli-71
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
@@ -408,13 +429,14 @@ services:
         aliases:
           - php-cli-71
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-71/etc/php.ini:/usr/local/etc/php/php.ini
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
       - $CONFIG_BASE:/home/phpcli/.config
       - $SSH_BASE:/home/phpcli/.ssh
 
   php-cli-72:
+    user: phpcli
     container_name: php-cli-72
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
@@ -430,13 +452,14 @@ services:
         aliases:
           - php-cli-72
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-72/etc/php.ini:/usr/local/etc/php/php.ini
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
       - $CONFIG_BASE:/home/phpcli/.config
       - $SSH_BASE:/home/phpcli/.ssh
 
   php-cli-73:
+    user: phpcli
     container_name: php-cli-73
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
@@ -452,7 +475,7 @@ services:
         aliases:
           - php-cli-73
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-73/etc/php.ini:/usr/local/etc/php/php.ini
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
       - $CONFIG_BASE:/home/phpcli/.config
@@ -470,7 +493,7 @@ services:
     ports:
       - 8983:8983
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/data/solr-771:/bitnami/solr/data
       - ${DOCKER_VOLUME_BASE_PATH}/solr-771-lib:/var/www/solr/lib
 
@@ -487,7 +510,7 @@ services:
       - 8888:8080
     volumes:
       - ${DOCKER_VOLUME_BASE_PATH}/data/tomcat-9:/bitnami
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
 
   apache-24:
     container_name: apache-24
@@ -506,7 +529,7 @@ services:
       - ${APACHE_HTTPS_PORT}:443
     volumes:
       - ${DOCKER_VOLUME_BASE_PATH}/config/apache-24/conf.d:/usr/local/apache2/conf/conf.d:ro
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
 
   redis-5:
     container_name: redis-5

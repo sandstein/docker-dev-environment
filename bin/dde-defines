@@ -1,12 +1,16 @@
 #!/usr/bin/env bash
 
-MY_PATH=`dirname $(readlink -f "$0")`
+if [[ "$(uname)" == "Darwin" ]]; then
+    MY_PATH=`dirname $(greadlink -f "$0")`
+else
+    MY_PATH=`dirname $(readlink -f "$0")`
+fi
 
 #
 # sets DOCKER_DEV_ENVIRONMENT_HOME
 #
 if [[ -e "${DOCKER_DEV_ENVIRONMENT_HOME+x}" ]]; then
-    DOCKER_DEV_ENVIRONMENT_HOME=$(readlink -f "${MY_PATH}/..")
+    DOCKER_DEV_ENVIRONMENT_HOME=$(greadlink -f "${MY_PATH}/..")
     echo $DOCKER_DEV_ENVIRONMENT_HOME
 fi
 
@@ -25,6 +29,7 @@ fi
 #
 # project specific settings
 #
+echo "${PWD}/.env"
 if [[ -e "${PWD}/.env" ]]; then
   set -a
   . ${PWD}/.env

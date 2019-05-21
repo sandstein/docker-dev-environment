@@ -1,15 +1,24 @@
 #!/usr/bin/env bash
 
-MY_PATH=`dirname $(readlink -f "$0")`
+if [[ "$(uname)" == "Darwin" ]]; then
+    MY_PATH=`dirname $(greadlink -f "$0")`
+    REQUESTED_DOCKER_DEV_ENVIRONMENT_HOME=$(greadlink -f "${MY_PATH}/..")
+else
+    MY_PATH=`dirname $(readlink -f "$0")`
+    REQUESTED_DOCKER_DEV_ENVIRONMENT_HOME=$(readlink -f "${MY_PATH}/..")
+fi
 
-REQUESTED_DOCKER_DEV_ENVIRONMENT_HOME=$(readlink -f "${MY_PATH}/..")
 #
 # sets DOCKER_DEV_ENVIRONMENT_HOME
 # if it is no set or changed
 #
 if [[ -z "${DOCKER_DEV_ENVIRONMENT_HOME+x}" || "${REQUESTED_DOCKER_DEV_ENVIRONMENT_HOME}" != "${DOCKER_DEV_ENVIRONMENT_HOME}" ]]; then
 
-    BASHRC_FILE="${HOME}/.bashrc"
+    if [[ "$(uname)" == "Darwin" ]]; then
+        BASHRC_FILE="${HOME}/.bash_profile"
+    else
+        BASHRC_FILE="${HOME}/.bashrc"
+    fi
     #
     # check if source command is included
     #
@@ -43,7 +52,11 @@ EOL_DOCKER
     fi
 
     echo "docker dev environment initialized or changed, please type"
-    echo "$ source ~/.bashrc "
+    if [[ "$(uname)" == "Darwin" ]]; then
+        echo "$ source ~/.bash_profile "
+    else
+        echo "$ source ~/.bashrc "
+    fi
     echo "to see effects"
 else
     echo "docker dev environment already initialised"
