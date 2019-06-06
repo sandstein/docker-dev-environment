@@ -458,6 +458,211 @@ services:
       - $CONFIG_BASE:/home/phpcli/.config
       - $SSH_BASE:/home/phpcli/.ssh
 
+  php-fpm-56-x:
+    container_name: php-fpm-56-x
+    build:
+      context: .
+      dockerfile: docker/php-fpm-56/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES_X}
+    networks:
+      app-tier:
+        aliases:
+          - php-fpm-56-x
+    ports:
+      - 9156:9000
+    volumes:
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-56/etc/php.ini:/usr/local/etc/php/php.ini
+
+  php-fpm-70-x:
+    container_name: php-fpm-70-x
+    build:
+      context: .
+      dockerfile: docker/php-fpm-70/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES_X}
+    networks:
+      app-tier:
+        aliases:
+          - php-fpm-70-x
+    ports:
+      - 9170:9000
+    volumes:
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-70/etc/php.ini:/usr/local/etc/php/php.ini
+
+  php-fpm-71-x:
+    container_name: php-fpm-71-x
+    build:
+      context: .
+      dockerfile: docker/php-fpm-71/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES_X}
+    networks:
+      app-tier:
+        aliases:
+          - php-fpm-71-x
+    ports:
+      - 9171:9000
+    volumes:
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-71/etc/php.ini:/usr/local/etc/php/php.ini
+
+  php-fpm-72-x:
+    container_name: php-fpm-72-x
+    build:
+      context: .
+      dockerfile: docker/php-fpm-72/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES_X}
+    networks:
+      app-tier:
+        aliases:
+          - php-fpm-72-x
+    ports:
+      - 9172:9000
+    volumes:
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-72/etc/php.ini:/usr/local/etc/php/php.ini
+
+  php-fpm-73-x:
+    container_name: php-fpm-73-x
+    build:
+      context: .
+      dockerfile: docker/php-fpm-73/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES_X}
+    networks:
+      app-tier:
+        aliases:
+          - php-fpm-73
+    ports:
+      - 9073:9000
+    volumes:
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-73/etc/php.ini:/usr/local/etc/php/php.ini
+
+  php-cli-56-x:
+    container_name: php-cli-56-x
+    environment:
+      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+    build:
+      context: .
+      dockerfile: docker/php-cli-56/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES_X}
+    networks:
+      app-tier:
+        aliases:
+          - php-cli-56-x
+    volumes:
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-56/etc/php.ini:/usr/local/etc/php/php.ini
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+      - $CONFIG_BASE:/home/phpcli/.config
+      - $SSH_BASE:/home/phpcli/.ssh
+
+  php-cli-70-x:
+    container_name: php-cli-70-x
+    environment:
+      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+    build:
+      context: .
+      dockerfile: docker/php-cli-70/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES_X}
+    networks:
+      app-tier:
+        aliases:
+          - php-cli-70-x
+    volumes:
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-70/etc/php.ini:/usr/local/etc/php/php.ini
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+      - $CONFIG_BASE:/home/phpcli/.config
+      - $SSH_BASE:/home/phpcli/.ssh
+
+  php-cli-71-x:
+    container_name: php-cli-71-x
+    environment:
+      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+    build:
+      context: .
+      dockerfile: docker/php-cli-71/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES_X}
+    networks:
+      app-tier:
+        aliases:
+          - php-cli-71-x
+    volumes:
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-71/etc/php.ini:/usr/local/etc/php/php.ini
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+      - $CONFIG_BASE:/home/phpcli/.config
+      - $SSH_BASE:/home/phpcli/.ssh
+
+  php-cli-72-x:
+    container_name: php-cli-72-x
+    environment:
+      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+    build:
+      context: .
+      dockerfile: docker/php-cli-72/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES_X}
+    networks:
+      app-tier:
+        aliases:
+          - php-cli-72-x
+    volumes:
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-72/etc/php.ini:/usr/local/etc/php/php.ini
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+      - $CONFIG_BASE:/home/phpcli/.config
+      - $SSH_BASE:/home/phpcli/.ssh
+
+  php-cli-73-x:
+    container_name: php-cli-73-x
+    environment:
+      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+    build:
+      context: .
+      dockerfile: docker/php-cli-73/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES_X}
+    networks:
+      app-tier:
+        aliases:
+          - php-cli-73-x
+    volumes:
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-73/etc/php.ini:/usr/local/etc/php/php.ini
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+      - $CONFIG_BASE:/home/phpcli/.config
+      - $SSH_BASE:/home/phpcli/.ssh
+
   solr-771:
     container_name: solr-771
     build:
