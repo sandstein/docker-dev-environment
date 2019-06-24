@@ -548,7 +548,7 @@ services:
         aliases:
           - php-fpm-73
     ports:
-      - 9073:9000
+      - 9173:9000
     volumes:
       - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-73/etc/php.ini:/usr/local/etc/php/php.ini
