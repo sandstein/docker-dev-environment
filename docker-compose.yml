@@ -738,4 +738,20 @@ services:
     ports:
       - ${VARNISH_HTTP_PORT}:80
     volumes:
-      -  ${DOCKER_VOLUME_BASE_PATH}/config/varnish/etc/varnish:/etc/varnish
+      - ${DOCKER_VOLUME_BASE_PATH}/config/varnish/etc/varnish:/etc/varnish
+
+  elastic-56:
+    container_name: elastic-56
+    build:
+      context: .
+      dockerfile: docker/elastic-56/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - elastic-56
+    env_file: env/elastic.env
+    ports:
+      - 9256:9200
+      - 9356:9300
+    volumes:
+      - ${DOCKER_VOLUME_BASE_PATH}/data/elastic-56:/usr/share/elasticsearch/data
