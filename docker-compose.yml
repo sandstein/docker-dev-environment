@@ -724,3 +724,18 @@ services:
           - redis-5
     ports:
       - 6379:6379
+
+  varnish:
+    container_name: varnish
+    env_file: env/varnish.env
+    build:
+      context: .
+      dockerfile: docker/varnish/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - varnish
+    ports:
+      - ${VARNISH_HTTP_PORT}:80
+    volumes:
+      -  ${DOCKER_VOLUME_BASE_PATH}/config/varnish/etc/varnish:/etc/varnish
