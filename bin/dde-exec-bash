@@ -6,7 +6,7 @@ set -a
 set +a
 
 if [[ -n $1 ]]; then
-   docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml exec  $1 bash
+   docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml exec $1 bash
 else
     echo "No container given to run bash in, Usage: dde-bash <service>"
 fi
