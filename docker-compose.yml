@@ -663,6 +663,26 @@ services:
       - $CONFIG_BASE:/home/phpcli/.config
       - $SSH_BASE:/home/phpcli/.ssh
 
+  ssh:
+    container_name: ssh
+    environment:
+      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+    build:
+      context: .
+      dockerfile: docker/ssh/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - ssh
+    volumes:
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/config/ssh/tunnel.conf:/home/ssh/tunnel.conf
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+      - $SSH_BASE:/home/ssh/.ssh
+
   solr-771:
     container_name: solr-771
     build:
