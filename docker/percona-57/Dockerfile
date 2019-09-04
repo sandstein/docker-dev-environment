@@ -1,4 +1,4 @@
-FROM sandstein/percona:5.6
+FROM sandstein/percona:5.7
 
 ARG USER_ID=999
 ARG GROUP_ID=999
