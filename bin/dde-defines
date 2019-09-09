@@ -52,7 +52,9 @@ touchConfigFile () {
     configFile="${DOCKER_DEV_ENVIRONMENT_HOME}/config/$1/etc/my.cnf"
   fi
 
-
+  if [[ $1 =~ "ssh" ]]; then
+    configFile="${DOCKER_DEV_ENVIRONMENT_HOME}/config/$1/tunnel.conf"
+  fi
 
   if [[ ! -z "${configFile}" && ! -f "${configFile}" ]]; then
     echo "Touching ${configFile} before startup, because it does not exist"

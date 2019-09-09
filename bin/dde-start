@@ -17,9 +17,7 @@ if [[ -n ${DOCKER_CONTAINER} ]]; then
           docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml up -d ${container}
       done
    done <<< "${DOCKER_CONTAINER}"
-   echo HIER
    if [[ -n ${PHP_FPM_CONTAINER} ]]; then
-       echo 'HIER'
        touchConfigFile ${PHP_FPM_CONTAINER}
        docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml up -d ${PHP_FPM_CONTAINER}
        docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml up -d ${PHP_FPM_CONTAINER}-x

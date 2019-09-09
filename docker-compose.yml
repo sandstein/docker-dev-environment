@@ -571,7 +571,7 @@ services:
         aliases:
           - php-fpm-73
     ports:
-      - 9073:9000
+      - 9173:9000
     volumes:
       - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-73/etc/php.ini:/usr/local/etc/php/php.ini
@@ -686,6 +686,26 @@ services:
       - $CONFIG_BASE:/home/phpcli/.config
       - $SSH_BASE:/home/phpcli/.ssh
 
+  ssh:
+    container_name: ssh
+    environment:
+      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+    build:
+      context: .
+      dockerfile: docker/ssh/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - ssh
+    volumes:
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/config/ssh/tunnel.conf:/home/ssh/tunnel.conf
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+      - $SSH_BASE:/home/ssh/.ssh
+
   solr-771:
     container_name: solr-771
     build:
@@ -747,3 +767,50 @@ services:
           - redis-5
     ports:
       - 6379:6379
+
+  varnish:
+    container_name: varnish
+    env_file: env/varnish.env
+    build:
+      context: .
+      dockerfile: docker/varnish/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - varnish
+    ports:
+      - ${VARNISH_HTTP_PORT}:80
+    volumes:
+      - ${DOCKER_VOLUME_BASE_PATH}/config/varnish/etc/varnish:/etc/varnish
+
+  elastic-56:
+    container_name: elastic-56
+    build:
+      context: .
+      dockerfile: docker/elastic-56/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - elastic-56
+    env_file: env/elastic.env
+    ports:
+      - 9256:9200
+      - 9356:9300
+    volumes:
+      - ${DOCKER_VOLUME_BASE_PATH}/data/elastic-56:/usr/share/elasticsearch/data
+
+  elastic-73:
+    container_name: elastic-73
+    build:
+      context: .
+      dockerfile: docker/elastic-73/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - elastic-73
+    env_file: env/elastic.env
+    ports:
+      - 9273:9200
+      - 9373:9300
+    volumes:
+      - ${DOCKER_VOLUME_BASE_PATH}/data/elastic-73:/usr/share/elasticsearch/data
