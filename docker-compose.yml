@@ -829,3 +829,17 @@ services:
       - 9373:9300
     volumes:
       - ${DOCKER_VOLUME_BASE_PATH}/data/elastic-73:/usr/share/elasticsearch/data:delegated
+
+  mailcatcher:
+    container_name: mailcatcher
+    build:
+      context: .
+      dockerfile: docker/mailcatcher/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - mailcatcher
+          - mailcatcher.sandstein.de
+    ports:
+      - 1025:1025
+      - 1080:1080
