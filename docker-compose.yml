@@ -482,6 +482,7 @@ services:
       - $SSH_BASE:/home/phpcli/.ssh
 
   php-fpm-56-x:
+    user: www-data
     container_name: php-fpm-56-x
     build:
       context: .
@@ -497,10 +498,11 @@ services:
     ports:
       - 9156:9000
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-56/etc/php.ini:/usr/local/etc/php/php.ini
 
   php-fpm-70-x:
+    user: www-data
     container_name: php-fpm-70-x
     build:
       context: .
@@ -516,10 +518,11 @@ services:
     ports:
       - 9170:9000
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-70/etc/php.ini:/usr/local/etc/php/php.ini
 
   php-fpm-71-x:
+    user: www-data
     container_name: php-fpm-71-x
     build:
       context: .
@@ -535,10 +538,11 @@ services:
     ports:
       - 9171:9000
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-71/etc/php.ini:/usr/local/etc/php/php.ini
 
   php-fpm-72-x:
+    user: www-data
     container_name: php-fpm-72-x
     build:
       context: .
@@ -554,10 +558,11 @@ services:
     ports:
       - 9172:9000
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-72/etc/php.ini:/usr/local/etc/php/php.ini
 
   php-fpm-73-x:
+    user: www-data
     container_name: php-fpm-73-x
     build:
       context: .
@@ -573,13 +578,15 @@ services:
     ports:
       - 9173:9000
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-73/etc/php.ini:/usr/local/etc/php/php.ini
 
   php-cli-56-x:
+    user: phpcli
     container_name: php-cli-56-x
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - PHP_IDE_CONFIG=serverName=localhost
     build:
       context: .
       dockerfile: docker/php-cli-56/Dockerfile
@@ -592,16 +599,18 @@ services:
         aliases:
           - php-cli-56-x
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-56/etc/php.ini:/usr/local/etc/php/php.ini
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
       - $CONFIG_BASE:/home/phpcli/.config
       - $SSH_BASE:/home/phpcli/.ssh
 
   php-cli-70-x:
+    user: phpcli
     container_name: php-cli-70-x
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - PHP_IDE_CONFIG=serverName=localhost
     build:
       context: .
       dockerfile: docker/php-cli-70/Dockerfile
@@ -614,16 +623,18 @@ services:
         aliases:
           - php-cli-70-x
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-70/etc/php.ini:/usr/local/etc/php/php.ini
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
       - $CONFIG_BASE:/home/phpcli/.config
       - $SSH_BASE:/home/phpcli/.ssh
 
   php-cli-71-x:
+    user: phpcli
     container_name: php-cli-71-x
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - PHP_IDE_CONFIG=serverName=localhost
     build:
       context: .
       dockerfile: docker/php-cli-71/Dockerfile
@@ -636,16 +647,18 @@ services:
         aliases:
           - php-cli-71-x
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-71/etc/php.ini:/usr/local/etc/php/php.ini
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
       - $CONFIG_BASE:/home/phpcli/.config
       - $SSH_BASE:/home/phpcli/.ssh
 
   php-cli-72-x:
+    user: phpcli
     container_name: php-cli-72-x
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - PHP_IDE_CONFIG=serverName=localhost
     build:
       context: .
       dockerfile: docker/php-cli-72/Dockerfile
@@ -658,16 +671,18 @@ services:
         aliases:
           - php-cli-72-x
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-72/etc/php.ini:/usr/local/etc/php/php.ini
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
       - $CONFIG_BASE:/home/phpcli/.config
       - $SSH_BASE:/home/phpcli/.ssh
 
   php-cli-73-x:
+    user: phpcli
     container_name: php-cli-73-x
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - PHP_IDE_CONFIG=serverName=localhost
     build:
       context: .
       dockerfile: docker/php-cli-73/Dockerfile
@@ -680,7 +695,7 @@ services:
         aliases:
           - php-cli-73-x
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-73/etc/php.ini:/usr/local/etc/php/php.ini
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
       - $CONFIG_BASE:/home/phpcli/.config
@@ -701,7 +716,7 @@ services:
         aliases:
           - ssh
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/ssh/tunnel.conf:/home/ssh/tunnel.conf
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
       - $SSH_BASE:/home/ssh/.ssh
@@ -719,7 +734,7 @@ services:
       - 8983:8983
     volumes:
       - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
-      - ${DOCKER_VOLUME_BASE_PATH}/data/solr-771:/bitnami/solr/data
+      - ${DOCKER_VOLUME_BASE_PATH}/data/solr-771:/bitnami/solr/data:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/solr-771-lib:/var/www/solr/lib
 
   tomcat-9:
@@ -797,7 +812,7 @@ services:
       - 9256:9200
       - 9356:9300
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/elastic-56:/usr/share/elasticsearch/data
+      - ${DOCKER_VOLUME_BASE_PATH}/data/elastic-56:/usr/share/elasticsearch/data:delegated
 
   elastic-73:
     container_name: elastic-73
@@ -813,4 +828,4 @@ services:
       - 9273:9200
       - 9373:9300
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/elastic-73:/usr/share/elasticsearch/data
+      - ${DOCKER_VOLUME_BASE_PATH}/data/elastic-73:/usr/share/elasticsearch/data:delegated
