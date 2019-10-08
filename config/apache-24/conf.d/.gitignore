@@ -1,3 +1,7 @@
 *
 !00_httpd.conf
 !01_macro.conf
+!ssl/crt/localhost.crt
+!ssl/crt/Sandstein-CA.crt
+!ssl/key/localhost.key
+
