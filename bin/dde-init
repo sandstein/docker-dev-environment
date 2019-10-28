@@ -20,15 +20,30 @@ if [[ -z "${DOCKER_DEV_ENVIRONMENT_HOME+x}" || "${REQUESTED_DOCKER_DEV_ENVIRONME
         BASHRC_FILE="${HOME}/.bashrc"
     fi
     #
-    # check if source command is included
+    # check if source command is included in .bashrc if the file exists
     #
-    if [[ "$(grep -c ".docker/.devenvrc" ${BASHRC_FILE})" = "0" ]]; then
+    if [[ -f $BASHRC_FILE  && "$(grep -c ".docker/.devenvrc" ${BASHRC_FILE})" = "0" ]]; then
         cat >> ${BASHRC_FILE} <<EOL_BASH
+
 #
 # initialising docker dev environment
 #
 source ~/.docker/.devenvrc
 EOL_BASH
+    fi
+
+    ZSHRC_FILE="${HOME}/.zshrc"
+    #
+    # check if source command is included in .zshrc if the file exists
+    #
+    if [[ -f $ZSHRC_FILE  && "$(grep -c ".docker/.devenvrc" ${ZSHRC_FILE})" = "0" ]]; then
+        cat >> ${ZSHRC_FILE} <<EOL_ZSH
+
+#
+# initialising docker dev environment
+#
+source ~/.docker/.devenvrc
+EOL_ZSH
     fi
 
     #
@@ -52,10 +67,12 @@ EOL_DOCKER
     fi
 
     echo "docker dev environment initialized or changed, please type"
-    if [[ "$(uname)" == "Darwin" ]]; then
-        echo "$ source ~/.bash_profile "
+    if [[ "$(grep -c "/bash" ${SHELL})" != "0" ]]; then
+        echo "$ source $BASHRC_FILE "
+    elif [[ "$(grep -c "/zsh" ${SHELL})" != "0" ]]; then
+        echo "$ source $ZSHRC_FILE "
     else
-        echo "$ source ~/.bashrc "
+        echo "$ source /pfad/zur/config/datei/der/shell "
     fi
     echo "to see effects"
 else
