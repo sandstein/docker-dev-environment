@@ -704,7 +704,7 @@ services:
   ssh:
     container_name: ssh
     environment:
-      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - SSH_AUTH_SOCK=/home/ssh/.ssh/agent.sock
     build:
       context: .
       dockerfile: docker/ssh/Dockerfile
@@ -718,7 +718,6 @@ services:
     volumes:
       - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/ssh/tunnel.conf:/home/ssh/tunnel.conf
-      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
       - $SSH_BASE:/home/ssh/.ssh
 
   solr-771:
