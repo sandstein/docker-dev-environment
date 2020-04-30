@@ -130,3 +130,17 @@ Just add a run configuration using your `example.localhost` adding a path matchi
 
 To configure your own solr cores you can symlink your core config directories to `./solr-771-data/your_core`.
 On top of this symlink.
+
+## macOS
+
+On Mac you can't use ```readlink -f "$0"``` to get the current path, because the installed version of readlink is not compatibel to current linux versions. Instead you will have to use greadlink, wich can be installed through Homebrew package coreutils.
+
+### Homebrew installieren
+(see https://brew.sh)
+```
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+```
+### Package coreutils installieren
+```
+brew install coreutils
+```
