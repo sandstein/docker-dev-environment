@@ -479,7 +479,7 @@ services:
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
       - $CONFIG_BASE:/home/phpcli/.config
       - $SSH_BASE:/home/phpcli/.ssh
-      -
+
   php-cli-74:
     container_name: php-cli-74
     environment:
