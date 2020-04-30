@@ -3,12 +3,7 @@
 #
 # sets common variables for all scripts
 #
-if [[ "$(uname)" == "Darwin" ]]; then
-    MY_PATH=`dirname $(greadlink -f "$0")`
-else
-    MY_PATH=`dirname $(readlink -f "$0")`
-fi
-
+MY_PATH=`dirname $(readlink -f "$0")`
 set -a
 . $MY_PATH/dde-defines
 set +a

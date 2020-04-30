@@ -1,24 +1,15 @@
 #!/usr/bin/env bash
 
-if [[ "$(uname)" == "Darwin" ]]; then
-    MY_PATH=`dirname $(greadlink -f "$0")`
-    REQUESTED_DOCKER_DEV_ENVIRONMENT_HOME=$(greadlink -f "${MY_PATH}/..")
-else
-    MY_PATH=`dirname $(readlink -f "$0")`
-    REQUESTED_DOCKER_DEV_ENVIRONMENT_HOME=$(readlink -f "${MY_PATH}/..")
-fi
+MY_PATH=`dirname $(readlink -f "$0")`
 
+REQUESTED_DOCKER_DEV_ENVIRONMENT_HOME=$(readlink -f "${MY_PATH}/..")
 #
 # sets DOCKER_DEV_ENVIRONMENT_HOME
 # if it is no set or changed
 #
 if [[ -z "${DOCKER_DEV_ENVIRONMENT_HOME+x}" || "${REQUESTED_DOCKER_DEV_ENVIRONMENT_HOME}" != "${DOCKER_DEV_ENVIRONMENT_HOME}" ]]; then
 
-    if [[ "$(uname)" == "Darwin" ]]; then
-        BASHRC_FILE="${HOME}/.bash_profile"
-    else
-        BASHRC_FILE="${HOME}/.bashrc"
-    fi
+    BASHRC_FILE="${HOME}/.bashrc"
     #
     # check if source command is included in .bashrc if the file exists
     #

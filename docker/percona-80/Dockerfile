@@ -1,7 +1,5 @@
 FROM sandstein/percona:8.0
 
-COPY env/bin/modify-user-ids /usr/local/bin/modify-user-ids
-
 ARG USER_ID=999
 ARG GROUP_ID=999
 USER root

@@ -1,7 +1,6 @@
 FROM sandstein/apache:2.4
 
 COPY config/apache-24/httpd.conf /usr/local/apache2/conf/httpd.conf
-COPY env/bin/modify-user-ids /usr/local/bin/modify-user-ids
 
 VOLUME /var/www/vhosts
 
