@@ -11,6 +11,12 @@ if [[ -e "${DOCKER_DEV_ENVIRONMENT_HOME+x}" ]]; then
 fi
 
 #
+# enalbe faster builds with BUILDKIT (https://www.docker.com/blog/faster-builds-in-compose-thanks-to-buildkit-support/)
+#
+COMPOSE_DOCKER_CLI_BUILD=1
+DOCKER_BUILDKIT=1
+
+#
 # global settings
 #
 if [[ -e "${MY_PATH}/../.env" ]]; then
