@@ -347,6 +347,7 @@ services:
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-73/etc/php.ini:/usr/local/etc/php/php.ini
 
   php-fpm-74:
+    user: www-data
     container_name: php-fpm-74
     build:
       context: .
@@ -362,7 +363,7 @@ services:
     ports:
       - 9074:9000
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-74/etc/php.ini:/usr/local/etc/php/php.ini
 
   php-cli-56:
@@ -385,7 +386,8 @@ services:
       - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-56/etc/php.ini:/usr/local/etc/php/php.ini
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-      - $CONFIG_BASE:/home/phpcli/.config
+      - $COMPOSER_BASE:/home/phpcli/.composer:delegated
+      - $CONFIG_BASE:/home/phpcli/.config:delegated
       - $SSH_BASE:/home/phpcli/.ssh
 
   php-cli-70:
@@ -408,7 +410,8 @@ services:
       - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-70/etc/php.ini:/usr/local/etc/php/php.ini
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-      - $CONFIG_BASE:/home/phpcli/.config
+      - $COMPOSER_BASE:/home/phpcli/.composer:delegated
+      - $CONFIG_BASE:/home/phpcli/.config:delegated
       - $SSH_BASE:/home/phpcli/.ssh
 
   php-cli-71:
@@ -431,7 +434,8 @@ services:
       - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-71/etc/php.ini:/usr/local/etc/php/php.ini
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-      - $CONFIG_BASE:/home/phpcli/.config
+      - $COMPOSER_BASE:/home/phpcli/.composer:delegated
+      - $CONFIG_BASE:/home/phpcli/.config:delegated
       - $SSH_BASE:/home/phpcli/.ssh
 
   php-cli-72:
@@ -454,7 +458,8 @@ services:
       - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-72/etc/php.ini:/usr/local/etc/php/php.ini
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-      - $CONFIG_BASE:/home/phpcli/.config
+      - $COMPOSER_BASE:/home/phpcli/.composer:delegated
+      - $CONFIG_BASE:/home/phpcli/.config:delegated
       - $SSH_BASE:/home/phpcli/.ssh
 
   php-cli-73:
@@ -477,10 +482,12 @@ services:
       - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-73/etc/php.ini:/usr/local/etc/php/php.ini
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-      - $CONFIG_BASE:/home/phpcli/.config
+      - $COMPOSER_BASE:/home/phpcli/.composer:delegated
+      - $CONFIG_BASE:/home/phpcli/.config:delegated
       - $SSH_BASE:/home/phpcli/.ssh
 
   php-cli-74:
+    user: phpcli
     container_name: php-cli-74
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
@@ -496,10 +503,11 @@ services:
         aliases:
           - php-cli-74
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-74/etc/php.ini:/usr/local/etc/php/php.ini
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-      - $CONFIG_BASE:/home/phpcli/.config
+      - $COMPOSER_BASE:/home/phpcli/.composer:delegated
+      - $CONFIG_BASE:/home/phpcli/.config:delegated
       - $SSH_BASE:/home/phpcli/.ssh
 
   php-fpm-56-x:
@@ -603,6 +611,7 @@ services:
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-73/etc/php.ini:/usr/local/etc/php/php.ini
 
   php-fpm-74-x:
+    user: www-data
     container_name: php-fpm-74-x
     build:
       context: .
@@ -618,7 +627,7 @@ services:
     ports:
       - 9173:9000
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-74/etc/php.ini:/usr/local/etc/php/php.ini
 
   php-cli-56-x:
@@ -642,7 +651,8 @@ services:
       - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-56/etc/php.ini:/usr/local/etc/php/php.ini
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-      - $CONFIG_BASE:/home/phpcli/.config
+      - $COMPOSER_BASE:/home/phpcli/.composer:delegated
+      - $CONFIG_BASE:/home/phpcli/.config:delegated
       - $SSH_BASE:/home/phpcli/.ssh
 
   php-cli-70-x:
@@ -666,7 +676,8 @@ services:
       - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-70/etc/php.ini:/usr/local/etc/php/php.ini
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-      - $CONFIG_BASE:/home/phpcli/.config
+      - $COMPOSER_BASE:/home/phpcli/.composer:delegated
+      - $CONFIG_BASE:/home/phpcli/.config:delegated
       - $SSH_BASE:/home/phpcli/.ssh
 
   php-cli-71-x:
@@ -690,7 +701,8 @@ services:
       - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-71/etc/php.ini:/usr/local/etc/php/php.ini
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-      - $CONFIG_BASE:/home/phpcli/.config
+      - $COMPOSER_BASE:/home/phpcli/.composer:delegated
+      - $CONFIG_BASE:/home/phpcli/.config:delegated
       - $SSH_BASE:/home/phpcli/.ssh
 
   php-cli-72-x:
@@ -714,7 +726,8 @@ services:
       - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-72/etc/php.ini:/usr/local/etc/php/php.ini
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-      - $CONFIG_BASE:/home/phpcli/.config
+      - $COMPOSER_BASE:/home/phpcli/.composer:delegated
+      - $CONFIG_BASE:/home/phpcli/.config:delegated
       - $SSH_BASE:/home/phpcli/.ssh
 
   php-cli-73-x:
@@ -738,13 +751,16 @@ services:
       - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-73/etc/php.ini:/usr/local/etc/php/php.ini
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-      - $CONFIG_BASE:/home/phpcli/.config
+      - $COMPOSER_BASE:/home/phpcli/.composer:delegated
+      - $CONFIG_BASE:/home/phpcli/.config:delegated
       - $SSH_BASE:/home/phpcli/.ssh
 
   php-cli-74-x:
+    user: phpcli
     container_name: php-cli-74-x
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - PHP_IDE_CONFIG=serverName=localhost
     build:
       context: .
       dockerfile: docker/php-cli-74/Dockerfile
@@ -757,10 +773,11 @@ services:
         aliases:
           - php-cli-74-x
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-74/etc/php.ini:/usr/local/etc/php/php.ini
       - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-      - $CONFIG_BASE:/home/phpcli/.config
+      - $COMPOSER_BASE:/home/phpcli/.composer:delegated
+      - $CONFIG_BASE:/home/phpcli/.config:delegated
       - $SSH_BASE:/home/phpcli/.ssh
 
   ssh:
@@ -810,7 +827,7 @@ services:
     ports:
       - 8888:8080
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/tomcat-9:/bitnami
+      - ${DOCKER_VOLUME_BASE_PATH}/data/tomcat-9:/bitnami:delegated
       - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts:delegated
 
   apache-24:
