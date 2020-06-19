@@ -82,25 +82,6 @@ services:
       - ${DOCKER_VOLUME_BASE_PATH}/data/mysql-80:/var/lib/mysql
       - ${DOCKER_VOLUME_BASE_PATH}/config/mysql-80/etc:/etc/mysql/conf.d
 
-  percona-56:
-    container_name: percona-56
-    env_file: env/db.env
-    build:
-      context: .
-      dockerfile: docker/percona-56/Dockerfile
-      args:
-        - USER_ID=${USER_ID}
-        - GROUP_ID=${GROUP_ID}
-    networks:
-      app-tier:
-        aliases:
-          - percona-56
-    ports:
-      - 3456:3306
-    volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/percona-56:/var/lib/mysql
-      - ${DOCKER_VOLUME_BASE_PATH}/config/percona-56/etc:/etc/mysql/conf.d
-
   percona-57:
     container_name: percona-57
     env_file: env/db.env
@@ -348,6 +329,25 @@ services:
       - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-73/etc/php.ini:/usr/local/etc/php/php.ini
 
+  php-fpm-74:
+    container_name: php-fpm-74
+    build:
+      context: .
+      dockerfile: docker/php-fpm-74/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES}
+    networks:
+      app-tier:
+        aliases:
+          - php-fpm-74
+    ports:
+      - 9074:9000
+    volumes:
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-74/etc/php.ini:/usr/local/etc/php/php.ini
+
   php-cli-56:
     container_name: php-cli-56
     environment:
@@ -458,6 +458,28 @@ services:
       - $CONFIG_BASE:/home/phpcli/.config
       - $SSH_BASE:/home/phpcli/.ssh
 
+  php-cli-74:
+    container_name: php-cli-74
+    environment:
+      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+    build:
+      context: .
+      dockerfile: docker/php-cli-74/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES}
+    networks:
+      app-tier:
+        aliases:
+          - php-cli-74
+    volumes:
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-74/etc/php.ini:/usr/local/etc/php/php.ini
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+      - $CONFIG_BASE:/home/phpcli/.config
+      - $SSH_BASE:/home/phpcli/.ssh
+
   php-fpm-56-x:
     container_name: php-fpm-56-x
     build:
@@ -552,6 +574,25 @@ services:
     volumes:
       - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
       - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-73/etc/php.ini:/usr/local/etc/php/php.ini
+
+  php-fpm-74-x:
+    container_name: php-fpm-74-x
+    build:
+      context: .
+      dockerfile: docker/php-fpm-74/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES_X}
+    networks:
+      app-tier:
+        aliases:
+          - php-fpm-74
+    ports:
+      - 9173:9000
+    volumes:
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-74/etc/php.ini:/usr/local/etc/php/php.ini
 
   php-cli-56-x:
     container_name: php-cli-56-x
@@ -663,6 +704,28 @@ services:
       - $CONFIG_BASE:/home/phpcli/.config
       - $SSH_BASE:/home/phpcli/.ssh
 
+  php-cli-74-x:
+    container_name: php-cli-74-x
+    environment:
+      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+    build:
+      context: .
+      dockerfile: docker/php-cli-74/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES_X}
+    networks:
+      app-tier:
+        aliases:
+          - php-cli-74-x
+    volumes:
+      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-74/etc/php.ini:/usr/local/etc/php/php.ini
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+      - $CONFIG_BASE:/home/phpcli/.config
+      - $SSH_BASE:/home/phpcli/.ssh
+
   ssh:
     container_name: ssh
     environment:
@@ -745,6 +808,19 @@ services:
     ports:
       - 6379:6379
 
+  mailhog:
+    container_name: mailhog
+    build:
+      context: .
+      dockerfile: docker/mailhog/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - mailhog
+    ports:
+      - 1025:1025
+      - 8025:8025
+
   varnish:
     container_name: varnish
     env_file: env/varnish.env
@@ -791,3 +867,20 @@ services:
       - 9373:9300
     volumes:
       - ${DOCKER_VOLUME_BASE_PATH}/data/elastic-73:/usr/share/elasticsearch/data
+
+
+  elastic-71:
+    container_name: elastic-71
+    build:
+      context: .
+      dockerfile: docker/elastic-71/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - elastic-71
+    env_file: env/elastic.env
+    ports:
+      - 9271:9200
+      - 9371:9300
+    volumes:
+      - ${DOCKER_VOLUME_BASE_PATH}/data/elastic-71:/usr/share/elasticsearch/data
