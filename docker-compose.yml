@@ -906,6 +906,22 @@ services:
     volumes:
       - ${DOCKER_VOLUME_BASE_PATH}/data/elastic-56:/usr/share/elasticsearch/data:delegated
 
+  elastic-64:
+    container_name: elastic-64
+    build:
+      context: .
+      dockerfile: docker/elastic-64/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - elastic-64
+    env_file: env/elastic.env
+    ports:
+      - 9264:9200
+      - 9364:9300
+    volumes:
+      - ${DOCKER_VOLUME_BASE_PATH}/data/elastic-64:/usr/share/elasticsearch/data:delegated
+
   elastic-71:
     container_name: elastic-71
     build:
