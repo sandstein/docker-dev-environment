@@ -5,19 +5,26 @@ set -a
 . $MY_PATH/dde-defines
 set +a
 
-if [[ -n ${DOCKER_CONTAINER} ]]; then
-   while IFS=',' read -ra CONTAINER; do
-      for container in "${CONTAINER[@]}"; do
+if [ $# -gt 0 ]; then
+    for container in "$@"; do
           touchConfigFile ${container}
           docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml up -d ${container}
-      done
-   done <<< "${DOCKER_CONTAINER}"
-   if [[ -n ${PHP_FPM_CONTAINER} ]]; then
-       touchConfigFile ${PHP_FPM_CONTAINER}
-       docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml up -d ${PHP_FPM_CONTAINER}
-       docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml up -d ${PHP_FPM_CONTAINER}-x
-   fi
+    done
 else
-    echo "No containers given, please add something to \$DOCKER_CONTAINER"
+    if [[ -n ${DOCKER_CONTAINER} ]]; then
+       while IFS=',' read -ra CONTAINER; do
+          for container in "${CONTAINER[@]}"; do
+              touchConfigFile ${container}
+              docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml up -d ${container}
+          done
+       done <<< "${DOCKER_CONTAINER}"
+       if [[ -n ${PHP_FPM_CONTAINER} ]]; then
+           touchConfigFile ${PHP_FPM_CONTAINER}
+           docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml up -d ${PHP_FPM_CONTAINER}
+           docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml up -d ${PHP_FPM_CONTAINER}-x
+       fi
+    else
+        echo "No containers given, please add something to \$DOCKER_CONTAINER"
+    fi
 fi
 
