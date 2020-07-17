@@ -22,8 +22,8 @@ services:
     ports:
       - 3355:3306
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/mysql-55:/var/lib/mysql
-      - ${DOCKER_VOLUME_BASE_PATH}/config/mysql-55/etc:/etc/mysql/conf.d
+      - data_mysql_55:/var/lib/mysql
+      - config_mysql_55_etc:/etc/mysql/conf.d
 
   mysql-56:
     container_name: mysql-56
@@ -41,8 +41,8 @@ services:
     ports:
       - 3356:3306
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/mysql-56:/var/lib/mysql
-      - ${DOCKER_VOLUME_BASE_PATH}/config/mysql-56/etc:/etc/mysql/conf.d
+      - data_mysql_56:/var/lib/mysql
+      - config_mysql_56_etc:/etc/mysql/conf.d
 
   mysql-57:
     container_name: mysql-57
@@ -60,8 +60,8 @@ services:
     ports:
       - 3357:3306
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/mysql-57:/var/lib/mysql
-      - ${DOCKER_VOLUME_BASE_PATH}/config/mysql-57/etc:/etc/mysql/conf.d
+      - data_mysql_57:/var/lib/mysql
+      - config_mysql_57_etc:/etc/mysql/conf.d
 
   mysql-80:
     container_name: mysql-80
@@ -79,8 +79,8 @@ services:
     ports:
       - 3380:3306
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/mysql-80:/var/lib/mysql
-      - ${DOCKER_VOLUME_BASE_PATH}/config/mysql-80/etc:/etc/mysql/conf.d
+      - data_mysql_80:/var/lib/mysql
+      - config_mysql_80_etc:/etc/mysql/conf.d
     command: mysqld --default-authentication-plugin=mysql_native_password --skip-mysqlx
 
   percona-57:
@@ -99,8 +99,8 @@ services:
     ports:
       - 3457:3306
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/percona-57:/var/lib/mysql
-      - ${DOCKER_VOLUME_BASE_PATH}/config/percona-57/etc:/etc/mysql/conf.d
+      - data_percona_57:/var/lib/mysql
+      - config_percona_57_etc:/etc/mysql/conf.d
 
   percona-80:
     container_name: percona-80
@@ -118,8 +118,8 @@ services:
     ports:
       - 3480:3306
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/percona-80:/var/lib/mysql
-      - ${DOCKER_VOLUME_BASE_PATH}/config/percona-80/etc:/etc/mysql/conf.d
+      - data_percona_80:/var/lib/mysql
+      - config_percona_80_etc:/etc/mysql/conf.d
     command: mysqld --default-authentication-plugin=mysql_native_password --skip-mysqlx
 
   mariadb-55:
@@ -138,8 +138,8 @@ services:
     ports:
       - 3555:3306
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-55:/var/lib/mysql
-      - ${DOCKER_VOLUME_BASE_PATH}/config/mariadb-55/etc:/etc/mysql/conf.d
+      - data_mariadb_55:/var/lib/mysql
+      - config_mariadb_55_etc:/etc/mysql/conf.d
 
   mariadb-100:
     container_name: mariadb-100
@@ -157,8 +157,8 @@ services:
     ports:
       - 3500:3306
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-100:/var/lib/mysql
-      - ${DOCKER_VOLUME_BASE_PATH}/config/mariadb-100/etc:/etc/mysql/conf.d
+      - data_mariadb_100:/var/lib/mysql
+      - config_mariadb_100_etc:/etc/mysql/conf.d
 
   mariadb-101:
     container_name: mariadb-101
@@ -176,8 +176,8 @@ services:
     ports:
       - 3501:3306
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-101:/var/lib/mysql
-      - ${DOCKER_VOLUME_BASE_PATH}/config/mariadb-100/etc:/etc/mysql/conf.d
+      - data_mariadb_101:/var/lib/mysql
+      - config_mariadb_101_etc:/etc/mysql/conf.d
 
   mariadb-102:
     container_name: mariadb-102
@@ -195,8 +195,8 @@ services:
     ports:
       - 3502:3306
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-102:/var/lib/mysql
-      - ${DOCKER_VOLUME_BASE_PATH}/config/mariadb-100/etc:/etc/mysql/conf.d
+      - data_mariadb_102:/var/lib/mysql
+      - config_mariadb_102_etc:/etc/mysql/conf.d
 
   mariadb-103:
     container_name: mariadb-103
@@ -214,8 +214,8 @@ services:
     ports:
       - 3503:3306
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-103:/var/lib/mysql
-      - ${DOCKER_VOLUME_BASE_PATH}/config/mariadb-100/etc:/etc/mysql/conf.d
+      - data_mariadb_103:/var/lib/mysql
+      - config_mariadb_103_etc:/etc/mysql/conf.d
 
   mariadb-104:
     container_name: mariadb-104
@@ -233,8 +233,8 @@ services:
     ports:
       - 3504:3306
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-104:/var/lib/mysql
-      - ${DOCKER_VOLUME_BASE_PATH}/config/mariadb-100/etc:/etc/mysql/conf.d
+      - data_mariadb_104:/var/lib/mysql
+      - config_mariadb_100_etc:/etc/mysql/conf.d
 
   php-fpm-56:
     container_name: php-fpm-56
@@ -252,8 +252,8 @@ services:
     ports:
       - 9056:9000
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
-      - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-56/etc/php.ini:/usr/local/etc/php/php.ini
+      - vhosts:/var/www/vhosts
+      - config_php_fpm_56_etc_php_ini:/usr/local/etc/php/php.ini
 
   php-fpm-70:
     container_name: php-fpm-70
@@ -271,8 +271,8 @@ services:
     ports:
       - 9070:9000
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
-      - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-70/etc/php.ini:/usr/local/etc/php/php.ini
+      - vhosts:/var/www/vhosts
+      - config_php_fpm_70_etc_php_ini:/usr/local/etc/php/php.ini
 
   php-fpm-71:
     container_name: php-fpm-71
@@ -290,8 +290,8 @@ services:
     ports:
       - 9071:9000
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
-      - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-71/etc/php.ini:/usr/local/etc/php/php.ini
+      - vhosts:/var/www/vhosts
+      - config_php_fpm_71_etc_php_ini:/usr/local/etc/php/php.ini
 
   php-fpm-72:
     container_name: php-fpm-72
@@ -309,8 +309,8 @@ services:
     ports:
       - 9072:9000
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
-      - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-72/etc/php.ini:/usr/local/etc/php/php.ini
+      - vhosts:/var/www/vhosts
+      - config_php_fpm_72_etc_php_ini:/usr/local/etc/php/php.ini
 
   php-fpm-73:
     container_name: php-fpm-73
@@ -328,8 +328,8 @@ services:
     ports:
       - 9073:9000
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
-      - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-73/etc/php.ini:/usr/local/etc/php/php.ini
+      - vhosts:/var/www/vhosts
+      - config_php_fpm_73_etc_php_ini:/usr/local/etc/php/php.ini
 
   php-fpm-74:
     container_name: php-fpm-74
@@ -347,8 +347,8 @@ services:
     ports:
       - 9074:9000
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
-      - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-74/etc/php.ini:/usr/local/etc/php/php.ini
+      - vhosts:/var/www/vhosts
+      - config_php_fpm_74_etc_php_ini:/usr/local/etc/php/php.ini
 
   php-cli-56:
     container_name: php-cli-56
@@ -366,11 +366,11 @@ services:
         aliases:
           - php-cli-56
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
-      - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-56/etc/php.ini:/usr/local/etc/php/php.ini
-      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-      - $CONFIG_BASE:/home/phpcli/.config
-      - $SSH_BASE:/home/phpcli/.ssh
+      - vhosts:/var/www/vhosts
+      - config_php_cli_56_etc_php_ini:/usr/local/etc/php/php.ini
+      - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
+      - config_base:/home/phpcli/.config
+      - ssh_base:/home/phpcli/.ssh
 
   php-cli-70:
     container_name: php-cli-70
@@ -388,11 +388,11 @@ services:
         aliases:
           - php-cli-70
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
-      - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-70/etc/php.ini:/usr/local/etc/php/php.ini
-      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-      - $CONFIG_BASE:/home/phpcli/.config
-      - $SSH_BASE:/home/phpcli/.ssh
+      - vhosts:/var/www/vhosts
+      - config_php_cli_70_etc_php_ini:/usr/local/etc/php/php.ini
+      - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
+      - config_base:/home/phpcli/.config
+      - ssh_base:/home/phpcli/.ssh
 
   php-cli-71:
     container_name: php-cli-71
@@ -410,11 +410,11 @@ services:
         aliases:
           - php-cli-71
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
-      - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-71/etc/php.ini:/usr/local/etc/php/php.ini
-      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-      - $CONFIG_BASE:/home/phpcli/.config
-      - $SSH_BASE:/home/phpcli/.ssh
+      - vhosts:/var/www/vhosts
+      - config_php_cli_71_etc_php_ini:/usr/local/etc/php/php.ini
+      - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
+      - config_base:/home/phpcli/.config
+      - ssh_base:/home/phpcli/.ssh
 
   php-cli-72:
     container_name: php-cli-72
@@ -432,11 +432,11 @@ services:
         aliases:
           - php-cli-72
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
-      - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-72/etc/php.ini:/usr/local/etc/php/php.ini
-      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-      - $CONFIG_BASE:/home/phpcli/.config
-      - $SSH_BASE:/home/phpcli/.ssh
+      - vhosts:/var/www/vhosts
+      - config_php_cli_72_etc_php_ini:/usr/local/etc/php/php.ini
+      - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
+      - config_base:/home/phpcli/.config
+      - ssh_base:/home/phpcli/.ssh
 
   php-cli-73:
     container_name: php-cli-73
@@ -454,11 +454,11 @@ services:
         aliases:
           - php-cli-73
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
-      - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-73/etc/php.ini:/usr/local/etc/php/php.ini
-      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-      - $CONFIG_BASE:/home/phpcli/.config
-      - $SSH_BASE:/home/phpcli/.ssh
+      - vhosts:/var/www/vhosts
+      - config_php_cli_73_etc_php_ini:/usr/local/etc/php/php.ini
+      - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
+      - config_base:/home/phpcli/.config
+      - ssh_base:/home/phpcli/.ssh
 
   php-cli-74:
     container_name: php-cli-74
@@ -476,11 +476,11 @@ services:
         aliases:
           - php-cli-74
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
-      - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-74/etc/php.ini:/usr/local/etc/php/php.ini
-      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-      - $CONFIG_BASE:/home/phpcli/.config
-      - $SSH_BASE:/home/phpcli/.ssh
+      - vhosts:/var/www/vhosts
+      - config_php_cli_74_etc_php_ini:/usr/local/etc/php/php.ini
+      - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
+      - config_base:/home/phpcli/.config
+      - ssh_base:/home/phpcli/.ssh
 
   php-fpm-56-x:
     container_name: php-fpm-56-x
@@ -498,8 +498,8 @@ services:
     ports:
       - 9156:9000
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
-      - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-56/etc/php.ini:/usr/local/etc/php/php.ini
+      - vhosts:/var/www/vhosts
+      - config_php_fpm_56_etc_php_ini:/usr/local/etc/php/php.ini
 
   php-fpm-70-x:
     container_name: php-fpm-70-x
@@ -517,8 +517,8 @@ services:
     ports:
       - 9170:9000
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
-      - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-70/etc/php.ini:/usr/local/etc/php/php.ini
+      - vhosts:/var/www/vhosts
+      - config_php_fpm_70_etc_php_ini:/usr/local/etc/php/php.ini
 
   php-fpm-71-x:
     container_name: php-fpm-71-x
@@ -536,8 +536,8 @@ services:
     ports:
       - 9171:9000
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
-      - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-71/etc/php.ini:/usr/local/etc/php/php.ini
+      - vhosts:/var/www/vhosts
+      - config_php_fpm_71_etc_php_ini:/usr/local/etc/php/php.ini
 
   php-fpm-72-x:
     container_name: php-fpm-72-x
@@ -555,8 +555,8 @@ services:
     ports:
       - 9172:9000
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
-      - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-72/etc/php.ini:/usr/local/etc/php/php.ini
+      - vhosts:/var/www/vhosts
+      - config_php_fpm_72_etc_php_ini:/usr/local/etc/php/php.ini
 
   php-fpm-73-x:
     container_name: php-fpm-73-x
@@ -574,8 +574,8 @@ services:
     ports:
       - 9173:9000
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
-      - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-73/etc/php.ini:/usr/local/etc/php/php.ini
+      - vhosts:/var/www/vhosts
+      - config_php_fpm_73_etc_php_ini:/usr/local/etc/php/php.ini
 
   php-fpm-74-x:
     container_name: php-fpm-74-x
@@ -593,8 +593,8 @@ services:
     ports:
       - 9173:9000
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
-      - ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-74/etc/php.ini:/usr/local/etc/php/php.ini
+      - vhosts:/var/www/vhosts
+      - config_php_fpm_74_etc_php_ini:/usr/local/etc/php/php.ini
 
   php-cli-56-x:
     container_name: php-cli-56-x
@@ -612,11 +612,11 @@ services:
         aliases:
           - php-cli-56-x
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
-      - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-56/etc/php.ini:/usr/local/etc/php/php.ini
-      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-      - $CONFIG_BASE:/home/phpcli/.config
-      - $SSH_BASE:/home/phpcli/.ssh
+      - vhosts:/var/www/vhosts
+      - config_php_cli_56_etc_php_ini:/usr/local/etc/php/php.ini
+      - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
+      - config_base:/home/phpcli/.config
+      - ssh_base:/home/phpcli/.ssh
 
   php-cli-70-x:
     container_name: php-cli-70-x
@@ -634,11 +634,11 @@ services:
         aliases:
           - php-cli-70-x
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
-      - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-70/etc/php.ini:/usr/local/etc/php/php.ini
-      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-      - $CONFIG_BASE:/home/phpcli/.config
-      - $SSH_BASE:/home/phpcli/.ssh
+      - vhosts:/var/www/vhosts
+      - config_php_cli_70_etc_php_ini:/usr/local/etc/php/php.ini
+      - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
+      - config_base:/home/phpcli/.config
+      - ssh_base:/home/phpcli/.ssh
 
   php-cli-71-x:
     container_name: php-cli-71-x
@@ -656,11 +656,11 @@ services:
         aliases:
           - php-cli-71-x
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
-      - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-71/etc/php.ini:/usr/local/etc/php/php.ini
-      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-      - $CONFIG_BASE:/home/phpcli/.config
-      - $SSH_BASE:/home/phpcli/.ssh
+      - vhosts:/var/www/vhosts
+      - config_php_cli_71_etc_php_ini:/usr/local/etc/php/php.ini
+      - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
+      - config_base:/home/phpcli/.config
+      - ssh_base:/home/phpcli/.ssh
 
   php-cli-72-x:
     container_name: php-cli-72-x
@@ -678,11 +678,11 @@ services:
         aliases:
           - php-cli-72-x
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
-      - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-72/etc/php.ini:/usr/local/etc/php/php.ini
-      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-      - $CONFIG_BASE:/home/phpcli/.config
-      - $SSH_BASE:/home/phpcli/.ssh
+      - vhosts:/var/www/vhosts
+      - config_php_cli_72_etc_php_ini:/usr/local/etc/php/php.ini
+      - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
+      - config_base:/home/phpcli/.config
+      - ssh_base:/home/phpcli/.ssh
 
   php-cli-73-x:
     container_name: php-cli-73-x
@@ -700,11 +700,11 @@ services:
         aliases:
           - php-cli-73-x
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
-      - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-73/etc/php.ini:/usr/local/etc/php/php.ini
-      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-      - $CONFIG_BASE:/home/phpcli/.config
-      - $SSH_BASE:/home/phpcli/.ssh
+      - vhosts:/var/www/vhosts
+      - config_php_cli_73_etc_php_ini:/usr/local/etc/php/php.ini
+      - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
+      - config_base:/home/phpcli/.config
+      - ssh_base:/home/phpcli/.ssh
 
   php-cli-74-x:
     container_name: php-cli-74-x
@@ -722,11 +722,11 @@ services:
         aliases:
           - php-cli-74-x
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
-      - ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-74/etc/php.ini:/usr/local/etc/php/php.ini
-      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-      - $CONFIG_BASE:/home/phpcli/.config
-      - $SSH_BASE:/home/phpcli/.ssh
+      - vhosts:/var/www/vhosts
+      - config_php_cli_74_etc_php_ini:/usr/local/etc/php/php.ini
+      - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
+      - config_base:/home/phpcli/.config
+      - ssh_base:/home/phpcli/.ssh
 
   ssh:
     container_name: ssh
@@ -743,10 +743,10 @@ services:
         aliases:
           - ssh
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
-      - ${DOCKER_VOLUME_BASE_PATH}/config/ssh/tunnel.conf:/home/ssh/tunnel.conf
-      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-      - $SSH_BASE:/home/ssh/.ssh
+      - vhosts:/var/www/vhosts
+      - config_ssh_tunnel_conf:/home/ssh/tunnel.conf
+      - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
+      - ssh_base:/home/ssh/.ssh
 
   solr-771:
     container_name: solr-771
@@ -760,9 +760,9 @@ services:
     ports:
       - 8983:8983
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
-      - ${DOCKER_VOLUME_BASE_PATH}/data/solr-771:/bitnami/solr/data
-      - ${DOCKER_VOLUME_BASE_PATH}/solr-771-lib:/var/www/solr/lib
+      - vhosts:/var/www/vhosts
+      - data_solr_771:/bitnami/solr/data
+      - solr_771_lib:/var/www/solr/lib
 
   tomcat-9:
     container_name: tomcat-9
@@ -776,8 +776,8 @@ services:
     ports:
       - 8888:8080
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/tomcat-9:/bitnami
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - data_tomcat_9:/bitnami
+      - vhosts:/var/www/vhosts
 
   apache-24:
     container_name: apache-24
@@ -795,8 +795,8 @@ services:
       - ${APACHE_HTTP_PORT}:80
       - ${APACHE_HTTPS_PORT}:443
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/config/apache-24/conf.d:/usr/local/apache2/conf/conf.d:ro
-      - ${DOCKER_VOLUME_BASE_PATH}/vhosts:/var/www/vhosts
+      - config_apache_24_conf_d:/usr/local/apache2/conf/conf.d:ro
+      - vhosts:/var/www/vhosts
 
   redis-5:
     container_name: redis-5
@@ -836,7 +836,7 @@ services:
     ports:
       - ${VARNISH_HTTP_PORT}:80
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/config/varnish/etc/varnish:/etc/varnish
+      - config_varnish_etc_varnish:/etc/varnish
 
   elastic-56:
     container_name: elastic-56
@@ -852,7 +852,7 @@ services:
       - 9256:9200
       - 9356:9300
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/elastic-56:/usr/share/elasticsearch/data
+      - data_elastic_56:/usr/share/elasticsearch/data
 
   elastic-64:
     container_name: elastic-64
@@ -868,7 +868,7 @@ services:
       - 9264:9200
       - 9364:9300
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/elastic-64:/usr/share/elasticsearch/data
+      - data_elastic_64:/usr/share/elasticsearch/data
 
   elastic-71:
     container_name: elastic-71
@@ -884,7 +884,7 @@ services:
       - 9271:9200
       - 9371:9300
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/elastic-71:/usr/share/elasticsearch/data
+      - data_elastic_71:/usr/share/elasticsearch/data
 
   elastic-73:
     container_name: elastic-73
@@ -900,5 +900,308 @@ services:
       - 9273:9200
       - 9373:9300
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/elastic-73:/usr/share/elasticsearch/data
+      - data_elastic_73:/usr/share/elasticsearch/data
+
+volumes:
+  data_mysql_55:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/data/mysql-55
+      o: bind
+  config_mysql_55_etc:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/mysql-55/etc
+      o: bind
+  data_mysql_56:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/data/mysql-56
+      o: bind
+  config_mysql_56_etc:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/mysql-56/etc
+      o: bind
+  data_mysql_57:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/data/mysql-57
+        o: bind
+  config_mysql_57_etc:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/mysql-57/etc
+        o: bind
+  data_mysql_80:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/data/mysql-80
+        o: bind
+  config_mysql_80_etc:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/mysql-80/etc
+        o: bind
+  data_percona_57:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/data/percona-57
+        o: bind
+  config_percona_57_etc:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/percona-57/etc
+        o: bind
+  data_percona_80:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/data/percona-80
+        o: bind
+  config_percona_80_etc:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/percona-80/etc
+        o: bind
+  data_mariadb_55:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-55
+        o: bind
+  config_mariadb_55_etc:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/mariadb-55/etc
+        o: bind
+  data_mariadb_100:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-100
+        o: bind
+  config_mariadb_100_etc:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/mariadb-100/etc
+        o: bind
+  data_mariadb_101:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-101
+        o: bind
+  config_mariadb_101_etc:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/mariadb-101/etc
+        o: bind
+  data_mariadb_102:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-102
+        o: bind
+  config_mariadb_102_etc:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/mariadb-102/etc
+        o: bind
+  data_mariadb_103:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-103
+        o: bind
+  config_mariadb_103_etc:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/mariadb-103/etc
+        o: bind
+  data_mariadb_104:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-104
+        o: bind
+  config_mariadb_104_etc:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/mariadb-104/etc
+        o: bind
+  vhosts:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/vhosts
+      o: bind
+  config_php_fpm_56_etc_php_ini:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-56/etc/php.ini
+        o: bind
+  config_php_fpm_70_etc_php_ini:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-70/etc/php.ini
+        o: bind
+  config_php_fpm_71_etc_php_ini:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-71/etc/php.ini
+        o: bind
+  config_php_fpm_72_etc_php_ini:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-72/etc/php.ini
+        o: bind
+  config_php_fpm_73_etc_php_ini:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-73/etc/php.ini
+        o: bind
+  config_php_fpm_74_etc_php_ini:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-74/etc/php.ini
+        o: bind
+  config_php_cli_56_etc_php_ini:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-56/etc/php.ini
+        o: bind
+  config_php_cli_70_etc_php_ini:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-70/etc/php.ini
+        o: bind
+  config_php_cli_71_etc_php_ini:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-71/etc/php.ini
+        o: bind
+  config_php_cli_72_etc_php_ini:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-72/etc/php.ini
+        o: bind
+  config_php_cli_73_etc_php_ini:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-73/etc/php.ini
+        o: bind
+  config_php_cli_74_etc_php_ini:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-74/etc/php.ini
+        o: bind
+  config_base:
+    driver: local
+    driver_opts:
+      type: none
+      device:  $CONFIG_BASE
+      o: bind
+  ssh_base:
+    driver: local
+    driver_opts:
+      type: none
+      device: $SSH_BASE
+      o: bind
+  ssh_auth_sock_base:
+    driver: local
+    driver_opts:
+      type: none
+      device: $SSH_AUTH_SOCK_BASE
+      o: bind
+  data_solr_771:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/data/solr-771
+        o: bind
+  solr_771_lib:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/solr-771-lib
+      o: bind
+  data_tomcat_9:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/data/tomcat-9
+        o: bind
+  config_apache_24_conf_d:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/apache-24/conf.d
+        o: bind
+  config_varnish_etc_varnish:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/varnish/etc/varnish
+      o: bind
+  data_elastic_56:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/data/elastic-56
+        o: bind
+  data_elastic_64:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/data/elastic-64
+        o: bind
+  data_elastic_71:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/data/elastic-71
+      o: bind
+  data_elastic_73:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/data/elastic-73
+        o: bind
+  config_ssh_tunnel_conf:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/ssh/tunnel.conf
+      o: bind
+
 
