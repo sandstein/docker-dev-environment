@@ -5,22 +5,34 @@ set -a
 . $MY_PATH/dde-defines
 set +a
 
-if [[ -n ${DOCKER_CONTAINER} ]]; then
-   docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml down
-   while IFS=',' read -ra CONTAINER; do
-      for container in "${CONTAINER[@]}"; do
+if [ $# -gt 0 ]; then
+    for container in "$@"; do
           touchConfigFile ${container}
-          docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml up --build -d ${container}
-      done
-   done <<< "${DOCKER_CONTAINER}"
-   if [[ -n ${PHP_FPM_CONTAINER} ]]; then
-       docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml up --build -d ${PHP_FPM_CONTAINER}
-       docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml up --build -d ${PHP_FPM_CONTAINER}-x
-   fi
-   if [[ -n ${PHP_CLI_CONTAINER} ]]; then
-       docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml build ${PHP_CLI_CONTAINER}
-       docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml build ${PHP_CLI_CONTAINER}-x
-   fi
+          docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml up --build \
+                                   --force-recreate --always-recreate-deps -d ${container}
+    done
 else
-    echo "No containers given, please add something to \$DOCKER_CONTAINER"
+    if [[ -n ${DOCKER_CONTAINER} ]]; then
+       while IFS=',' read -ra CONTAINER; do
+          for container in "${CONTAINER[@]}"; do
+              touchConfigFile ${container}
+              docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml up --build \
+                                   --force-recreate --always-recreate-deps -d ${container}
+          done
+       done <<< "${DOCKER_CONTAINER}"
+       if [[ -n ${PHP_FPM_CONTAINER} ]]; then
+           touchConfigFile ${PHP_FPM_CONTAINER}
+           docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml up --build \
+                                   --force-recreate --always-recreate-deps -d ${PHP_FPM_CONTAINER}
+           docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml up --build \
+                                   --force-recreate --always-recreate-deps -d ${PHP_FPM_CONTAINER}-x
+       fi
+       if [[ -n ${PHP_CLI_CONTAINER} ]]; then
+           touchConfigFile ${PHP_CLI_CONTAINER}
+           docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml build --force-rm ${PHP_CLI_CONTAINER}
+           docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml build --force-rm ${PHP_CLI_CONTAINER}-x
+       fi
+    else
+        echo "No containers given, please add something to \$DOCKER_CONTAINER"
+    fi
 fi

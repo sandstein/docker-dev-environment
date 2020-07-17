@@ -81,6 +81,7 @@ services:
     volumes:
       - ${DOCKER_VOLUME_BASE_PATH}/data/mysql-80:/var/lib/mysql
       - ${DOCKER_VOLUME_BASE_PATH}/config/mysql-80/etc:/etc/mysql/conf.d
+    command: mysqld --default-authentication-plugin=mysql_native_password --skip-mysqlx
 
   percona-57:
     container_name: percona-57
@@ -119,6 +120,7 @@ services:
     volumes:
       - ${DOCKER_VOLUME_BASE_PATH}/data/percona-80:/var/lib/mysql
       - ${DOCKER_VOLUME_BASE_PATH}/config/percona-80/etc:/etc/mysql/conf.d
+    command: mysqld --default-authentication-plugin=mysql_native_password --skip-mysqlx
 
   mariadb-55:
     container_name: mariadb-55
@@ -852,22 +854,21 @@ services:
     volumes:
       - ${DOCKER_VOLUME_BASE_PATH}/data/elastic-56:/usr/share/elasticsearch/data
 
-  elastic-73:
-    container_name: elastic-73
+  elastic-64:
+    container_name: elastic-64
     build:
       context: .
-      dockerfile: docker/elastic-73/Dockerfile
+      dockerfile: docker/elastic-64/Dockerfile
     networks:
       app-tier:
         aliases:
-          - elastic-73
+          - elastic-64
     env_file: env/elastic.env
     ports:
-      - 9273:9200
-      - 9373:9300
+      - 9264:9200
+      - 9364:9300
     volumes:
-      - ${DOCKER_VOLUME_BASE_PATH}/data/elastic-73:/usr/share/elasticsearch/data
-
+      - ${DOCKER_VOLUME_BASE_PATH}/data/elastic-64:/usr/share/elasticsearch/data
 
   elastic-71:
     container_name: elastic-71
@@ -884,3 +885,20 @@ services:
       - 9371:9300
     volumes:
       - ${DOCKER_VOLUME_BASE_PATH}/data/elastic-71:/usr/share/elasticsearch/data
+
+  elastic-73:
+    container_name: elastic-73
+    build:
+      context: .
+      dockerfile: docker/elastic-73/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - elastic-73
+    env_file: env/elastic.env
+    ports:
+      - 9273:9200
+      - 9373:9300
+    volumes:
+      - ${DOCKER_VOLUME_BASE_PATH}/data/elastic-73:/usr/share/elasticsearch/data
+
