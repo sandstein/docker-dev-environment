@@ -4,4 +4,6 @@
 !ssl/crt/localhost.crt
 !ssl/crt/Sandstein-CA.crt
 !ssl/key/localhost.key
+!mailhog.conf
+
 
