@@ -130,3 +130,42 @@ Just add a run configuration using your `example.localhost` adding a path matchi
 
 To configure your own solr cores you can symlink your core config directories to `./solr-771-data/your_core`.
 On top of this symlink.
+
+
+## Upgrading from Version <= 20.07.17
+
+### Resetting Volumes, Images and Container
+
+Since the way the local volumes are mounted changed dramatically between these versions, you have to remove the docker
+volumes and rebuild all containers. Your local volumes are kept in this action:
+
+```shell script
+$ for container in `docker container ls | grep dev-environment | awk '{print $1}'`; do docker container rm -f $container; done
+$ for image in `docker image ls | grep dev-environment | awk '{print $1}'`; do docker image rm $image; done
+$ for volume in `docker volume ls | grep dev-environment | awk '{print $2}'`; do docker volume rm $volume; done
+$ docker volume prune
+```
+
+### Custimize PHP Extension
+
+The PHP extensions can now be activated or deactivated under `config/php-(cli|fpm)-(number)/etc/php/php.ini` and
+`config/php-(cli|fpm)-(number)/etc/php/conf.d/*.ini`. Since these are copied from sample data the first time a container
+is started, you may have to remove previously existing `config/php-(cli|fpm)-(number)/etc/php/php.ini` file.
+
+### No more php-(cli|fpm)-(number)-x Containers / Images
+
+Since the `config/php-(cli|fpm)-(number)/etc/php/conf.d/xdebug.ini` can now be edited, there is no need to povide
+special debugging containers.
+Also the PHP??X apache macros have been removed, you need to change these in your apache vhost conf files.
+
+### Customizable bin commands in the PHP-CLI-Containers
+
+The directory `/home/phpcli/bin` is now mouted to your `config/php-cli-(number)/bin` dir, so you can put custom commmands
+there, this is specially handy if you want for instance composer to be selfupdateable: Just type
+
+```shell script
+phpcli@xxxxxxxxx:/project/path/$ curl -sS https://getcomposer.org/installer | php -- --install-dir=/home/phpcli/bin --filename=composer
+```
+inside your container. It will be found before the composer instance installed while building the image.
+
+
