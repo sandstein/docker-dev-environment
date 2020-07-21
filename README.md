@@ -8,10 +8,12 @@ Dockerfiles exist for the following
 * php-fpm-71
 * php-fpm-72
 * php-fpm-73
+* php-fpm-74
 * php-cli-57
 * php-cli-71
 * php-cli-72
 * php-cli-73
+* php-cli-74
 * mysql-55
 * mysql-56
 * mysql-57
@@ -22,12 +24,18 @@ Dockerfiles exist for the following
 * mariadb-102
 * mariadb-103
 * mariadb-104
-* percona-56
 * percona-57
 * peronca-80
 * apache-24
 * solr-771
 * tomcat-9
+* redis-5
+* mailhog
+* varnish
+* elastic-56
+* elastic-64
+* elastic-71
+* elastic-73
 
 Your local projects are mounted into the respective containers from the mount point
 `/path/to/this/repo/vhosts`
