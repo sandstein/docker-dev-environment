@@ -52,7 +52,7 @@ to your `${PATH}`.
 Then you can start all the needed containers by invoking
 ```bash
 $ dde-start
-``` 
+```
 in your project root dir, call
 ```bash
 $ dde-cli [some-command]
@@ -68,7 +68,7 @@ To rebuild all containers use
 $ dde-rebuild
 ```
 
-If you need to restart a single or multiple containers (e.g. your apache configuration or php-fpm configuration has 
+If you need to restart a single or multiple containers (e.g. your apache configuration or php-fpm configuration has
 changed) you can use
 ```bash
 $ dde-restart [service or services]
