@@ -21,7 +21,6 @@ else
        if [[ -n ${PHP_FPM_CONTAINER} ]]; then
            touchConfigFile ${PHP_FPM_CONTAINER}
            docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml up -d ${PHP_FPM_CONTAINER}
-           docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml up -d ${PHP_FPM_CONTAINER}-x
        fi
     else
         echo "No containers given, please add something to \$DOCKER_CONTAINER"
