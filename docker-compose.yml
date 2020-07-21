@@ -253,7 +253,7 @@ services:
       - 9056:9000
     volumes:
       - vhosts:/var/www/vhosts
-      - config_php_fpm_56_etc_php_ini:/usr/local/etc/php/php.ini
+      - config_php_fpm_56:/usr/local/etc/php
 
   php-fpm-70:
     container_name: php-fpm-70
@@ -272,7 +272,7 @@ services:
       - 9070:9000
     volumes:
       - vhosts:/var/www/vhosts
-      - config_php_fpm_70_etc_php_ini:/usr/local/etc/php/php.ini
+      - config_php_fpm_70:/usr/local/etc/php
 
   php-fpm-71:
     container_name: php-fpm-71
@@ -291,7 +291,7 @@ services:
       - 9071:9000
     volumes:
       - vhosts:/var/www/vhosts
-      - config_php_fpm_71_etc_php_ini:/usr/local/etc/php/php.ini
+      - config_php_fpm_71:/usr/local/etc/php
 
   php-fpm-72:
     container_name: php-fpm-72
@@ -310,7 +310,7 @@ services:
       - 9072:9000
     volumes:
       - vhosts:/var/www/vhosts
-      - config_php_fpm_72_etc_php_ini:/usr/local/etc/php/php.ini
+      - config_php_fpm_72:/usr/local/etc/php
 
   php-fpm-73:
     container_name: php-fpm-73
@@ -329,7 +329,7 @@ services:
       - 9073:9000
     volumes:
       - vhosts:/var/www/vhosts
-      - config_php_fpm_73_etc_php_ini:/usr/local/etc/php/php.ini
+      - config_php_fpm_73:/usr/local/etc/php
 
   php-fpm-74:
     container_name: php-fpm-74
@@ -348,7 +348,7 @@ services:
       - 9074:9000
     volumes:
       - vhosts:/var/www/vhosts
-      - config_php_fpm_74_etc_php_ini:/usr/local/etc/php/php.ini
+      - config_php_fpm_74:/usr/local/etc/php
 
   php-cli-56:
     container_name: php-cli-56
@@ -367,10 +367,11 @@ services:
           - php-cli-56
     volumes:
       - vhosts:/var/www/vhosts
-      - config_php_cli_56_etc_php_ini:/usr/local/etc/php/php.ini
+      - config_php_cli_56:/usr/local/etc/php
       - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
+      - php_cli_56_bin:/home/phpcli/bin
 
   php-cli-70:
     container_name: php-cli-70
@@ -389,10 +390,11 @@ services:
           - php-cli-70
     volumes:
       - vhosts:/var/www/vhosts
-      - config_php_cli_70_etc_php_ini:/usr/local/etc/php/php.ini
+      - config_php_cli_70:/usr/local/etc/php
       - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
+      - php_cli_70_bin:/home/phpcli/bin
 
   php-cli-71:
     container_name: php-cli-71
@@ -411,10 +413,11 @@ services:
           - php-cli-71
     volumes:
       - vhosts:/var/www/vhosts
-      - config_php_cli_71_etc_php_ini:/usr/local/etc/php/php.ini
+      - config_php_cli_71:/usr/local/etc/php
       - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
+      - php_cli_71_bin:/home/phpcli/bin
 
   php-cli-72:
     container_name: php-cli-72
@@ -433,10 +436,11 @@ services:
           - php-cli-72
     volumes:
       - vhosts:/var/www/vhosts
-      - config_php_cli_72_etc_php_ini:/usr/local/etc/php/php.ini
+      - config_php_cli_72:/usr/local/etc/php
       - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
+      - php_cli_72_bin:/home/phpcli/bin
 
   php-cli-73:
     container_name: php-cli-73
@@ -455,10 +459,11 @@ services:
           - php-cli-73
     volumes:
       - vhosts:/var/www/vhosts
-      - config_php_cli_73_etc_php_ini:/usr/local/etc/php/php.ini
+      - config_php_cli_73:/usr/local/etc/php
       - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
+      - php_cli_73_bin:/home/phpcli/bin
 
   php-cli-74:
     container_name: php-cli-74
@@ -477,256 +482,11 @@ services:
           - php-cli-74
     volumes:
       - vhosts:/var/www/vhosts
-      - config_php_cli_74_etc_php_ini:/usr/local/etc/php/php.ini
+      - config_php_cli_74:/usr/local/etc/php
       - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
-
-  php-fpm-56-x:
-    container_name: php-fpm-56-x
-    build:
-      context: .
-      dockerfile: docker/php-fpm-56/Dockerfile
-      args:
-        - USER_ID=${USER_ID}
-        - GROUP_ID=${GROUP_ID}
-        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES_X}
-    networks:
-      app-tier:
-        aliases:
-          - php-fpm-56-x
-    ports:
-      - 9156:9000
-    volumes:
-      - vhosts:/var/www/vhosts
-      - config_php_fpm_56_etc_php_ini:/usr/local/etc/php/php.ini
-
-  php-fpm-70-x:
-    container_name: php-fpm-70-x
-    build:
-      context: .
-      dockerfile: docker/php-fpm-70/Dockerfile
-      args:
-        - USER_ID=${USER_ID}
-        - GROUP_ID=${GROUP_ID}
-        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES_X}
-    networks:
-      app-tier:
-        aliases:
-          - php-fpm-70-x
-    ports:
-      - 9170:9000
-    volumes:
-      - vhosts:/var/www/vhosts
-      - config_php_fpm_70_etc_php_ini:/usr/local/etc/php/php.ini
-
-  php-fpm-71-x:
-    container_name: php-fpm-71-x
-    build:
-      context: .
-      dockerfile: docker/php-fpm-71/Dockerfile
-      args:
-        - USER_ID=${USER_ID}
-        - GROUP_ID=${GROUP_ID}
-        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES_X}
-    networks:
-      app-tier:
-        aliases:
-          - php-fpm-71-x
-    ports:
-      - 9171:9000
-    volumes:
-      - vhosts:/var/www/vhosts
-      - config_php_fpm_71_etc_php_ini:/usr/local/etc/php/php.ini
-
-  php-fpm-72-x:
-    container_name: php-fpm-72-x
-    build:
-      context: .
-      dockerfile: docker/php-fpm-72/Dockerfile
-      args:
-        - USER_ID=${USER_ID}
-        - GROUP_ID=${GROUP_ID}
-        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES_X}
-    networks:
-      app-tier:
-        aliases:
-          - php-fpm-72-x
-    ports:
-      - 9172:9000
-    volumes:
-      - vhosts:/var/www/vhosts
-      - config_php_fpm_72_etc_php_ini:/usr/local/etc/php/php.ini
-
-  php-fpm-73-x:
-    container_name: php-fpm-73-x
-    build:
-      context: .
-      dockerfile: docker/php-fpm-73/Dockerfile
-      args:
-        - USER_ID=${USER_ID}
-        - GROUP_ID=${GROUP_ID}
-        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES_X}
-    networks:
-      app-tier:
-        aliases:
-          - php-fpm-73
-    ports:
-      - 9173:9000
-    volumes:
-      - vhosts:/var/www/vhosts
-      - config_php_fpm_73_etc_php_ini:/usr/local/etc/php/php.ini
-
-  php-fpm-74-x:
-    container_name: php-fpm-74-x
-    build:
-      context: .
-      dockerfile: docker/php-fpm-74/Dockerfile
-      args:
-        - USER_ID=${USER_ID}
-        - GROUP_ID=${GROUP_ID}
-        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES_X}
-    networks:
-      app-tier:
-        aliases:
-          - php-fpm-74
-    ports:
-      - 9173:9000
-    volumes:
-      - vhosts:/var/www/vhosts
-      - config_php_fpm_74_etc_php_ini:/usr/local/etc/php/php.ini
-
-  php-cli-56-x:
-    container_name: php-cli-56-x
-    environment:
-      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
-    build:
-      context: .
-      dockerfile: docker/php-cli-56/Dockerfile
-      args:
-        - USER_ID=${USER_ID}
-        - GROUP_ID=${GROUP_ID}
-        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES_X}
-    networks:
-      app-tier:
-        aliases:
-          - php-cli-56-x
-    volumes:
-      - vhosts:/var/www/vhosts
-      - config_php_cli_56_etc_php_ini:/usr/local/etc/php/php.ini
-      - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
-      - config_base:/home/phpcli/.config
-      - ssh_base:/home/phpcli/.ssh
-
-  php-cli-70-x:
-    container_name: php-cli-70-x
-    environment:
-      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
-    build:
-      context: .
-      dockerfile: docker/php-cli-70/Dockerfile
-      args:
-        - USER_ID=${USER_ID}
-        - GROUP_ID=${GROUP_ID}
-        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES_X}
-    networks:
-      app-tier:
-        aliases:
-          - php-cli-70-x
-    volumes:
-      - vhosts:/var/www/vhosts
-      - config_php_cli_70_etc_php_ini:/usr/local/etc/php/php.ini
-      - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
-      - config_base:/home/phpcli/.config
-      - ssh_base:/home/phpcli/.ssh
-
-  php-cli-71-x:
-    container_name: php-cli-71-x
-    environment:
-      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
-    build:
-      context: .
-      dockerfile: docker/php-cli-71/Dockerfile
-      args:
-        - USER_ID=${USER_ID}
-        - GROUP_ID=${GROUP_ID}
-        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES_X}
-    networks:
-      app-tier:
-        aliases:
-          - php-cli-71-x
-    volumes:
-      - vhosts:/var/www/vhosts
-      - config_php_cli_71_etc_php_ini:/usr/local/etc/php/php.ini
-      - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
-      - config_base:/home/phpcli/.config
-      - ssh_base:/home/phpcli/.ssh
-
-  php-cli-72-x:
-    container_name: php-cli-72-x
-    environment:
-      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
-    build:
-      context: .
-      dockerfile: docker/php-cli-72/Dockerfile
-      args:
-        - USER_ID=${USER_ID}
-        - GROUP_ID=${GROUP_ID}
-        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES_X}
-    networks:
-      app-tier:
-        aliases:
-          - php-cli-72-x
-    volumes:
-      - vhosts:/var/www/vhosts
-      - config_php_cli_72_etc_php_ini:/usr/local/etc/php/php.ini
-      - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
-      - config_base:/home/phpcli/.config
-      - ssh_base:/home/phpcli/.ssh
-
-  php-cli-73-x:
-    container_name: php-cli-73-x
-    environment:
-      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
-    build:
-      context: .
-      dockerfile: docker/php-cli-73/Dockerfile
-      args:
-        - USER_ID=${USER_ID}
-        - GROUP_ID=${GROUP_ID}
-        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES_X}
-    networks:
-      app-tier:
-        aliases:
-          - php-cli-73-x
-    volumes:
-      - vhosts:/var/www/vhosts
-      - config_php_cli_73_etc_php_ini:/usr/local/etc/php/php.ini
-      - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
-      - config_base:/home/phpcli/.config
-      - ssh_base:/home/phpcli/.ssh
-
-  php-cli-74-x:
-    container_name: php-cli-74-x
-    environment:
-      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
-    build:
-      context: .
-      dockerfile: docker/php-cli-74/Dockerfile
-      args:
-        - USER_ID=${USER_ID}
-        - GROUP_ID=${GROUP_ID}
-        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES_X}
-    networks:
-      app-tier:
-        aliases:
-          - php-cli-74-x
-    volumes:
-      - vhosts:/var/www/vhosts
-      - config_php_cli_74_etc_php_ini:/usr/local/etc/php/php.ini
-      - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
-      - config_base:/home/phpcli/.config
-      - ssh_base:/home/phpcli/.ssh
+      - php_cli_74_bin:/home/phpcli/bin
 
   ssh:
     container_name: ssh
@@ -1053,78 +813,114 @@ volumes:
       type: none
       device: ${DOCKER_VOLUME_BASE_PATH}/vhosts
       o: bind
-  config_php_fpm_56_etc_php_ini:
+  config_php_fpm_56:
     driver: local
     driver_opts:
         type: none
-        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-56/etc/php.ini
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-56/etc/php
         o: bind
-  config_php_fpm_70_etc_php_ini:
+  config_php_fpm_70:
     driver: local
     driver_opts:
         type: none
-        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-70/etc/php.ini
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-70/etc/php
         o: bind
-  config_php_fpm_71_etc_php_ini:
+  config_php_fpm_71:
     driver: local
     driver_opts:
         type: none
-        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-71/etc/php.ini
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-71/etc/php
         o: bind
-  config_php_fpm_72_etc_php_ini:
+  config_php_fpm_72:
     driver: local
     driver_opts:
         type: none
-        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-72/etc/php.ini
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-72/etc/php
         o: bind
-  config_php_fpm_73_etc_php_ini:
+  config_php_fpm_73:
     driver: local
     driver_opts:
         type: none
-        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-73/etc/php.ini
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-73/etc/php
         o: bind
-  config_php_fpm_74_etc_php_ini:
+  config_php_fpm_74:
     driver: local
     driver_opts:
         type: none
-        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-74/etc/php.ini
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-74/etc/php
         o: bind
-  config_php_cli_56_etc_php_ini:
+  config_php_cli_56:
     driver: local
     driver_opts:
         type: none
-        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-56/etc/php.ini
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-56/etc/php
         o: bind
-  config_php_cli_70_etc_php_ini:
+  config_php_cli_70:
     driver: local
     driver_opts:
         type: none
-        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-70/etc/php.ini
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-70/etc/php
         o: bind
-  config_php_cli_71_etc_php_ini:
+  config_php_cli_71:
     driver: local
     driver_opts:
         type: none
-        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-71/etc/php.ini
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-71/etc/php
         o: bind
-  config_php_cli_72_etc_php_ini:
+  config_php_cli_72:
     driver: local
     driver_opts:
         type: none
-        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-72/etc/php.ini
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-72/etc/php
         o: bind
-  config_php_cli_73_etc_php_ini:
+  config_php_cli_73:
     driver: local
     driver_opts:
         type: none
-        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-73/etc/php.ini
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-73/etc/php
         o: bind
-  config_php_cli_74_etc_php_ini:
+  config_php_cli_74:
     driver: local
     driver_opts:
         type: none
-        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-74/etc/php.ini
+        device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-74/etc/php
         o: bind
+  php_cli_56_bin:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-56/bin
+      o: bind
+  php_cli_70_bin:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-70/bin
+      o: bind
+  php_cli_71_bin:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-71/bin
+      o: bind
+  php_cli_72_bin:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-72/bin
+      o: bind
+  php_cli_73_bin:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-73/bin
+      o: bind
+  php_cli_74_bin:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-74/bin
+      o: bind
   config_base:
     driver: local
     driver_opts:
