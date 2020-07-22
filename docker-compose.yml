@@ -347,7 +347,7 @@ services:
   php-cli-56:
     container_name: php-cli-56
     environment:
-      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - SSH_AUTH_SOCK_BASE=$SSH_AUTH_SOCK_BASE
     build:
       context: .
       dockerfile: docker/php-cli-56/Dockerfile
@@ -369,7 +369,7 @@ services:
   php-cli-70:
     container_name: php-cli-70
     environment:
-      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - SSH_AUTH_SOCK_BASE=$SSH_AUTH_SOCK_BASE
     build:
       context: .
       dockerfile: docker/php-cli-70/Dockerfile
@@ -391,7 +391,7 @@ services:
   php-cli-71:
     container_name: php-cli-71
     environment:
-      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - SSH_AUTH_SOCK_BASE=$SSH_AUTH_SOCK_BASE
     build:
       context: .
       dockerfile: docker/php-cli-71/Dockerfile
@@ -413,7 +413,7 @@ services:
   php-cli-72:
     container_name: php-cli-72
     environment:
-      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - SSH_AUTH_SOCK_BASE=$SSH_AUTH_SOCK_BASE
     build:
       context: .
       dockerfile: docker/php-cli-72/Dockerfile
@@ -435,7 +435,7 @@ services:
   php-cli-73:
     container_name: php-cli-73
     environment:
-      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - SSH_AUTH_SOCK_BASE=$SSH_AUTH_SOCK_BASE
     build:
       context: .
       dockerfile: docker/php-cli-73/Dockerfile
@@ -457,7 +457,7 @@ services:
   php-cli-74:
     container_name: php-cli-74
     environment:
-      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - SSH_AUTH_SOCK_BASE=$SSH_AUTH_SOCK_BASE
     build:
       context: .
       dockerfile: docker/php-cli-74/Dockerfile
@@ -479,7 +479,7 @@ services:
   ssh:
     container_name: ssh
     environment:
-      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - SSH_AUTH_SOCK_BASE=$SSH_AUTH_SOCK_BASE
     build:
       context: .
       dockerfile: docker/ssh/Dockerfile
