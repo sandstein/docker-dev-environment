@@ -492,7 +492,7 @@ services:
           - ssh
     volumes:
       - vhosts:/var/www/vhosts
-      - config_ssh_tunnel_conf:/home/ssh/tunnel.conf
+      - config_ssh_tunnel:/home/ssh/.tunnel
       - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
       - ssh_base:/home/ssh/.ssh
 
@@ -981,11 +981,11 @@ volumes:
         type: none
         device: ${DOCKER_VOLUME_BASE_PATH}/data/elastic-73
         o: bind
-  config_ssh_tunnel_conf:
+  config_ssh_tunnel:
     driver: local
     driver_opts:
       type: none
-      device: ${DOCKER_VOLUME_BASE_PATH}/config/ssh/tunnel.conf
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/ssh
       o: bind
 
 
