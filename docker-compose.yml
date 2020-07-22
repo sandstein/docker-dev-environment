@@ -244,7 +244,6 @@ services:
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
-        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES}
     networks:
       app-tier:
         aliases:
@@ -263,7 +262,6 @@ services:
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
-        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES}
     networks:
       app-tier:
         aliases:
@@ -282,7 +280,6 @@ services:
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
-        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES}
     networks:
       app-tier:
         aliases:
@@ -301,7 +298,6 @@ services:
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
-        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES}
     networks:
       app-tier:
         aliases:
@@ -320,7 +316,6 @@ services:
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
-        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES}
     networks:
       app-tier:
         aliases:
@@ -339,7 +334,6 @@ services:
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
-        - DISABLED_PHP_FPM_MODULES=${DISABLED_PHP_FPM_MODULES}
     networks:
       app-tier:
         aliases:
@@ -360,7 +354,6 @@ services:
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
-        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES}
     networks:
       app-tier:
         aliases:
@@ -383,7 +376,6 @@ services:
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
-        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES}
     networks:
       app-tier:
         aliases:
@@ -406,7 +398,6 @@ services:
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
-        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES}
     networks:
       app-tier:
         aliases:
@@ -429,7 +420,6 @@ services:
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
-        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES}
     networks:
       app-tier:
         aliases:
@@ -452,7 +442,6 @@ services:
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
-        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES}
     networks:
       app-tier:
         aliases:
@@ -475,7 +464,6 @@ services:
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
-        - DISABLED_PHP_CLI_MODULES=${DISABLED_PHP_CLI_MODULES}
     networks:
       app-tier:
         aliases:

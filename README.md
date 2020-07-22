@@ -176,4 +176,13 @@ phpcli@xxxxxxxxx:/project/path/$ curl -sS https://getcomposer.org/installer | ph
 ```
 inside your container. It will be found before the composer instance installed while building the image.
 
+### SSH Sock mounted as Directory
+
+Since the ssh sock can not be mounted as plain file it is necessary to add
+
+```shell script
+SSH_AUTH_SOCK_BASE=/run/user/1001/keyring
+```
+to your `.env` file. If you are working as another user, please change accordingly.
+
 
