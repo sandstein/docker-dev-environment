@@ -365,6 +365,7 @@ services:
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
       - php_cli_56_bin:/home/phpcli/bin
+    user: $USER_ID:$GROUP_ID
 
   php-cli-70:
     container_name: php-cli-70
@@ -387,6 +388,7 @@ services:
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
       - php_cli_70_bin:/home/phpcli/bin
+    user: $USER_ID:$GROUP_ID
 
   php-cli-71:
     container_name: php-cli-71
@@ -409,6 +411,7 @@ services:
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
       - php_cli_71_bin:/home/phpcli/bin
+    user: $USER_ID:$GROUP_ID
 
   php-cli-72:
     container_name: php-cli-72
@@ -431,6 +434,7 @@ services:
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
       - php_cli_72_bin:/home/phpcli/bin
+    user: $USER_ID:$GROUP_ID
 
   php-cli-73:
     container_name: php-cli-73
@@ -453,6 +457,7 @@ services:
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
       - php_cli_73_bin:/home/phpcli/bin
+    user: $USER_ID:$GROUP_ID
 
   php-cli-74:
     container_name: php-cli-74
@@ -475,6 +480,7 @@ services:
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
       - php_cli_74_bin:/home/phpcli/bin
+    user: $USER_ID:$GROUP_ID
 
   ssh:
     container_name: ssh
