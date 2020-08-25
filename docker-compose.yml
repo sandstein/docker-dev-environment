@@ -656,6 +656,23 @@ services:
     volumes:
       - data_elastic_73:/usr/share/elasticsearch/data
 
+  elastic-76:
+    container_name: elastic-76
+    build:
+      context: .
+      dockerfile: docker/elastic-76/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - elastic-76
+    env_file: env/elastic.env
+    ports:
+      - 9276:9200
+      - 9376:9300
+    volumes:
+      - data_elastic_76:/usr/share/elasticsearch/data
+
+
 volumes:
   data_mysql_55:
     driver: local
@@ -987,6 +1004,12 @@ volumes:
         type: none
         device: ${DOCKER_VOLUME_BASE_PATH}/data/elastic-73
         o: bind
+  data_elastic_76:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/data/elastic-76
+      o: bind
   config_ssh_tunnel:
     driver: local
     driver_opts:
