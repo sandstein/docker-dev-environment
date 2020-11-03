@@ -672,6 +672,18 @@ services:
     volumes:
       - data_elastic_76:/usr/share/elasticsearch/data
 
+  esadmin:
+    container_name: esadmin
+    build:
+      context: .
+      dockerfile: docker/esadmin/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - esadmin
+    env_file: env/esadmin.env
+    ports:
+      - 8181:8080
 
 volumes:
   data_mysql_55:
