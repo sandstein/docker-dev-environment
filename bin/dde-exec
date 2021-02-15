@@ -5,8 +5,8 @@ set -a
 . $MY_PATH/dde-defines
 set +a
 
-if [[ -n $1 ]]; then
-   docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml exec $1 $2
+if [[ -n $1 && -n $2 ]]; then
+   docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml exec -u ${USER_ID} -w /var/www/vhosts/${PROJECT_ROOT} $1 $2
 else
-    echo "No container given to run bash in, Usage: dde-bash <service>"
+    echo "No container and command given to run in, Usage: dde-exec <container> <command>"
 fi

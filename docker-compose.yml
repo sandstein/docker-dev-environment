@@ -344,6 +344,24 @@ services:
       - vhosts:/var/www/vhosts
       - config_php_fpm_74:/usr/local/etc/php
 
+  php-fpm-80:
+    container_name: php-fpm-80
+    build:
+      context: .
+      dockerfile: docker/php-fpm-80/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - php-fpm-80
+    ports:
+      - 9080:9000
+    volumes:
+      - vhosts:/var/www/vhosts
+      - config_php_fpm_80:/usr/local/etc/php
+
   php-cli-56:
     container_name: php-cli-56
     environment:
@@ -364,6 +382,7 @@ services:
       - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
+      - composer_base:/home/phpcli/.composer
       - php_cli_56_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
 
@@ -387,6 +406,7 @@ services:
       - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
+      - composer_base:/home/phpcli/.composer
       - php_cli_70_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
 
@@ -410,6 +430,7 @@ services:
       - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
+      - composer_base:/home/phpcli/.composer
       - php_cli_71_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
 
@@ -433,6 +454,7 @@ services:
       - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
+      - composer_base:/home/phpcli/.composer
       - php_cli_72_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
 
@@ -456,6 +478,7 @@ services:
       - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
+      - composer_base:/home/phpcli/.composer
       - php_cli_73_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
 
@@ -479,8 +502,35 @@ services:
       - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
+      - composer_base:/home/phpcli/.composer
       - php_cli_74_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
+    tty: true
+
+  php-cli-80:
+    container_name: php-cli-80
+    environment:
+      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+    build:
+      context: .
+      dockerfile: docker/php-cli-80/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - php-cli-80
+    volumes:
+      - vhosts:/var/www/vhosts
+      - config_php_cli_80:/usr/local/etc/php
+      - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
+      - config_base:/home/phpcli/.config
+      - ssh_base:/home/phpcli/.ssh
+      - composer_base:/home/phpcli/.composer
+      - php_cli_80_bin:/home/phpcli/bin
+    user: $USER_ID:$GROUP_ID
+    tty: true
 
   ssh:
     container_name: ssh
@@ -546,8 +596,8 @@ services:
         aliases:
           - apache-24
     ports:
-      - ${APACHE_HTTP_PORT}:80
-      - ${APACHE_HTTPS_PORT}:443
+      - 127.0.0.1:${APACHE_HTTP_PORT}:80
+      - 127.0.0.1:${APACHE_HTTPS_PORT}:443
     volumes:
       - config_apache_24_conf_d:/usr/local/apache2/conf/conf.d:ro
       - vhosts:/var/www/vhosts
@@ -588,7 +638,7 @@ services:
         aliases:
           - varnish
     ports:
-      - ${VARNISH_HTTP_PORT}:80
+      - 127.0.1.1:${VARNISH_HTTP_PORT}:80
     volumes:
       - config_varnish_etc_varnish:/etc/varnish
 
@@ -672,6 +722,18 @@ services:
     volumes:
       - data_elastic_76:/usr/share/elasticsearch/data
 
+  esadmin:
+    container_name: esadmin
+    build:
+      context: .
+      dockerfile: docker/esadmin/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - esadmin
+    env_file: env/esadmin.env
+    ports:
+      - 8181:8080
 
 volumes:
   data_mysql_55:
@@ -860,6 +922,12 @@ volumes:
         type: none
         device: ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-74/etc/php
         o: bind
+  config_php_fpm_80:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-80/etc/php
+      o: bind
   config_php_cli_56:
     driver: local
     driver_opts:
@@ -896,6 +964,12 @@ volumes:
         type: none
         device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-74/etc/php
         o: bind
+  config_php_cli_80:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-80/etc/php
+      o: bind
   php_cli_56_bin:
     driver: local
     driver_opts:
@@ -932,6 +1006,12 @@ volumes:
       type: none
       device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-74/bin
       o: bind
+  php_cli_80_bin:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-80/bin
+      o: bind
   config_base:
     driver: local
     driver_opts:
@@ -943,6 +1023,12 @@ volumes:
     driver_opts:
       type: none
       device: $SSH_BASE
+      o: bind
+  composer_base:
+    driver: local
+    driver_opts:
+      type: none
+      device: $COMPOSER_BASE
       o: bind
   ssh_auth_sock_base:
     driver: local
