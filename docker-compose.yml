@@ -409,6 +409,7 @@ services:
       - composer_base:/home/phpcli/.composer
       - php_cli_70_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
+    tty: true
 
   php-cli-71:
     container_name: php-cli-71
@@ -433,6 +434,7 @@ services:
       - composer_base:/home/phpcli/.composer
       - php_cli_71_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
+    tty: true
 
   php-cli-72:
     container_name: php-cli-72
@@ -457,6 +459,7 @@ services:
       - composer_base:/home/phpcli/.composer
       - php_cli_72_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
+    tty: true
 
   php-cli-73:
     container_name: php-cli-73
@@ -481,6 +484,7 @@ services:
       - composer_base:/home/phpcli/.composer
       - php_cli_73_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
+    tty: true
 
   php-cli-74:
     container_name: php-cli-74
