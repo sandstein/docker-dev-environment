@@ -616,7 +616,19 @@ services:
         aliases:
           - redis-5
     ports:
-      - 6379:6379
+      - 6305:6379
+
+  redis-6:
+    container_name: redis-6
+    build:
+      context: .
+      dockerfile: docker/redis-6/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - redis-6
+    ports:
+      - 6306:6379
 
   mailhog:
     container_name: mailhog
@@ -709,6 +721,22 @@ services:
       - 9373:9300
     volumes:
       - data_elastic_73:/usr/share/elasticsearch/data
+
+  elastic-74:
+    container_name: elastic-74
+    build:
+      context: .
+      dockerfile: docker/elastic-74/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - elastic-74
+    env_file: env/elastic.env
+    ports:
+      - 9274:9200
+      - 9374:9300
+    volumes:
+      - data_elastic_74:/usr/share/elasticsearch/data
 
   elastic-76:
     container_name: elastic-76
@@ -1093,6 +1121,12 @@ volumes:
     driver_opts:
         type: none
         device: ${DOCKER_VOLUME_BASE_PATH}/data/elastic-73
+        o: bind
+  data_elastic_74:
+    driver: local
+    driver_opts:
+        type: none
+        device: ${DOCKER_VOLUME_BASE_PATH}/data/elastic-74
         o: bind
   data_elastic_76:
     driver: local
