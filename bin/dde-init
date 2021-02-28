@@ -50,7 +50,6 @@ EOL_ZSH
 #
 # initialising docker dev environment
 #
-source ~/.docker/.devenvrc
 EOL_COMPOSER
     fi
 
