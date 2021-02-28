@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-MY_PATH=`dirname $(readlink -f "$0")`
+MY_PATH=$(dirname "$(readlink -f "$0")")
 
 REQUESTED_DOCKER_DEV_ENVIRONMENT_HOME=$(readlink -f "${MY_PATH}/..")
 #
@@ -13,8 +13,8 @@ if [[ -z "${DOCKER_DEV_ENVIRONMENT_HOME+x}" || "${REQUESTED_DOCKER_DEV_ENVIRONME
     #
     # check if source command is included in .bashrc if the file exists
     #
-    if [[ -f $BASHRC_FILE  && "$(grep -c ".docker/.devenvrc" ${BASHRC_FILE})" = "0" ]]; then
-        cat >> ${BASHRC_FILE} <<EOL_BASH
+    if [[ -f $BASHRC_FILE  && "$(grep -c ".docker/.devenvrc" "${BASHRC_FILE}")" = "0" ]]; then
+        cat >> "${BASHRC_FILE}" <<EOL_BASH
 
 #
 # initialising docker dev environment
@@ -27,8 +27,8 @@ EOL_BASH
     #
     # check if source command is included in .zshrc if the file exists
     #
-    if [[ -f $ZSHRC_FILE  && "$(grep -c ".docker/.devenvrc" ${ZSHRC_FILE})" = "0" ]]; then
-        cat >> ${ZSHRC_FILE} <<EOL_ZSH
+    if [[ -f $ZSHRC_FILE  && "$(grep -c ".docker/.devenvrc" "${ZSHRC_FILE}")" = "0" ]]; then
+        cat >> "${ZSHRC_FILE}" <<EOL_ZSH
 
 #
 # initialising docker dev environment
@@ -46,7 +46,19 @@ EOL_ZSH
 
     if [[ ( ! -f ~/.docker/.devenvrc ) || "${REQUESTED_DOCKER_DEV_ENVIRONMENT_HOME}" != "${DOCKER_DEV_ENVIRONMENT_HOME}" ]]; then
 
-        cat > ~/.docker/.devenvrc <<EOL_DOCKER
+        cat > ~/.docker/.devenvrc <<EOL_COMPOSER
+#
+# initialising docker dev environment
+#
+source ~/.docker/.devenvrc
+EOL_COMPOSER
+    fi
+
+    #
+    # check if .composer directory exists
+    #
+    if [[ ! -d ~/.composer ]]; then
+       mkdir ~/.composer <<EOL_DOCKER
 #
 # initialising docker dev environment
 #
@@ -58,9 +70,9 @@ EOL_DOCKER
     fi
 
     echo "docker dev environment initialized or changed, please type"
-    if [[ "$(grep -c "/bash" ${SHELL})" != "0" ]]; then
+    if [[ "$(grep -c "/bash" "${SHELL}")" != "0" ]]; then
         echo "$ source $BASHRC_FILE "
-    elif [[ "$(grep -c "/zsh" ${SHELL})" != "0" ]]; then
+    elif [[ "$(grep -c "/zsh" "${SHELL}")" != "0" ]]; then
         echo "$ source $ZSHRC_FILE "
     else
         echo "$ source /pfad/zur/config/datei/der/shell "
