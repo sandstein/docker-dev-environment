@@ -1,5 +1,10 @@
 # Docker Development Environment
 
+## Prerequisites
+
+- Install [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/)
+- Port 80 on your host must be unused.
+
 ## Possible containers
 
 Dockerfiles exist for the following.
