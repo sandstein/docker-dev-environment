@@ -618,6 +618,18 @@ services:
     ports:
       - 6379:6379
 
+  redis-6:
+    container_name: redis-6
+    build:
+      context: .
+      dockerfile: docker/redis-6/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - redis-6
+    ports:
+      - 6380:6379
+
   mailhog:
     container_name: mailhog
     build:
@@ -725,6 +737,22 @@ services:
       - 9376:9300
     volumes:
       - data_elastic_76:/usr/share/elasticsearch/data
+
+  elastic-710:
+    container_name: elastic-710
+    build:
+      context: .
+      dockerfile: docker/elastic-710/Dockerfile
+    networks:
+      app-tier:
+        aliases:
+          - elastic-710
+    env_file: env/elastic.env
+    ports:
+      - 9280:9200
+      - 9380:9300
+    volumes:
+      - data_elastic_710:/usr/share/elasticsearch/data
 
   esadmin:
     container_name: esadmin
@@ -1099,6 +1127,12 @@ volumes:
     driver_opts:
       type: none
       device: ${DOCKER_VOLUME_BASE_PATH}/data/elastic-76
+      o: bind
+  data_elastic_710:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/data/elastic-710
       o: bind
   config_ssh_tunnel:
     driver: local
