@@ -1,4 +1,4 @@
-FROM sandstein/elasticsearch:7.3
+FROM sandstein/elasticsearch:7.16
 
 ARG USER_ID=1000
 ARG GROUP_ID=1000

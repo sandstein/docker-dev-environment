@@ -253,6 +253,8 @@ services:
     volumes:
       - vhosts:/var/www/vhosts
       - config_php_fpm_56:/usr/local/etc/php
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
   php-fpm-70:
     container_name: php-fpm-70
@@ -271,6 +273,8 @@ services:
     volumes:
       - vhosts:/var/www/vhosts
       - config_php_fpm_70:/usr/local/etc/php
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
   php-fpm-71:
     container_name: php-fpm-71
@@ -289,6 +293,8 @@ services:
     volumes:
       - vhosts:/var/www/vhosts
       - config_php_fpm_71:/usr/local/etc/php
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
   php-fpm-72:
     container_name: php-fpm-72
@@ -307,6 +313,8 @@ services:
     volumes:
       - vhosts:/var/www/vhosts
       - config_php_fpm_72:/usr/local/etc/php
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
   php-fpm-73:
     container_name: php-fpm-73
@@ -325,6 +333,8 @@ services:
     volumes:
       - vhosts:/var/www/vhosts
       - config_php_fpm_73:/usr/local/etc/php
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
   php-fpm-74:
     container_name: php-fpm-74
@@ -343,6 +353,8 @@ services:
     volumes:
       - vhosts:/var/www/vhosts
       - config_php_fpm_74:/usr/local/etc/php
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
   php-fpm-80:
     container_name: php-fpm-80
@@ -361,6 +373,8 @@ services:
     volumes:
       - vhosts:/var/www/vhosts
       - config_php_fpm_80:/usr/local/etc/php
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
   php-cli-56:
     container_name: php-cli-56
@@ -385,6 +399,8 @@ services:
       - composer_base:/home/phpcli/.composer
       - php_cli_56_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
   php-cli-70:
     container_name: php-cli-70
@@ -410,6 +426,8 @@ services:
       - php_cli_70_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
     tty: true
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
   php-cli-71:
     container_name: php-cli-71
@@ -435,6 +453,8 @@ services:
       - php_cli_71_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
     tty: true
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
   php-cli-72:
     container_name: php-cli-72
@@ -460,6 +480,8 @@ services:
       - php_cli_72_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
     tty: true
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
   php-cli-73:
     container_name: php-cli-73
@@ -485,6 +507,8 @@ services:
       - php_cli_73_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
     tty: true
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
   php-cli-74:
     container_name: php-cli-74
@@ -510,6 +534,8 @@ services:
       - php_cli_74_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
     tty: true
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
   php-cli-80:
     container_name: php-cli-80
@@ -535,6 +561,8 @@ services:
       - php_cli_80_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
     tty: true
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
   ssh:
     container_name: ssh
@@ -599,6 +627,7 @@ services:
       app-tier:
         aliases:
           - apache-24
+          - m2.localhost
     ports:
       - 127.0.0.1:${APACHE_HTTP_PORT}:80
       - 127.0.0.1:${APACHE_HTTPS_PORT}:443
@@ -663,6 +692,9 @@ services:
     build:
       context: .
       dockerfile: docker/elastic-56/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
     networks:
       app-tier:
         aliases:
@@ -679,6 +711,9 @@ services:
     build:
       context: .
       dockerfile: docker/elastic-64/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
     networks:
       app-tier:
         aliases:
@@ -690,11 +725,33 @@ services:
     volumes:
       - data_elastic_64:/usr/share/elasticsearch/data
 
+  elastic-68:
+    container_name: elastic-68
+    build:
+      context: .
+      dockerfile: docker/elastic-68/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - elastic-68
+    env_file: env/elastic.env
+    ports:
+      - 9268:9200
+      - 9368:9300
+    volumes:
+      - data_elastic_68:/usr/share/elasticsearch/data
+
   elastic-71:
     container_name: elastic-71
     build:
       context: .
       dockerfile: docker/elastic-71/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
     networks:
       app-tier:
         aliases:
@@ -711,6 +768,9 @@ services:
     build:
       context: .
       dockerfile: docker/elastic-73/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
     networks:
       app-tier:
         aliases:
@@ -727,6 +787,9 @@ services:
     build:
       context: .
       dockerfile: docker/elastic-76/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
     networks:
       app-tier:
         aliases:
@@ -743,6 +806,9 @@ services:
     build:
       context: .
       dockerfile: docker/elastic-710/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
     networks:
       app-tier:
         aliases:
@@ -753,6 +819,25 @@ services:
       - 9380:9300
     volumes:
       - data_elastic_710:/usr/share/elasticsearch/data
+
+  elastic-716:
+    container_name: elastic-716
+    build:
+      context: .
+      dockerfile: docker/elastic-716/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - elastic-716
+    env_file: env/elastic.env
+    ports:
+      - 9286:9200
+      - 9386:9300
+    volumes:
+      - data_elastic_716:/usr/share/elasticsearch/data
 
   esadmin:
     container_name: esadmin
@@ -766,6 +851,124 @@ services:
     env_file: env/esadmin.env
     ports:
       - 8181:8080
+
+  chrome-standalone:
+    container_name: chrome-standalone
+    image: selenium/standalone-chrome
+    shm_size: 2gb
+    networks:
+      app-tier:
+        aliases:
+          - chrome-standalone
+    ports:
+      - "14440:4444"
+      - "7900:7900"
+
+  edge-standalone:
+    image: selenium/standalone-edge
+    shm_size: 2gb
+    networks:
+      app-tier:
+        aliases:
+          - edge-standalone
+    container_name: edge-standalone
+    ports:
+      - "14441:4444"
+      - "7901:7900"
+
+  firefox-standalone:
+    image: selenium/standalone-firefox
+    shm_size: 2gb
+    container_name: firefox-standalone
+    networks:
+      app-tier:
+        aliases:
+          - firefox-standalone
+    ports:
+      - "14442:4444"
+      - "7902:7900"
+
+  chrome:
+    image: selenium/node-chrome
+    container_name: chrome
+    shm_size: 2gb
+    networks:
+      app-tier:
+        aliases:
+          - chrome
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+    ports:
+      - "7900:7900"
+
+  edge:
+    image: selenium/node-edge
+    container_name: edge
+    shm_size: 2gb
+    networks:
+      app-tier:
+        aliases:
+          - edge
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+    ports:
+      - "7901:7900"
+
+  firefox:
+    image: selenium/node-firefox
+    container_name: firefox
+    shm_size: 2gb
+    networks:
+      app-tier:
+        aliases:
+          - firefox
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+    ports:
+      - "7902:7900"
+
+  selenium-hub:
+    image: selenium/hub
+    container_name: selenium-hub
+    networks:
+      app-tier:
+        aliases:
+          - selenium-hub
+    ports:
+      - "24442:4442"
+      - "24443:4443"
+      - "24444:4444"
+
+  selenium-side-runner:
+    container_name: selenium-side-runner
+    build:
+      context: .
+      dockerfile: docker/selenium-side-runner/Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - selenium-side-runner
+    volumes:
+      - vhosts:/var/www/vhosts
+    user: $USER_ID:$GROUP_ID
+    tty: true
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
 volumes:
   data_mysql_55:
@@ -1110,6 +1313,12 @@ volumes:
         type: none
         device: ${DOCKER_VOLUME_BASE_PATH}/data/elastic-64
         o: bind
+  data_elastic_68:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/data/elastic-68
+      o: bind
   data_elastic_71:
     driver: local
     driver_opts:
@@ -1133,6 +1342,12 @@ volumes:
     driver_opts:
       type: none
       device: ${DOCKER_VOLUME_BASE_PATH}/data/elastic-710
+      o: bind
+  data_elastic_716:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/data/elastic-716
       o: bind
   config_ssh_tunnel:
     driver: local

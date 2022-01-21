@@ -1,4 +1,4 @@
-FROM sandstein/elasticsearch:7.3
+FROM sandstein/elasticsearch:6.8
 
 ARG USER_ID=1000
 ARG GROUP_ID=1000
@@ -7,4 +7,3 @@ RUN modify-user-ids elasticsearch ${USER_ID} ${GROUP_ID} \
 
 RUN bin/elasticsearch-plugin install analysis-phonetic \
     && bin/elasticsearch-plugin install analysis-icu
-
