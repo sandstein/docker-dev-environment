@@ -21,6 +21,8 @@ Following dockerfiles exist
             php-fpm-72<br>
             php-fpm-73<br>
             php-fpm-74<br>
+            php-fpm-80<br>
+            php-fpm-81<br>
         </td>
         <td>
             mysql-55<br>
@@ -45,6 +47,8 @@ Following dockerfiles exist
             php-cli-72<br>
             php-cli-73<br>
             php-cli-74<br>
+            php-cli-80<br>
+            php-cli-81<br>
         </td>
         <td>
             mariadb-55<br>
@@ -308,5 +312,3 @@ Since the ssh sock can not be mounted as plain file it is necessary to add your 
 SSH_AUTH_SOCK_BASE=/run/user/<UID>/keyring
 ```
 to your `.env` file. If you are working as another user, please change accordingly.
-
-
