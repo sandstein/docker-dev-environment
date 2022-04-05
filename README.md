@@ -2,7 +2,7 @@
 
 ## Possible containers
 
-Following dockerfiles exist
+Dockerfiles exist for the following
 
 <table style="width:100%">
     <tr>
@@ -31,6 +31,7 @@ Following dockerfiles exist
             mysql-80<br>
         </td>
         <td>
+            ssh (for automatic tunnels)<br>
             solr-771<br>
             tomcat-9<br>
             redis-5<br>
@@ -59,125 +60,60 @@ Following dockerfiles exist
             mariadb-104<br>
         </td>
         <td>
-            percona-57<br>
-            peronca-80<br>
-        </td>
-    </tr>
-    <tr>
-        <td>
-        </td>
-        <td>
-        </td>
-        <td>
-        </td>
-        <td>
             elastic-56<br>
             elastic-64<br>
             elastic-71<br>
             elastic-73<br>
+            elastic-76<br>
+            elastic-710<br>
+            elastic-716<br>
+            esadmin
+        </td>
+    </tr>
+    <tr>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+            percona-57<br>
+            peronca-80<br>
+        </td>
+        <td>
+            <strong>Selenium</strong>:<br>
+            chrome-standalone<br>
+            edge-standalone<br>
+            firefox-standalone<br>
+            chrome<br>
+            edge<br>
+            firefox<br>
+            selenium-hub<br>
+            selenium-side-runner<br>
         </td>
 </tr>
 </table>
 
-
-##Setup docker dev enviroment to use it with your project
-
-###Apache vhost
 Your local projects are mounted into the respective containers from the mount point
-`/path/to/this/repo/vhosts`.
+`/path/to/this/repo/vhosts`
+
 So ideally you would symlink your projects directory to this location (`./vhosts`).
 
-<!-- hier habe ich ggf. nicht richtig den link gesetzt? -->
-```bash
-$ ln -s /path/to/this/repo/vhosts /var/www/vhosts
-```
-<!-- liegt nicht in .docker -->
-Apache vhosts are configured in the `docker/apache-24/conf/` directory.
-You can create a new `<vhost-name>.conf` file per vhost. They are automatically loaded when starting/restarting your apache container.
-If you do not use "project-name __.localhost__" within linux, remember to edit your local hosts file when adding new vhosts.
+Apache vhosts are configured in the `.docker/apache/conf/vhosts` directory.
+You can create a new `.conf` file per vhost. They are automatically loaded when starting/restarting your apache container.
 
-Example file
-```
-<VirtualHost "*:${HTTP_PORT}">
-    ServerName project-name.localhost
-    DocumentRoot "${VHOSTROOT}/project-name"
-    Use PHP73 "${VHOSTROOT}/project-name"
-</VirtualHost>
-```
-
-## Set correct enviroment for both docker enviroment and your project
-
-There are some commands which together with .env files will facilate your work. Copy `.env.docker-sample` to `.env` in your docker-dev-enviroment folder and possibly
-make changes according to your system.
-
-
-Copy `.env.project-sample` to `.env` in your projects root folder (if not under version control) and edit settings therein.
-
-```bash
-$ cp ~/workspace/docker/docker-dev-environment/.env.docker-sample ~/workspace/docker/docker-dev-environment/.env
-```
-
+If you do not use .localhost under linux, remember to edit your local hosts file when adding new vhosts.
 
 ## Initialisation and commands
-List of all commands placed  `bin/` dde - < command >
-<table style="width:100%">
-    <tr>
-        <th>CLI options</th>
-        <th>Controllers</th>
-        <th>Initialization</th>
-        <th>Others</th>
-    </tr>
-    <tr>
-        <td>
-        dde-bash<br>
-        dde-cli<br>
-        <br>
-        dde-cron<br>
-        dde-cron-bash<br>
-        dde-cron-root-bash<br>
-        <br>
-        dde-exec<br>
-        dde-exec-bash<br>
-        dde-exec-root-bash<br>
-        </td>
-        <td>
-<!--
-    Ich sehe hier die aehnlichkeit zu systemd daher dde-down zu dde-stop aendern oder hinzufuegen?
-    Kann gerade nicht einschaetzen wie ihr zu Redundanz steht wenn beide das selbe machen sollten
--->
-        dde-start<br>
-        dde-down<br>
-        dde-restart<br>
-        dde-rebuild<br>
-        <br>
-        </td>
-        <td>
-        dde-init<br>
-        dde-build<br>
-        dde-buildall<br>
-        dde-<br>
-        </td>
-        <td>
-        dde-defines<br>
-        dde-test<br>
-        dde-composer<br>
-        </td>
-    </tr>
-</table>
 
+There are some commands which - together with .env files will facilate your work. Copy `.env.sample` to `.env` and possibly
+make changes according to your system.
+
+Copy `.env.project-sample` to your projects root file (if not under version control) and edit settings therein.
 
 The command `bin/dde-init` will set `DOCKER_DEV_ENVIRONMENT_HOME` in your .bashrc and add `${DOCKER_DEV_ENVIRONMENT_HOME}/bin`
 to your `${PATH}`.
 
-```bash
-$ bin/dde-init
-```
-
-Then you can start all the needed containers by invoking.
-
----
-
-
+Then you can start all the needed containers by invoking
 ```bash
 $ dde-start
 ```
@@ -202,22 +138,14 @@ changed) you can use
 $ dde-restart [service or services]
 ```
 
-
----
-
 Finally, if all the work is done and you want to save resources, you can just use
 
 ```bash
 $ dde-down
 ```
-or
-```bash
-$ dde-stop
-```
+
 to stop all the containers.
 
-
----
 
 ## Startup (old?)
 
@@ -306,9 +234,9 @@ inside your container. It will be found before the composer instance installed w
 
 ### SSH Sock mounted as Directory
 
-Since the ssh sock can not be mounted as plain file it is necessary to add your User ID (UID)
+Since the ssh sock can not be mounted as plain file it is necessary to add
 
 ```shell script
-SSH_AUTH_SOCK_BASE=/run/user/<UID>/keyring
+SSH_AUTH_SOCK_BASE=/run/user/1001/keyring
 ```
 to your `.env` file. If you are working as another user, please change accordingly.
