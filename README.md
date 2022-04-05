@@ -4,38 +4,94 @@
 
 Dockerfiles exist for the following
 
-* php-fpm-57
-* php-fpm-71
-* php-fpm-72
-* php-fpm-73
-* php-fpm-74
-* php-cli-57
-* php-cli-71
-* php-cli-72
-* php-cli-73
-* php-cli-74
-* mysql-55
-* mysql-56
-* mysql-57
-* mysql-80
-* mariadb-55
-* mariadb-100
-* mariadb-101
-* mariadb-102
-* mariadb-103
-* mariadb-104
-* percona-57
-* peronca-80
-* apache-24
-* solr-771
-* tomcat-9
-* redis-5
-* mailhog
-* varnish
-* elastic-56
-* elastic-64
-* elastic-71
-* elastic-73
+<table style="width:100%">
+    <tr>
+        <th>Webserver</th>
+        <th>PHP modules</th>
+        <th>Database modules</th>
+        <th>Additional services</th>
+    </tr>
+    <tr>
+        <td>
+            apache24
+        </td>
+        <td>
+            php-fpm-57<br>
+            php-fpm-71<br>
+            php-fpm-72<br>
+            php-fpm-73<br>
+            php-fpm-74<br>
+            php-fpm-80<br>
+            php-fpm-81<br>
+        </td>
+        <td>
+            mysql-55<br>
+            mysql-56<br>
+            mysql-57<br>
+            mysql-80<br>
+        </td>
+        <td>
+            ssh (for automatic tunnels)<br>
+            solr-771<br>
+            tomcat-9<br>
+            redis-5<br>
+            mailhog<br>
+            varnish<br>
+        </td>
+    </tr>
+    <tr>
+        <td>
+        </td>
+        <td>
+            php-cli-57<br>
+            php-cli-71<br>
+            php-cli-72<br>
+            php-cli-73<br>
+            php-cli-74<br>
+            php-cli-80<br>
+            php-cli-81<br>
+        </td>
+        <td>
+            mariadb-55<br>
+            mariadb-100<br>
+            mariadb-101<br>
+            mariadb-102<br>
+            mariadb-103<br>
+            mariadb-104<br>
+        </td>
+        <td>
+            elastic-56<br>
+            elastic-64<br>
+            elastic-71<br>
+            elastic-73<br>
+            elastic-76<br>
+            elastic-710<br>
+            elastic-716<br>
+            esadmin
+        </td>
+    </tr>
+    <tr>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+            percona-57<br>
+            peronca-80<br>
+        </td>
+        <td>
+            <strong>Selenium</strong>:<br>
+            chrome-standalone<br>
+            edge-standalone<br>
+            firefox-standalone<br>
+            chrome<br>
+            edge<br>
+            firefox<br>
+            selenium-hub<br>
+            selenium-side-runner<br>
+        </td>
+</tr>
+</table>
 
 Your local projects are mounted into the respective containers from the mount point
 `/path/to/this/repo/vhosts`
@@ -184,5 +240,3 @@ Since the ssh sock can not be mounted as plain file it is necessary to add
 SSH_AUTH_SOCK_BASE=/run/user/1001/keyring
 ```
 to your `.env` file. If you are working as another user, please change accordingly.
-
-
