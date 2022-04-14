@@ -1,0 +1,81 @@
+name: dde
+help: Docker Desktop Environment
+version: 0.1.0
+
+environment_variables:
+
+commands:
+- name: init
+  short: i
+  help: "Initializes dde. Only has to be run once from directory docker-dev-environment is installed"
+
+- name: list
+  short: l
+  help: "Lists all available services"
+
+- name: start
+  short: s
+  help: "Starts or restarts (if running) one container if provided \n
+        or all the containers needed for an application \n
+        as defined in local .env file. \n
+        See .env.project.sample for documentation"
+  args:
+    - name: container
+      help: Name of container
+
+- name: build
+  short: x
+  help: "Builds or rebuilds given container, or all if --a option is given"
+
+  args:
+    - name: container
+      help: Name of container
+
+  flags:
+    - long: --all
+      short: -a
+      help: Builds all containers
+
+- name: bash
+  short: b
+  help: Starts bash in default cli container or alternative container if given
+
+  args:
+  - name: container
+    help: Name of container
+
+  flags:
+  - long: --run
+    short: -r
+    help: "Uses docker run instead of docker exec"
+  - long: --root
+    short: -s
+    help: "Starts command as root user"
+
+  examples:
+  - dde bash
+  - dde bash -r -s mysql-80
+
+- name: command
+  short: c
+  help: Executes a specific command on a given container
+  args:
+    - name: container
+      required: true
+      help: "name of the container"
+
+    - name: command
+      required: true
+      help:
+
+  flags:
+    - long: --run
+      short: -r
+      help: "Uses docker run instead of docker exec"
+    - long: --root
+      short: -s
+      help: "Starts command as root user"
+
+- name: test
+  short: t
+  help: Test command for development
