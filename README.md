@@ -240,3 +240,18 @@ Since the ssh sock can not be mounted as plain file it is necessary to add
 SSH_AUTH_SOCK_BASE=/run/user/1001/keyring
 ```
 to your `.env` file. If you are working as another user, please change accordingly.
+
+
+# Rewrite cli
+
+## Some ideas on how to rewrite:
+
+1. mv dde-defines to config/defines
+2. mv dde-xxx to modules/xxx
+3. create dde which behaves "normal"
+
+## List of commands and what they should do
+
+dde help: prints general usage
+dde list: list commands
+dde help <command>:
