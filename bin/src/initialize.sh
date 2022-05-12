@@ -31,3 +31,26 @@ if [ -f "${PWD}/.env" ]; then
 elif [ "${DOCKER_DEV_ENVIRONMENT_HOME}" != "${PWD}" ]; then
   ENV_WARNING="Warning: there is no .env in your current working dir. Wrong pwd or missing project initialisation?"
 fi
+
+function parse_command_args() {
+
+    if [ -v "PROJECT_ROOT" ]; then
+        WORKINGDIRPART="-w /var/www/vhosts/${PROJECT_ROOT}"
+    else
+        WORKINGDIRPART=""
+    fi
+
+    if [ -v "args[--root]" ]; then
+        USERPART="-u root"
+    else
+        USERPART="-u ${USER_ID}"
+    fi
+
+    if [ -v "args[--run]" ]; then
+        MODEPART="run --rm"
+    else
+        MODEPART="exec"
+    fi
+}
+
+

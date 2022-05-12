@@ -321,7 +321,7 @@ dde_test_usage() {
   echo
 
   printf "Usage:\n"
-  printf "  dde test\n"
+  printf "  dde test [CONTAINER] [options]\n"
   printf "  dde test --help | -h\n"
   echo
 
@@ -330,6 +330,23 @@ dde_test_usage() {
     # :command.usage_fixed_flags
     echo "  --help, -h"
     printf "    Show this help\n"
+    echo
+    # :command.usage_flags
+    # :flag.usage
+    echo "  --run, -r"
+    printf "    Uses docker run instead of docker exec\n"
+    echo
+
+    # :flag.usage
+    echo "  --root, -s"
+    printf "    Starts command as root user\n"
+    echo
+    # :command.usage_args
+    printf "Arguments:\n"
+
+    # :argument.usage
+    echo "  CONTAINER"
+    printf "    Name of container\n"
     echo
 
   fi
@@ -546,24 +563,23 @@ dde_build_command() {
 # :command.function
 dde_bash_command() {
   # src/bash_command.sh
-  echo "# this file is located in 'src/bash_command.sh'"
-  echo "# code for 'dde bash' goes here"
-  echo "# you can edit it freely and regenerate (it will not be overwritten)"
-  inspect_args
+  parse_command_args
+  docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml ${MODEPART} ${USERPART} ${WORKINGDIRPART} ${args[container]} ${args[command]}
 }
 
 # :command.function
 dde_command_command() {
   # src/command_command.sh
-  echo "# this file is located in 'src/command_command.sh'"
-  echo "# code for 'dde command' goes here"
-  echo "# you can edit it freely and regenerate (it will not be overwritten)"
-  inspect_args
+  parse_command_args
+  docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml ${MODEPART} ${USERPART} ${WORKINGDIRPART} ${args[container]} ${args[command]}
 }
 
 # :command.function
 dde_test_command() {
   # src/test_command.sh
+  if [ -v "args[--run]" ]; then
+      red run
+  fi
   green done
 }
 
@@ -1007,6 +1023,19 @@ dde_test_parse_requirements() {
   while [[ $# -gt 0 ]]; do
     key="$1"
     case "$key" in
+    # :flag.case
+    --run | -r )
+      # :flag.conflicts
+      args[--run]=1
+      shift
+      ;;
+
+    # :flag.case
+    --root | -s )
+      # :flag.conflicts
+      args[--root]=1
+      shift
+      ;;
 
     -?* )
       printf "invalid option: %s\n" "$key"
@@ -1015,8 +1044,14 @@ dde_test_parse_requirements() {
 
     * )
       # :command.parse_requirements_case
-      printf "invalid argument: %s\n" "$key"
-      exit 1
+      if [[ -z ${args[container]+x} ]]; then
+        # :argument.validations
+        args[container]=$1
+        shift
+      else
+        printf "invalid argument: %s\n" "$key"
+        exit 1
+      fi
       ;;
 
     esac
@@ -1063,6 +1098,27 @@ initialize() {
   elif [ "${DOCKER_DEV_ENVIRONMENT_HOME}" != "${PWD}" ]; then
     ENV_WARNING="Warning: there is no .env in your current working dir. Wrong pwd or missing project initialisation?"
   fi
+
+  function parse_command_args() {
+
+      if [ -v "PROJECT_ROOT" ]; then
+          WORKINGDIRPART="-w /var/www/vhosts/${PROJECT_ROOT}"
+      else
+          WORKINGDIRPART=""
+      fi
+
+      if [ -v "args[--root]" ]; then
+          USERPART="-u root"
+      else
+          USERPART="-u ${USER_ID}"
+      fi
+
+      if [ -v "args[--run]" ]; then
+          MODEPART="run --rm"
+      else
+          MODEPART="exec"
+      fi
+  }
 }
 
 # :command.run
