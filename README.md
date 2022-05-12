@@ -1,6 +1,10 @@
 # Docker Development Environment
 
 Refactored with bashly
+init with
+
+$ alias bashly='docker run --rm -it --user $(id -u):$(id -g) --volume "$PWD:/app" dannyben/bashly'
+$ bashly generate
 
 ## Possible containers
 
