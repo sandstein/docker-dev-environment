@@ -36,8 +36,9 @@ dde_usage() {
   printf "Commands:\n"
   echo "  init      Initializes dde. Only has to be run once from directory docker-dev-environment is installed"
   echo "  list      Lists all available services"
-  echo "  start     Starts or restarts (if running) one container if provided "
-  echo "  build     Builds or rebuilds given container, or all if --a option is given"
+  echo "  start     Starts or restarts (if flag -r is given) one or several "
+  echo "  restart   Shortcut for dde start -r"
+  echo "  build     Builds or rebuilds one or multiple containers. "
   echo "  bash      Starts bash in default cli container or alternative container if given"
   echo "  command   Executes a specific command on a given container"
   echo "  test      Test command for development"
@@ -122,11 +123,11 @@ dde_start_usage() {
     printf "dde start\n"
     echo
 
-    printf "  Starts or restarts (if running) one container if provided \n   or all the containers needed for an application \n   as defined in local .env file. \n   See .env.project.sample for documentation\n"
+    printf "  Starts or restarts (if flag -r is given) one or several \n   containers if provided. Use colon seperated list for multiple containers. \n   If no containers are given all the containers needed for \n   an application are started as defined in the local .env file. \n   See .env.project.sample for documentation\n"
     echo
 
   else
-    printf "dde start - Starts or restarts (if running) one container if provided \n"
+    printf "dde start - Starts or restarts (if flag -r is given) one or several \n"
     echo
 
   fi
@@ -135,8 +136,58 @@ dde_start_usage() {
   echo
 
   printf "Usage:\n"
-  printf "  dde start [CONTAINER]\n"
+  printf "  dde start [CONTAINER] [options]\n"
   printf "  dde start --help | -h\n"
+  echo
+
+  if [[ -n $long_usage ]]; then
+    printf "Options:\n"
+    # :command.usage_fixed_flags
+    echo "  --help, -h"
+    printf "    Show this help\n"
+    echo
+    # :command.usage_flags
+    # :flag.usage
+    echo "  --restart, -r"
+    printf "    forces restart if container is running\n"
+    echo
+    # :command.usage_args
+    printf "Arguments:\n"
+
+    # :argument.usage
+    echo "  CONTAINER"
+    printf "    Name of container(s)\n"
+    echo
+
+    # :command.usage_examples
+    printf "Examples:\n"
+
+    printf "  \"dde start\": starts all the containers defined in the variable\n  DOCKER_CONTAINER\n"
+    printf "  \"dde start -r\": as above, but containers are stopped first if running\n"
+    printf "  \"dde start -r apache-24,php-fpm-81\": restarts the two given containers\n"
+    echo
+
+  fi
+}
+
+# :command.usage
+dde_restart_usage() {
+  if [[ -n $long_usage ]]; then
+    printf "dde restart - Shortcut for dde start -r\n"
+    echo
+
+  else
+    printf "dde restart - Shortcut for dde start -r\n"
+    echo
+
+  fi
+
+  printf "Shortcut: r\n"
+  echo
+
+  printf "Usage:\n"
+  printf "  dde restart [CONTAINER]\n"
+  printf "  dde restart --help | -h\n"
   echo
 
   if [[ -n $long_usage ]]; then
@@ -151,7 +202,7 @@ dde_start_usage() {
 
     # :argument.usage
     echo "  CONTAINER"
-    printf "    Name of container\n"
+    printf "    Name of container(s), see dde start -h for more help\n"
     echo
 
   fi
@@ -160,11 +211,14 @@ dde_start_usage() {
 # :command.usage
 dde_build_usage() {
   if [[ -n $long_usage ]]; then
-    printf "dde build - Builds or rebuilds given container, or all if --a option is given\n"
+    printf "dde build\n"
+    echo
+
+    printf "  Builds or rebuilds one or multiple containers. \n   If multiple container building is desired use colon seperated list.\n   If container list is omitted, all containers needed for your\n   application (as defined in your local .env file) will be built or \n   rebuilt.\n   If the --all option is given, all dde containers are built. \n   BEWARE: this might take some time. \n   If the --restart option is given, the service will be restarted after\n   being built. BEWARE: you can not combine the two options,\n   as there are too many containers to be run at\n   the same time.\n  \n   The command uses the --force-rm --no-cache --pull options from\n   docker-compose build and therefor takes some time. \n   For more fine grained tuning use\n  \n   docker-compose build -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml\n  build\n  \n   with the options that suite you best.\n"
     echo
 
   else
-    printf "dde build - Builds or rebuilds given container, or all if --a option is given\n"
+    printf "dde build - Builds or rebuilds one or multiple containers. \n"
     echo
 
   fi
@@ -186,14 +240,19 @@ dde_build_usage() {
     # :command.usage_flags
     # :flag.usage
     echo "  --all, -a"
-    printf "    Builds all containers\n"
+    printf "    Build all containers defined in the dde docker-compose.yml\n"
+    echo
+
+    # :flag.usage
+    echo "  --restart, -r"
+    printf "    restarts (or starts) the (re)built container\n"
     echo
     # :command.usage_args
     printf "Arguments:\n"
 
     # :argument.usage
     echo "  CONTAINER"
-    printf "    Name of container\n"
+    printf "    Name of container(s)\n"
     echo
 
   fi
@@ -234,6 +293,11 @@ dde_bash_usage() {
     # :flag.usage
     echo "  --root, -s"
     printf "    Starts command as root user\n"
+    echo
+
+    # :flag.usage
+    echo "  --default-working-dir, -d"
+    printf "    Uses default working dir rather than project root\n"
     echo
     # :command.usage_args
     printf "Arguments:\n"
@@ -289,6 +353,11 @@ dde_command_usage() {
     echo "  --root, -s"
     printf "    Starts command as root user\n"
     echo
+
+    # :flag.usage
+    echo "  --default-working-dir, -d"
+    printf "    Uses default working dir rather than project root\n"
+    echo
     # :command.usage_args
     printf "Arguments:\n"
 
@@ -299,7 +368,7 @@ dde_command_usage() {
 
     # :argument.usage
     echo "  COMMAND"
-    printf "\n"
+    printf "    the command to execute\n"
     echo
 
   fi
@@ -321,7 +390,7 @@ dde_test_usage() {
   echo
 
   printf "Usage:\n"
-  printf "  dde test [CONTAINER] [options]\n"
+  printf "  dde test\n"
   printf "  dde test --help | -h\n"
   echo
 
@@ -330,23 +399,6 @@ dde_test_usage() {
     # :command.usage_fixed_flags
     echo "  --help, -h"
     printf "    Show this help\n"
-    echo
-    # :command.usage_flags
-    # :flag.usage
-    echo "  --run, -r"
-    printf "    Uses docker run instead of docker exec\n"
-    echo
-
-    # :flag.usage
-    echo "  --root, -s"
-    printf "    Starts command as root user\n"
-    echo
-    # :command.usage_args
-    printf "Arguments:\n"
-
-    # :argument.usage
-    echo "  CONTAINER"
-    printf "    Name of container\n"
     echo
 
   fi
@@ -545,26 +597,67 @@ dde_list_command() {
 # :command.function
 dde_start_command() {
   # src/start_command.sh
-  echo "# this file is located in 'src/start_command.sh'"
-  echo "# code for 'dde start' goes here"
-  echo "# you can edit it freely and regenerate (it will not be overwritten)"
-  inspect_args
+  parse_command_args
+  if [ -v WARNING ]; then
+      red "${WARNING}"
+      red "${ENV_WARNING}"
+  else
+         while IFS=',' read -ra CONTAINER; do
+            for container in "${CONTAINER[@]}"; do
+                if [ -v "args[--restart]" ]; then
+                    docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml stop ${container}
+                fi
+                touchConfigFile ${container}
+                docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml up -d ${container}
+            done
+         done <<< "${CONTAINER_LIST}"
+  fi
+}
+
+# :command.function
+dde_restart_command() {
+  # src/restart_command.sh
+  parse_command_args
+  dde start "${CONTAINER_LIST}" -r
 }
 
 # :command.function
 dde_build_command() {
   # src/build_command.sh
-  echo "# this file is located in 'src/build_command.sh'"
-  echo "# code for 'dde build' goes here"
-  echo "# you can edit it freely and regenerate (it will not be overwritten)"
-  inspect_args
+  parse_command_args
+  if [ -v "args[--all]" ]; then
+      if [ -v "args[--restart]" ]; then
+          red "You can not provide the two options together!"
+      else
+          docker-compose -f "${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml" build "${BUILD_OPTIONS}"
+      fi
+  elif [ -v WARNING ]; then
+      red "${WARNING}"
+      red "${ENV_WARNING}"
+  else
+         while IFS=',' read -ra CONTAINER; do
+            for container in "${CONTAINER[@]}"; do
+                docker-compose -f "${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml" build \
+                   --force-rm --pull --no-cache "${container}"
+                if [ -v "args[--restart]" ]; then
+                    dde restart "${container}"
+                fi
+            done
+         done <<< "${CONTAINER_LIST}"
+  fi
 }
 
 # :command.function
 dde_bash_command() {
   # src/bash_command.sh
+  #inspect_args
   parse_command_args
-  docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml ${MODEPART} ${USERPART} ${WORKINGDIRPART} ${args[container]} ${args[command]}
+  if [ -v WARNING ]; then
+      red "${WARNING}"
+      red "${ENV_WARNING}"
+  else
+      docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml ${MODEPART} ${USERPART} ${WORKINGDIRPART} ${CONTAINER} bash
+  fi
 }
 
 # :command.function
@@ -577,6 +670,7 @@ dde_command_command() {
 # :command.function
 dde_test_command() {
   # src/test_command.sh
+  inspect_args
   if [ -v "args[--run]" ]; then
       red run
   fi
@@ -626,6 +720,13 @@ parse_requirements() {
     action="start"
     shift
     dde_start_parse_requirements "$@"
+    shift $#
+    ;;
+
+  restart | r )
+    action="restart"
+    shift
+    dde_restart_parse_requirements "$@"
     shift $#
     ;;
 
@@ -791,6 +892,59 @@ dde_start_parse_requirements() {
   while [[ $# -gt 0 ]]; do
     key="$1"
     case "$key" in
+    # :flag.case
+    --restart | -r )
+      # :flag.conflicts
+      args[--restart]=1
+      shift
+      ;;
+
+    -?* )
+      printf "invalid option: %s\n" "$key"
+      exit 1
+      ;;
+
+    * )
+      # :command.parse_requirements_case
+      if [[ -z ${args[container]+x} ]]; then
+        # :argument.validations
+        args[container]=$1
+        shift
+      else
+        printf "invalid argument: %s\n" "$key"
+        exit 1
+      fi
+      ;;
+
+    esac
+  done
+  # :command.required_args_filter
+  # :command.required_flags_filter
+  # :command.catch_all_filter
+  # :command.default_assignments
+  # :command.whitelist_filter
+  # :command.user_filter
+}
+
+# :command.parse_requirements
+dde_restart_parse_requirements() {
+  # :command.fixed_flags_filter
+  case "${1:-}" in
+  --help | -h )
+    long_usage=yes
+    dde_restart_usage
+    exit
+    ;;
+
+  esac
+  # :command.environment_variables_filter
+  # :command.dependencies_filter
+  # :command.command_filter
+  action="restart"
+  # :command.parse_requirements_while
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
 
     -?* )
       printf "invalid option: %s\n" "$key"
@@ -842,6 +996,13 @@ dde_build_parse_requirements() {
     --all | -a )
       # :flag.conflicts
       args[--all]=1
+      shift
+      ;;
+
+    # :flag.case
+    --restart | -r )
+      # :flag.conflicts
+      args[--restart]=1
       shift
       ;;
 
@@ -905,6 +1066,13 @@ dde_bash_parse_requirements() {
       shift
       ;;
 
+    # :flag.case
+    --default-working-dir | -d )
+      # :flag.conflicts
+      args[--default-working-dir]=1
+      shift
+      ;;
+
     -?* )
       printf "invalid option: %s\n" "$key"
       exit 1
@@ -962,6 +1130,13 @@ dde_command_parse_requirements() {
     --root | -s )
       # :flag.conflicts
       args[--root]=1
+      shift
+      ;;
+
+    # :flag.case
+    --default-working-dir | -d )
+      # :flag.conflicts
+      args[--default-working-dir]=1
       shift
       ;;
 
@@ -1023,19 +1198,6 @@ dde_test_parse_requirements() {
   while [[ $# -gt 0 ]]; do
     key="$1"
     case "$key" in
-    # :flag.case
-    --run | -r )
-      # :flag.conflicts
-      args[--run]=1
-      shift
-      ;;
-
-    # :flag.case
-    --root | -s )
-      # :flag.conflicts
-      args[--root]=1
-      shift
-      ;;
 
     -?* )
       printf "invalid option: %s\n" "$key"
@@ -1044,14 +1206,8 @@ dde_test_parse_requirements() {
 
     * )
       # :command.parse_requirements_case
-      if [[ -z ${args[container]+x} ]]; then
-        # :argument.validations
-        args[container]=$1
-        shift
-      else
-        printf "invalid argument: %s\n" "$key"
-        exit 1
-      fi
+      printf "invalid argument: %s\n" "$key"
+      exit 1
       ;;
 
     esac
@@ -1071,7 +1227,7 @@ initialize() {
   set -e
 
   # src/initialize.sh
-
+  # where is this file located
   SCRIPT_PATH=$(readlink -f "$0")
   MY_PATH=$(dirname "$SCRIPT_PATH")
 
@@ -1082,6 +1238,9 @@ initialize() {
       magenta "Warning: dde not initialised, use dde init to do so"
   fi
 
+  # initializes the dde wide variables like user id etc.
+  # see .env.sample
+  #
   if [ -f "${MY_PATH}/../.env" ]; then
    set -a
    . "${MY_PATH}/../.env"
@@ -1091,6 +1250,8 @@ initialize() {
     exit 1
   fi
 
+  # initializes the specific container needs for a given project
+  # see .env.project-sample
   if [ -f "${PWD}/.env" ]; then
     set -a
     . "${PWD}/.env"
@@ -1099,25 +1260,88 @@ initialize() {
     ENV_WARNING="Warning: there is no .env in your current working dir. Wrong pwd or missing project initialisation?"
   fi
 
+  # creates an empty config file for services which are started
+  # for the first time.
+  # for php container a sample php.ini is copied
+  touchConfigFile () {
+
+    if [[ $1 =~ "php" ]]; then
+      part="${1/-x//}"
+      configFile="${DOCKER_DEV_ENVIRONMENT_HOME}/config/$part/etc/php/php.ini"
+    fi
+
+    if [[ $1 =~ mysql|percona|mariadb ]]; then
+      configFile="${DOCKER_DEV_ENVIRONMENT_HOME}/config/$1/etc/my.cnf"
+    fi
+
+    if [[ $1 =~ "ssh" ]]; then
+      configFile="${DOCKER_DEV_ENVIRONMENT_HOME}/config/$1/tunnel.conf"
+    fi
+
+    if [[ -n "${configFile}" && ! -f "${configFile}" ]]; then
+      echo "Touching ${configFile} before startup, because it does not exist"
+      touch "${configFile}"
+      if [[ $part =~ "php" ]]; then
+        echo 'Copying ini files, adopt to your needs'
+        cp "${DOCKER_DEV_ENVIRONMENT_HOME}/config/$part/sample/conf.d/*.ini" \
+           "${DOCKER_DEV_ENVIRONMENT_HOME}/config/$part/etc/php/conf.d"
+      fi
+    fi
+  }
+
+  # parses the command args
   function parse_command_args() {
 
-      if [ -v "PROJECT_ROOT" ]; then
+      # determine working dir
+      if [ -v "args[--default-working-dir]" ]; then
+          WORKINGDIRPART=""
+      elif [ -v "PROJECT_ROOT" ]; then
           WORKINGDIRPART="-w /var/www/vhosts/${PROJECT_ROOT}"
       else
           WORKINGDIRPART=""
       fi
 
+      # set root user if desired
       if [ -v "args[--root]" ]; then
           USERPART="-u root"
       else
           USERPART="-u ${USER_ID}"
       fi
 
+      # create new container if desired
       if [ -v "args[--run]" ]; then
           MODEPART="run --rm"
       else
           MODEPART="exec"
       fi
+
+      # seek default container for dde bash
+      if [ -v "args[container]" ]; then
+          CONTAINER="${args[container]}"
+      # inspect PHP_CLI_CONTAINER for backward compatibility
+      elif [ -v "PHP_CLI_CONTAINER" ]; then
+          CONTAINER="${PHP_CLI_CONTAINER}"
+      elif [ -v "DEFAULT_CONTAINER" ]; then
+          CONTAINER="${DEFAULT_CONTAINER}"
+      else
+          WARNING="Could not determine the container!"
+      fi
+
+      # prepares the container list for dde start and dde build
+      if [ -v "args[container]" ]; then
+          CONTAINER_LIST="${args[container]}"
+      elif [ -v "DOCKER_CONTAINER" ]; then
+          CONTAINER_LIST="${DOCKER_CONTAINER}"
+          # inspect PHP_FPM_CONTAINER for backward compatibility
+          if [ -v "PHP_FPM_CONTAINER" ]; then
+              CONTAINER_LIST="${CONTAINER_LIST},${PHP_FPM_CONTAINER}"
+          fi
+      else
+          WARNING="No container given!"
+      fi
+
+      # sets the build options
+      BUILD_OPTIONS="--force-rm --pull --no-cache"
   }
 }
 
@@ -1151,6 +1375,14 @@ run() {
       dde_start_usage
     else
       dde_start_command
+    fi
+
+  elif [[ $action == "restart" ]]; then
+    if [[ ${args[--help]:-} ]]; then
+      long_usage=yes
+      dde_restart_usage
+    else
+      dde_restart_command
     fi
 
   elif [[ $action == "build" ]]; then

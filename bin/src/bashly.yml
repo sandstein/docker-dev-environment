@@ -15,34 +15,72 @@ commands:
 
 - name: start
   short: s
-  help: "Starts or restarts (if running) one container if provided \n
-        or all the containers needed for an application \n
-        as defined in local .env file. \n
+  help: "Starts or restarts (if flag -r is given) one or several \n
+        containers if provided. Use colon seperated list for multiple containers. \n
+        If no containers are given all the containers needed for \n
+        an application are started as defined in the local .env file. \n
         See .env.project.sample for documentation"
   args:
     - name: container
-      help: Name of container
+      help: Name of container(s)
 
-- name: build
-  short: x
-  help: "Builds or rebuilds given container, or all if --a option is given"
+  flags:
+    - long: --restart
+      short: -r
+      help: "forces restart if container is running"
+
+  examples:
+    - "\"dde start\": starts all the containers defined in the variable DOCKER_CONTAINER"
+    - "\"dde start -r\": as above, but containers are stopped first if running"
+    - "\"dde start -r apache-24,php-fpm-81\": restarts the two given containers"
+
+- name: restart
+  short: r
+  help: "Shortcut for dde start -r"
 
   args:
     - name: container
-      help: Name of container
+      help: "Name of container(s), see dde start -h for more help"
+
+- name: build
+  short: x
+  help: "Builds or rebuilds one or multiple containers. \n
+          If multiple container building is desired use colon seperated list.\n
+          If container list is omitted, all containers needed for your\n
+          application (as defined in your local .env file) will be built or \n
+          rebuilt.\n
+          If the --all option is given, all dde containers are built. \n
+          BEWARE: this might take some time. \n
+          If the --restart option is given, the service will be restarted after\n
+          being built. BEWARE: you can not combine the two options,\n
+          as there are too many containers to be run at\n
+          the same time.\n\n
+          The command uses the --force-rm --no-cache --pull options from\n
+          docker-compose build and therefor takes some time. \n
+          For more fine grained tuning use\n\n
+          docker-compose build -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml build\n\n
+          with the options that suite you best."
+
+  args:
+    - name: container
+      help: Name of container(s)
 
   flags:
     - long: --all
       short: -a
-      help: Builds all containers
+      help: "Build all containers defined in the dde docker-compose.yml"
+
+    - long: --restart
+      short: -r
+      help: "restarts (or starts) the (re)built container"
 
 - name: bash
   short: b
-  help: Starts bash in default cli container or alternative container if given
+  help: "Starts bash in default cli container or alternative container if given"
 
   args:
   - name: container
-    help: Name of container
+    help: "Name of container"
 
   flags:
   - long: --run
@@ -51,6 +89,9 @@ commands:
   - long: --root
     short: -s
     help: "Starts command as root user"
+  - long: --default-working-dir
+    short: -d
+    help: "Uses default working dir rather than project root"
 
   examples:
   - dde bash
@@ -66,7 +107,7 @@ commands:
 
     - name: command
       required: true
-      help:
+      help: "the command to execute"
 
   flags:
     - long: --run
@@ -75,6 +116,9 @@ commands:
     - long: --root
       short: -s
       help: "Starts command as root user"
+    - long: --default-working-dir
+      short: -d
+      help: "Uses default working dir rather than project root"
 
 - name: test
   short: t
