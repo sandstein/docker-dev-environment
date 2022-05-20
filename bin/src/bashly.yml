@@ -63,7 +63,7 @@ commands:
 
   args:
     - name: container
-      help: Name of container(s)
+      help: "Name of container(s)"
 
   flags:
     - long: --all
@@ -78,48 +78,68 @@ commands:
   short: b
   help: "Starts bash in default cli container or alternative container if given"
 
-  args:
-  - name: container
-    help: "Name of container"
-
   flags:
   - long: --run
     short: -r
     help: "Uses docker run instead of docker exec"
   - long: --root
-    short: -s
+    short: -o
     help: "Starts command as root user"
   - long: --default-working-dir
     short: -d
     help: "Uses default working dir rather than project root"
+  - long: --service
+    short: -s
+    arg: service
+    help: "The service to execute the command in, defaults to the one \n
+            defined in $DEFAULT_CONTAINER"
 
   examples:
-  - dde bash
-  - dde bash -r -s mysql-80
+  - "dde bash: Starts ab bash on the running default service"
+  - "dde bash -r -o -s mysql-80: Starts a bash in a newly created mysql-80 service as root"
 
 - name: command
   short: c
-  help: Executes a specific command on a given container
+  help: "Executes a specific command on the default (or given via --service) service"
   args:
-    - name: container
-      required: true
-      help: "name of the container"
-
     - name: command
       required: true
-      help: "the command to execute"
+      help: "The command to execute, needs to be quoted if it contains spaces"
 
   flags:
     - long: --run
       short: -r
       help: "Uses docker run instead of docker exec"
     - long: --root
-      short: -s
+      short: -o
       help: "Starts command as root user"
     - long: --default-working-dir
       short: -d
       help: "Uses default working dir rather than project root"
+    - long: --service
+      short: -s
+      arg: service
+      help: "The service to execute the command in, defaults to the one \n
+            defined in $DEFAULT_CONTAINER"
+    - long: --no-tty
+      short: -T
+      help: "Do not allocate tty while executing command. This is needed for execution of cronjobs.\n
+              See the documentation for more details"
+
+  examples:
+    - "dde command \"ls -l\": lists the dir content on the running default service"
+    - "dde c -T -s redis-5 redis-cli flushall: flushes the redis cache from a cron job (i.e. without tty)"
 
 - name: test
   short: t
   help: Test command for development
+  args:
+    - name: command
+      required: true
+      help: "The command to execute"
+
+  flags:
+    - long: --service
+      short: -s
+      arg: service
+      help: "The service to execute the "

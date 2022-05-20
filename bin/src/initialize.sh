@@ -61,41 +61,50 @@ touchConfigFile () {
 }
 
 # parses the command args
+# see https://github.com/koalaman/shellcheck/wiki/SC2086 for argument parsing in shell
 function parse_command_args() {
 
     # determine working dir
     if [ -v "args[--default-working-dir]" ]; then
-        WORKINGDIRPART=""
+        WORKINGDIRPART=()
     elif [ -v "PROJECT_ROOT" ]; then
-        WORKINGDIRPART="-w /var/www/vhosts/${PROJECT_ROOT}"
+        WORKINGDIRPART=(-w /var/www/vhosts/${PROJECT_ROOT})
     else
-        WORKINGDIRPART=""
+        WORKINGDIRPART=()
     fi
 
     # set root user if desired
     if [ -v "args[--root]" ]; then
-        USERPART="-u root"
+        USERPART=(-u root)
     else
-        USERPART="-u ${USER_ID}"
+        USERPART=(-u ${USER_ID})
     fi
 
-    # create new container if desired
+    # determine run type
+
     if [ -v "args[--run]" ]; then
-        MODEPART="run --rm"
+        MODEPART=(run --rm)
     else
-        MODEPART="exec"
+        MODEPART=(exec)
     fi
 
-    # seek default container for dde bash
-    if [ -v "args[container]" ]; then
-        CONTAINER="${args[container]}"
+    #
+    if [ -v "args[--no-tty]" ]; then
+        TTYPART=(-T)
+    else
+        TTYPART=()
+    fi
+
+    # seek default service for command execution
+    if [ -v "args[--service]" ]; then
+        SERVICE="${args[--service]}"
     # inspect PHP_CLI_CONTAINER for backward compatibility
     elif [ -v "PHP_CLI_CONTAINER" ]; then
-        CONTAINER="${PHP_CLI_CONTAINER}"
+        SERVICE="${PHP_CLI_CONTAINER}"
     elif [ -v "DEFAULT_CONTAINER" ]; then
-        CONTAINER="${DEFAULT_CONTAINER}"
+        SERVICE="${DEFAULT_CONTAINER}"
     else
-        WARNING="Could not determine the container!"
+        SERVICE_WARNING="Could not determine the service to execute the command on!"
     fi
 
 
@@ -109,11 +118,12 @@ function parse_command_args() {
             CONTAINER_LIST="${CONTAINER_LIST},${PHP_FPM_CONTAINER}"
         fi
     else
-        WARNING="No container given!"
+        CONTAINER_WARNING="No container given!"
     fi
 
-    # sets the build options
-    BUILD_OPTIONS="--force-rm --pull --no-cache"
+    if [ -v "args[command]" ]; then
+        IFS=" " read -ra COMMAND<<<"${args[command]}"
+    fi
 }
 
 

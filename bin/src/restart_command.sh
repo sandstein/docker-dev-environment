@@ -1,2 +1,7 @@
 parse_command_args
-dde start "${CONTAINER_LIST}" -r
+if [ -v CONTAINER_WARNING ]; then
+    red "${CONTAINER_WARNING}"
+    red "${ENV_WARNING}"
+else
+    dde start "${CONTAINER_LIST}" -r
+fi

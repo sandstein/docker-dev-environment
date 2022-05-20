@@ -40,7 +40,7 @@ dde_usage() {
   echo "  restart   Shortcut for dde start -r"
   echo "  build     Builds or rebuilds one or multiple containers. "
   echo "  bash      Starts bash in default cli container or alternative container if given"
-  echo "  command   Executes a specific command on a given container"
+  echo "  command   Executes a specific command on the default (or given via --service) service"
   echo "  test      Test command for development"
   echo
 
@@ -274,7 +274,7 @@ dde_bash_usage() {
   echo
 
   printf "Usage:\n"
-  printf "  dde bash [CONTAINER] [options]\n"
+  printf "  dde bash [options]\n"
   printf "  dde bash --help | -h\n"
   echo
 
@@ -291,7 +291,7 @@ dde_bash_usage() {
     echo
 
     # :flag.usage
-    echo "  --root, -s"
+    echo "  --root, -o"
     printf "    Starts command as root user\n"
     echo
 
@@ -299,19 +299,17 @@ dde_bash_usage() {
     echo "  --default-working-dir, -d"
     printf "    Uses default working dir rather than project root\n"
     echo
-    # :command.usage_args
-    printf "Arguments:\n"
 
-    # :argument.usage
-    echo "  CONTAINER"
-    printf "    Name of container\n"
+    # :flag.usage
+    echo "  --service, -s SERVICE"
+    printf "    The service to execute the command in, defaults to the one \n     defined in $DEFAULT_CONTAINER\n"
     echo
 
     # :command.usage_examples
     printf "Examples:\n"
 
-    printf "  dde bash\n"
-    printf "  dde bash -r -s mysql-80\n"
+    printf "  dde bash: Starts ab bash on the running default service\n"
+    printf "  dde bash -r -o -s mysql-80: Starts a bash in a newly created mysql-80 service\n  as root\n"
     echo
 
   fi
@@ -320,11 +318,11 @@ dde_bash_usage() {
 # :command.usage
 dde_command_usage() {
   if [[ -n $long_usage ]]; then
-    printf "dde command - Executes a specific command on a given container\n"
+    printf "dde command - Executes a specific command on the default (or given via --service) service\n"
     echo
 
   else
-    printf "dde command - Executes a specific command on a given container\n"
+    printf "dde command - Executes a specific command on the default (or given via --service) service\n"
     echo
 
   fi
@@ -333,7 +331,7 @@ dde_command_usage() {
   echo
 
   printf "Usage:\n"
-  printf "  dde command CONTAINER COMMAND [options]\n"
+  printf "  dde command COMMAND [options]\n"
   printf "  dde command --help | -h\n"
   echo
 
@@ -350,7 +348,7 @@ dde_command_usage() {
     echo
 
     # :flag.usage
-    echo "  --root, -s"
+    echo "  --root, -o"
     printf "    Starts command as root user\n"
     echo
 
@@ -358,17 +356,29 @@ dde_command_usage() {
     echo "  --default-working-dir, -d"
     printf "    Uses default working dir rather than project root\n"
     echo
+
+    # :flag.usage
+    echo "  --service, -s SERVICE"
+    printf "    The service to execute the command in, defaults to the one \n     defined in $DEFAULT_CONTAINER\n"
+    echo
+
+    # :flag.usage
+    echo "  --no-tty, -T"
+    printf "    Do not allocate tty while executing command. This is needed for execution of\n    cronjobs.\n     See the documentation for more details\n"
+    echo
     # :command.usage_args
     printf "Arguments:\n"
 
     # :argument.usage
-    echo "  CONTAINER"
-    printf "    name of the container\n"
+    echo "  COMMAND"
+    printf "    The command to execute, needs to be quoted if it contains spaces\n"
     echo
 
-    # :argument.usage
-    echo "  COMMAND"
-    printf "    the command to execute\n"
+    # :command.usage_examples
+    printf "Examples:\n"
+
+    printf "  dde command \"ls -l\": lists the dir content on the running default service\n"
+    printf "  dde c -T -s redis-5 redis-cli flushall: flushes the redis cache from a cron\n  job (i.e. without tty)\n"
     echo
 
   fi
@@ -390,7 +400,7 @@ dde_test_usage() {
   echo
 
   printf "Usage:\n"
-  printf "  dde test\n"
+  printf "  dde test COMMAND [options]\n"
   printf "  dde test --help | -h\n"
   echo
 
@@ -399,6 +409,18 @@ dde_test_usage() {
     # :command.usage_fixed_flags
     echo "  --help, -h"
     printf "    Show this help\n"
+    echo
+    # :command.usage_flags
+    # :flag.usage
+    echo "  --service, -s SERVICE"
+    printf "    The service to execute the\n"
+    echo
+    # :command.usage_args
+    printf "Arguments:\n"
+
+    # :argument.usage
+    echo "  COMMAND"
+    printf "    The command to execute\n"
     echo
 
   fi
@@ -547,7 +569,7 @@ dde_init_command() {
       #
       # check if source command is included in .bashrc if the file exists
       #
-      if [[ -f $BASHRC_FILE  && "$(grep -c ".docker/.dderc" ${BASHRC_FILE})" = "0" ]]; then
+      if [[ -f $BASHRC_FILE  && "$(grep -c ".docker/.dderc" "${BASHRC_FILE}")" = "0" ]]; then
           init_rc
       fi
 
@@ -555,7 +577,7 @@ dde_init_command() {
       #
       # check if source command is included in .zshrc if the file exists
       #
-      if [[ -f $ZSHRC_FILE  && "$(grep -c ".docker/.dderc" ${ZSHRC_FILE})" = "0" ]]; then
+      if [[ -f $ZSHRC_FILE  && "$(grep -c ".docker/.dderc" "${ZSHRC_FILE}")" = "0" ]]; then
           init_rc
       fi
 
@@ -571,9 +593,9 @@ dde_init_command() {
       fi
 
       green "docker dev environment initialized or changed, please type"
-      if [[ "$(grep -c "/bash" ${SHELL})" != "0" ]]; then
+      if [[ "$(grep -c "/bash" "${SHELL}")" != "0" ]]; then
           green "$ source $BASHRC_FILE "
-      elif [[ "$(grep -c "/zsh" ${SHELL})" != "0" ]]; then
+      elif [[ "$(grep -c "/zsh" "${SHELL}")" != "0" ]]; then
           green "$ source $ZSHRC_FILE "
       else
           green "$ source /pfad/zur/config/datei/der/shell "
@@ -587,28 +609,25 @@ dde_init_command() {
 # :command.function
 dde_list_command() {
   # src/list_command.sh
-  green "Listing all defined services"
-  echo
-  docker-compose  -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml config --service
-  echo
-  green "Done"
+  green "Listing all defined services:"
+  docker-compose  -f "${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml" config --service
 }
 
 # :command.function
 dde_start_command() {
   # src/start_command.sh
   parse_command_args
-  if [ -v WARNING ]; then
-      red "${WARNING}"
+  if [ -v CONTAINER_WARNING ]; then
+      red "${CONTAINER_WARNING}"
       red "${ENV_WARNING}"
   else
          while IFS=',' read -ra CONTAINER; do
             for container in "${CONTAINER[@]}"; do
                 if [ -v "args[--restart]" ]; then
-                    docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml stop ${container}
+                    docker-compose -f "${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml" stop ${container}
                 fi
-                touchConfigFile ${container}
-                docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml up -d ${container}
+                touchConfigFile "${container}"
+                docker-compose -f "${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml" up -d ${container}
             done
          done <<< "${CONTAINER_LIST}"
   fi
@@ -618,7 +637,12 @@ dde_start_command() {
 dde_restart_command() {
   # src/restart_command.sh
   parse_command_args
-  dde start "${CONTAINER_LIST}" -r
+  if [ -v CONTAINER_WARNING ]; then
+      red "${CONTAINER_WARNING}"
+      red "${ENV_WARNING}"
+  else
+      dde start "${CONTAINER_LIST}" -r
+  fi
 }
 
 # :command.function
@@ -631,8 +655,8 @@ dde_build_command() {
       else
           docker-compose -f "${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml" build "${BUILD_OPTIONS}"
       fi
-  elif [ -v WARNING ]; then
-      red "${WARNING}"
+  elif [ -v CONTAINER_WARNING ]; then
+      red "${CONTAINER_WARNING}"
       red "${ENV_WARNING}"
   else
          while IFS=',' read -ra CONTAINER; do
@@ -652,11 +676,12 @@ dde_bash_command() {
   # src/bash_command.sh
   #inspect_args
   parse_command_args
-  if [ -v WARNING ]; then
-      red "${WARNING}"
+  if [ -v SERVICE_WARNING ]; then
+      red "${SERVICE_WARNING}"
       red "${ENV_WARNING}"
   else
-      docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml ${MODEPART} ${USERPART} ${WORKINGDIRPART} ${CONTAINER} bash
+      docker-compose -f "${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml" "${MODEPART[@]}" \
+          "${USERPART[@]}" "${WORKINGDIRPART[@]}" "${SERVICE}" bash
   fi
 }
 
@@ -664,17 +689,23 @@ dde_bash_command() {
 dde_command_command() {
   # src/command_command.sh
   parse_command_args
-  docker-compose -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml ${MODEPART} ${USERPART} ${WORKINGDIRPART} ${args[container]} ${args[command]}
+  if [ -v SERVICE_WARNING ]; then
+      red "${SERVICE_WARNING}"
+      red "${ENV_WARNING}"
+  else
+      docker-compose -f "${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml" "${MODEPART[@]}" \
+          "${TTYPART[@]}" "${USERPART[@]}" "${WORKINGDIRPART[@]}" "${SERVICE}" "${COMMAND[@]}"
+  fi
 }
 
 # :command.function
 dde_test_command() {
   # src/test_command.sh
   inspect_args
-  if [ -v "args[--run]" ]; then
-      red run
+  if [ -v "args[--service]" ]; then
+      red "${args[--service]}"
   fi
-  green done
+  green "done"
 }
 
 # :command.parse_requirements
@@ -1060,7 +1091,7 @@ dde_bash_parse_requirements() {
       ;;
 
     # :flag.case
-    --root | -s )
+    --root | -o )
       # :flag.conflicts
       args[--root]=1
       shift
@@ -1073,6 +1104,20 @@ dde_bash_parse_requirements() {
       shift
       ;;
 
+    # :flag.case
+    --service | -s )
+      # :flag.conflicts
+      if [[ -n ${2+x} ]]; then
+        # :flag.validations
+        args[--service]="$2"
+        shift
+        shift
+      else
+        printf "%s\n" "--service requires an argument: --service, -s SERVICE"
+        exit 1
+      fi
+      ;;
+
     -?* )
       printf "invalid option: %s\n" "$key"
       exit 1
@@ -1080,14 +1125,8 @@ dde_bash_parse_requirements() {
 
     * )
       # :command.parse_requirements_case
-      if [[ -z ${args[container]+x} ]]; then
-        # :argument.validations
-        args[container]=$1
-        shift
-      else
-        printf "invalid argument: %s\n" "$key"
-        exit 1
-      fi
+      printf "invalid argument: %s\n" "$key"
+      exit 1
       ;;
 
     esac
@@ -1127,7 +1166,7 @@ dde_command_parse_requirements() {
       ;;
 
     # :flag.case
-    --root | -s )
+    --root | -o )
       # :flag.conflicts
       args[--root]=1
       shift
@@ -1140,6 +1179,27 @@ dde_command_parse_requirements() {
       shift
       ;;
 
+    # :flag.case
+    --service | -s )
+      # :flag.conflicts
+      if [[ -n ${2+x} ]]; then
+        # :flag.validations
+        args[--service]="$2"
+        shift
+        shift
+      else
+        printf "%s\n" "--service requires an argument: --service, -s SERVICE"
+        exit 1
+      fi
+      ;;
+
+    # :flag.case
+    --no-tty | -T )
+      # :flag.conflicts
+      args[--no-tty]=1
+      shift
+      ;;
+
     -?* )
       printf "invalid option: %s\n" "$key"
       exit 1
@@ -1147,11 +1207,7 @@ dde_command_parse_requirements() {
 
     * )
       # :command.parse_requirements_case
-      if [[ -z ${args[container]+x} ]]; then
-        # :argument.validations
-        args[container]=$1
-        shift
-      elif [[ -z ${args[command]+x} ]]; then
+      if [[ -z ${args[command]+x} ]]; then
         # :argument.validations
         args[command]=$1
         shift
@@ -1164,12 +1220,8 @@ dde_command_parse_requirements() {
     esac
   done
   # :command.required_args_filter
-  if [[ -z ${args[container]+x} ]]; then
-    printf "missing required argument: CONTAINER\nusage: dde command CONTAINER COMMAND [options]\n"
-    exit 1
-  fi
   if [[ -z ${args[command]+x} ]]; then
-    printf "missing required argument: COMMAND\nusage: dde command CONTAINER COMMAND [options]\n"
+    printf "missing required argument: COMMAND\nusage: dde command COMMAND [options]\n"
     exit 1
   fi
   # :command.required_flags_filter
@@ -1198,6 +1250,19 @@ dde_test_parse_requirements() {
   while [[ $# -gt 0 ]]; do
     key="$1"
     case "$key" in
+    # :flag.case
+    --service | -s )
+      # :flag.conflicts
+      if [[ -n ${2+x} ]]; then
+        # :flag.validations
+        args[--service]="$2"
+        shift
+        shift
+      else
+        printf "%s\n" "--service requires an argument: --service, -s SERVICE"
+        exit 1
+      fi
+      ;;
 
     -?* )
       printf "invalid option: %s\n" "$key"
@@ -1206,13 +1271,23 @@ dde_test_parse_requirements() {
 
     * )
       # :command.parse_requirements_case
-      printf "invalid argument: %s\n" "$key"
-      exit 1
+      if [[ -z ${args[command]+x} ]]; then
+        # :argument.validations
+        args[command]=$1
+        shift
+      else
+        printf "invalid argument: %s\n" "$key"
+        exit 1
+      fi
       ;;
 
     esac
   done
   # :command.required_args_filter
+  if [[ -z ${args[command]+x} ]]; then
+    printf "missing required argument: COMMAND\nusage: dde test COMMAND [options]\n"
+    exit 1
+  fi
   # :command.required_flags_filter
   # :command.catch_all_filter
   # :command.default_assignments
@@ -1290,41 +1365,50 @@ initialize() {
   }
 
   # parses the command args
+  # see https://github.com/koalaman/shellcheck/wiki/SC2086 for argument parsing in shell
   function parse_command_args() {
 
       # determine working dir
       if [ -v "args[--default-working-dir]" ]; then
-          WORKINGDIRPART=""
+          WORKINGDIRPART=()
       elif [ -v "PROJECT_ROOT" ]; then
-          WORKINGDIRPART="-w /var/www/vhosts/${PROJECT_ROOT}"
+          WORKINGDIRPART=(-w /var/www/vhosts/${PROJECT_ROOT})
       else
-          WORKINGDIRPART=""
+          WORKINGDIRPART=()
       fi
 
       # set root user if desired
       if [ -v "args[--root]" ]; then
-          USERPART="-u root"
+          USERPART=(-u root)
       else
-          USERPART="-u ${USER_ID}"
+          USERPART=(-u ${USER_ID})
       fi
 
-      # create new container if desired
+      # determine run type
+
       if [ -v "args[--run]" ]; then
-          MODEPART="run --rm"
+          MODEPART=(run --rm)
       else
-          MODEPART="exec"
+          MODEPART=(exec)
       fi
 
-      # seek default container for dde bash
-      if [ -v "args[container]" ]; then
-          CONTAINER="${args[container]}"
+      #
+      if [ -v "args[--no-tty]" ]; then
+          TTYPART=(-T)
+      else
+          TTYPART=()
+      fi
+
+      # seek default service for command execution
+      if [ -v "args[--service]" ]; then
+          SERVICE="${args[--service]}"
       # inspect PHP_CLI_CONTAINER for backward compatibility
       elif [ -v "PHP_CLI_CONTAINER" ]; then
-          CONTAINER="${PHP_CLI_CONTAINER}"
+          SERVICE="${PHP_CLI_CONTAINER}"
       elif [ -v "DEFAULT_CONTAINER" ]; then
-          CONTAINER="${DEFAULT_CONTAINER}"
+          SERVICE="${DEFAULT_CONTAINER}"
       else
-          WARNING="Could not determine the container!"
+          SERVICE_WARNING="Could not determine the service to execute the command on!"
       fi
 
       # prepares the container list for dde start and dde build
@@ -1337,11 +1421,12 @@ initialize() {
               CONTAINER_LIST="${CONTAINER_LIST},${PHP_FPM_CONTAINER}"
           fi
       else
-          WARNING="No container given!"
+          CONTAINER_WARNING="No container given!"
       fi
 
-      # sets the build options
-      BUILD_OPTIONS="--force-rm --pull --no-cache"
+      if [ -v "args[command]" ]; then
+          IFS=" " read -ra COMMAND<<<"${args[command]}"
+      fi
   }
 }
 

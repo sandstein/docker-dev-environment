@@ -1,5 +1,5 @@
 inspect_args
-if [ -v "args[--run]" ]; then
-    red run
+if [ -v "args[--service]" ]; then
+    red "${args[--service]}"
 fi
-green done
+green "done"

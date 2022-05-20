@@ -5,8 +5,8 @@ if [ -v "args[--all]" ]; then
     else
         docker-compose -f "${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml" build "${BUILD_OPTIONS}"
     fi
-elif [ -v WARNING ]; then
-    red "${WARNING}"
+elif [ -v CONTAINER_WARNING ]; then
+    red "${CONTAINER_WARNING}"
     red "${ENV_WARNING}"
 else
        while IFS=',' read -ra CONTAINER; do

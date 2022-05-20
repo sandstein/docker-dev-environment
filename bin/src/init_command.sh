@@ -10,7 +10,7 @@ if [[ -z "${DOCKER_DEV_ENVIRONMENT_HOME+x}" || "${REQUESTED_DOCKER_DEV_ENVIRONME
     #
     # check if source command is included in .bashrc if the file exists
     #
-    if [[ -f $BASHRC_FILE  && "$(grep -c ".docker/.dderc" ${BASHRC_FILE})" = "0" ]]; then
+    if [[ -f $BASHRC_FILE  && "$(grep -c ".docker/.dderc" "${BASHRC_FILE}")" = "0" ]]; then
         init_rc
     fi
 
@@ -18,7 +18,7 @@ if [[ -z "${DOCKER_DEV_ENVIRONMENT_HOME+x}" || "${REQUESTED_DOCKER_DEV_ENVIRONME
     #
     # check if source command is included in .zshrc if the file exists
     #
-    if [[ -f $ZSHRC_FILE  && "$(grep -c ".docker/.dderc" ${ZSHRC_FILE})" = "0" ]]; then
+    if [[ -f $ZSHRC_FILE  && "$(grep -c ".docker/.dderc" "${ZSHRC_FILE}")" = "0" ]]; then
         init_rc
     fi
 
@@ -34,9 +34,9 @@ if [[ -z "${DOCKER_DEV_ENVIRONMENT_HOME+x}" || "${REQUESTED_DOCKER_DEV_ENVIRONME
     fi
 
     green "docker dev environment initialized or changed, please type"
-    if [[ "$(grep -c "/bash" ${SHELL})" != "0" ]]; then
+    if [[ "$(grep -c "/bash" "${SHELL}")" != "0" ]]; then
         green "$ source $BASHRC_FILE "
-    elif [[ "$(grep -c "/zsh" ${SHELL})" != "0" ]]; then
+    elif [[ "$(grep -c "/zsh" "${SHELL}")" != "0" ]]; then
         green "$ source $ZSHRC_FILE "
     else
         green "$ source /pfad/zur/config/datei/der/shell "
