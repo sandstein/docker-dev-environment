@@ -23,7 +23,11 @@ fi
 
 # initializes the specific container needs for a given project
 # see .env.project-sample
-if [ -f "${PWD}/.env" ]; then
+if [ -f "${PWD}/.env.dde" ]; then
+  set -a
+  . "${PWD}/.env.dde"
+  set +a
+elif [ -f "${PWD}/.env" ]; then
   set -a
   . "${PWD}/.env"
   set +a
@@ -54,8 +58,8 @@ touchConfigFile () {
     touch "${configFile}"
     if [[ $part =~ "php" ]]; then
       echo 'Copying ini files, adopt to your needs'
-      cp "${DOCKER_DEV_ENVIRONMENT_HOME}/config/$part/sample/conf.d/*.ini" \
-         "${DOCKER_DEV_ENVIRONMENT_HOME}/config/$part/etc/php/conf.d"
+      cp "${DOCKER_DEV_ENVIRONMENT_HOME}/config/$part"/sample/conf.d/*.ini \
+         "${DOCKER_DEV_ENVIRONMENT_HOME}/config/$part"/etc/php/conf.d
     fi
   fi
 }
