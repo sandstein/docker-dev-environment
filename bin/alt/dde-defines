@@ -11,7 +11,7 @@ if [[ -e "${DOCKER_DEV_ENVIRONMENT_HOME+x}" ]]; then
 fi
 
 #
-# enalbe faster builds with BUILDKIT (https://www.docker.com/blog/faster-builds-in-compose-thanks-to-buildkit-support/)
+# enable faster builds with BUILDKIT (https://www.docker.com/blog/faster-builds-in-compose-thanks-to-buildkit-support/)
 #
 #COMPOSE_DOCKER_CLI_BUILD=1
 #DOCKER_BUILDKIT=1
@@ -33,10 +33,10 @@ fi
 #
 if [[ -e "${PWD}/.env" ]]; then
   set -a
-  . ${PWD}/.env
+  . "${PWD}/.env"
   set +a
 else
-  echo "Warning: there is no .env in your current working dir. Wrong pwd or missing project initialisation?"
+  red "Warning: there is no .env in your current working dir. Wrong pwd or missing project initialisation?"
 fi
 
 if [[ "$(basename $0)" = "dde-defines" ]]; then
@@ -58,13 +58,13 @@ touchConfigFile () {
     configFile="${DOCKER_DEV_ENVIRONMENT_HOME}/config/$1/tunnel.conf"
   fi
 
-  if [[ ! -z "${configFile}" && ! -f "${configFile}" ]]; then
+  if [[ -n "${configFile}" && ! -f "${configFile}" ]]; then
     echo "Touching ${configFile} before startup, because it does not exist"
-    touch ${configFile}
+    touch "${configFile}"
     if [[ $part =~ "php" ]]; then
       echo 'Copying ini files, adopt to your needs'
-      cp ${DOCKER_DEV_ENVIRONMENT_HOME}/config/$part/sample/conf.d/*.ini \
-         ${DOCKER_DEV_ENVIRONMENT_HOME}/config/$part/etc/php/conf.d
+      cp "${DOCKER_DEV_ENVIRONMENT_HOME}/config/$part/sample/conf.d/*.ini" \
+         "${DOCKER_DEV_ENVIRONMENT_HOME}/config/$part/etc/php/conf.d"
     fi
   fi
 }
