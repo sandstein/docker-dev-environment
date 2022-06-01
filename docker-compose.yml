@@ -881,6 +881,7 @@ services:
       - 9312:9300
     volumes:
       - data_opensearch_12:/usr/share/opensearch/data
+      - config_opensearch_12:/usr/share/opensearch/config
 
   esadmin:
     container_name: esadmin
@@ -1413,6 +1414,12 @@ volumes:
     driver_opts:
       type: none
       device: ${DOCKER_VOLUME_BASE_PATH}/data/opensearch-12
+      o: bind
+  config_opensearch_12:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/opensearch-12/config
       o: bind
   config_ssh_tunnel:
     driver: local

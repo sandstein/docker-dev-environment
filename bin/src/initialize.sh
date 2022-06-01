@@ -53,6 +53,11 @@ touchConfigFile () {
     configFile="${DOCKER_DEV_ENVIRONMENT_HOME}/config/$1/tunnel.conf"
   fi
 
+  if [[ $1 =~ "opensearch" ]]; then
+    part="${1/-x//}"
+    configFile="${DOCKER_DEV_ENVIRONMENT_HOME}/config/$1/config/initialized"
+  fi
+
   if [[ -n "${configFile}" && ! -f "${configFile}" ]]; then
     echo "Touching ${configFile} before startup, because it does not exist"
     touch "${configFile}"
@@ -60,6 +65,11 @@ touchConfigFile () {
       echo 'Copying ini files, adopt to your needs'
       cp "${DOCKER_DEV_ENVIRONMENT_HOME}/config/$part"/sample/conf.d/*.ini \
          "${DOCKER_DEV_ENVIRONMENT_HOME}/config/$part"/etc/php/conf.d
+    fi
+    if [[ $part =~ "opensearch" ]]; then
+        echo 'Copying config files, adopt to your needs'
+        cp -R "${DOCKER_DEV_ENVIRONMENT_HOME}/config/$part"/sample/* \
+              "${DOCKER_DEV_ENVIRONMENT_HOME}/config/$part"/config
     fi
   fi
 }
