@@ -842,6 +842,24 @@ services:
     volumes:
       - data_elastic_716:/usr/share/elasticsearch/data
 
+  opensearch-12:
+    container_name: opensearch-12
+    build:
+      context: ./docker/opensearch-12
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - opensearch-12
+    env_file: env/opensearch.env
+    ports:
+      - 9212:9200
+      - 9312:9300
+    volumes:
+      - data_opensearch_12:/usr/share/opensearch/data
+
   esadmin:
     container_name: esadmin
     build:
@@ -1367,6 +1385,12 @@ volumes:
     driver_opts:
       type: none
       device: ${DOCKER_VOLUME_BASE_PATH}/data/elastic-716
+      o: bind
+  data_opensearch_12:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/data/opensearch-12
       o: bind
   config_ssh_tunnel:
     driver: local
