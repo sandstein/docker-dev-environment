@@ -10,8 +10,7 @@ services:
     container_name: mysql-55
     env_file: env/db.env
     build:
-      context: .
-      dockerfile: docker/mysql-55/Dockerfile
+      context: ./docker/mysql-55
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -29,8 +28,7 @@ services:
     container_name: mysql-56
     env_file: env/db.env
     build:
-      context: .
-      dockerfile: docker/mysql-56/Dockerfile
+      context: ./docker/mysql-56
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -48,8 +46,7 @@ services:
     container_name: mysql-57
     env_file: env/db.env
     build:
-      context: .
-      dockerfile: docker/mysql-57/Dockerfile
+      context: ./docker/mysql-57
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -67,8 +64,7 @@ services:
     container_name: mysql-80
     env_file: env/db.env
     build:
-      context: .
-      dockerfile: docker/mysql-80/Dockerfile
+      context: ./docker/mysql-80
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -87,8 +83,7 @@ services:
     container_name: percona-57
     env_file: env/db.env
     build:
-      context: .
-      dockerfile: docker/percona-57/Dockerfile
+      context: ./docker/percona-57
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -106,8 +101,7 @@ services:
     container_name: percona-80
     env_file: env/db.env
     build:
-      context: .
-      dockerfile: docker/percona-80/Dockerfile
+      context: ./docker/percona-80
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -126,8 +120,7 @@ services:
     container_name: mariadb-55
     env_file: env/db.env
     build:
-      context: .
-      dockerfile: docker/mariadb-55/Dockerfile
+      context: ./docker/mariadb-55
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -145,8 +138,7 @@ services:
     container_name: mariadb-100
     env_file: env/db.env
     build:
-      context: .
-      dockerfile: docker/mariadb-100/Dockerfile
+      context: ./docker/mariadb-100
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -164,8 +156,7 @@ services:
     container_name: mariadb-101
     env_file: env/db.env
     build:
-      context: .
-      dockerfile: docker/mariadb-101/Dockerfile
+      context: ./docker/mariadb-101
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -183,8 +174,7 @@ services:
     container_name: mariadb-102
     env_file: env/db.env
     build:
-      context: .
-      dockerfile: docker/mariadb-102/Dockerfile
+      context: ./docker/mariadb-102
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -202,8 +192,7 @@ services:
     container_name: mariadb-103
     env_file: env/db.env
     build:
-      context: .
-      dockerfile: docker/mariadb-103/Dockerfile
+      context: ./docker/mariadb-103
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -221,8 +210,7 @@ services:
     container_name: mariadb-104
     env_file: env/db.env
     build:
-      context: .
-      dockerfile: docker/mariadb-104/Dockerfile
+      context: ./docker/mariadb-104
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -239,8 +227,7 @@ services:
   php-fpm-56:
     container_name: php-fpm-56
     build:
-      context: .
-      dockerfile: docker/php-fpm-56/Dockerfile
+      context: ./docker/php-fpm-56
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -259,8 +246,7 @@ services:
   php-fpm-70:
     container_name: php-fpm-70
     build:
-      context: .
-      dockerfile: docker/php-fpm-70/Dockerfile
+      context: ./docker/php-fpm-70
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -279,8 +265,7 @@ services:
   php-fpm-71:
     container_name: php-fpm-71
     build:
-      context: .
-      dockerfile: docker/php-fpm-71/Dockerfile
+      context: ./docker/php-fpm-71
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -299,8 +284,7 @@ services:
   php-fpm-72:
     container_name: php-fpm-72
     build:
-      context: .
-      dockerfile: docker/php-fpm-72/Dockerfile
+      context: ./docker/php-fpm-72
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -319,8 +303,7 @@ services:
   php-fpm-73:
     container_name: php-fpm-73
     build:
-      context: .
-      dockerfile: docker/php-fpm-73/Dockerfile
+      context: ./docker/php-fpm-73
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -339,8 +322,7 @@ services:
   php-fpm-74:
     container_name: php-fpm-74
     build:
-      context: .
-      dockerfile: docker/php-fpm-74/Dockerfile
+      context: ./docker/php-fpm-74
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -359,8 +341,7 @@ services:
   php-fpm-80:
     container_name: php-fpm-80
     build:
-      context: .
-      dockerfile: docker/php-fpm-80/Dockerfile
+      context: ./docker/php-fpm-80
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -379,8 +360,7 @@ services:
   php-fpm-81:
     container_name: php-fpm-81
     build:
-      context: .
-      dockerfile: docker/php-fpm-81/Dockerfile
+      context: ./docker/php-fpm-81
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -401,8 +381,7 @@ services:
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
     build:
-      context: .
-      dockerfile: docker/php-cli-56/Dockerfile
+      context: ./docker/php-cli-56
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -427,8 +406,7 @@ services:
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
     build:
-      context: .
-      dockerfile: docker/php-cli-70/Dockerfile
+      context: ./docker/php-cli-70
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -454,8 +432,7 @@ services:
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
     build:
-      context: .
-      dockerfile: docker/php-cli-71/Dockerfile
+      context: ./docker/php-cli-71
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -481,8 +458,7 @@ services:
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
     build:
-      context: .
-      dockerfile: docker/php-cli-72/Dockerfile
+      context: ./docker/php-cli-72
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -508,8 +484,7 @@ services:
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
     build:
-      context: .
-      dockerfile: docker/php-cli-73/Dockerfile
+      context: ./docker/php-cli-73
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -535,8 +510,7 @@ services:
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
     build:
-      context: .
-      dockerfile: docker/php-cli-74/Dockerfile
+      context: ./docker/php-cli-74
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -562,8 +536,7 @@ services:
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
     build:
-      context: .
-      dockerfile: docker/php-cli-80/Dockerfile
+      context: ./docker/php-cli-80
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -589,8 +562,7 @@ services:
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
     build:
-      context: .
-      dockerfile: docker/php-cli-81/Dockerfile
+      context: ./docker/php-cli-81
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -616,8 +588,7 @@ services:
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
     build:
-      context: .
-      dockerfile: docker/ssh/Dockerfile
+      context: ./docker/ssh
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -634,8 +605,7 @@ services:
   solr-771:
     container_name: solr-771
     build:
-      context: .
-      dockerfile: docker/solr-771/Dockerfile
+      context: ./docker/solr-771
     networks:
       app-tier:
         aliases:
@@ -650,8 +620,7 @@ services:
   tomcat-9:
     container_name: tomcat-9
     build:
-      context: .
-      dockerfile: docker/tomcat-9/Dockerfile
+      context: ./docker/tomcat-9
     networks:
       app-tier:
         aliases:
@@ -665,8 +634,7 @@ services:
   apache-24:
     container_name: apache-24
     build:
-      context: .
-      dockerfile: docker/apache-24/Dockerfile
+      context: ./docker/apache-24
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -685,8 +653,7 @@ services:
   redis-5:
     container_name: redis-5
     build:
-      context: .
-      dockerfile: docker/redis-5/Dockerfile
+      context: ./docker/redis-5
     networks:
       app-tier:
         aliases:
@@ -697,8 +664,7 @@ services:
   redis-6:
     container_name: redis-6
     build:
-      context: .
-      dockerfile: docker/redis-6/Dockerfile
+      context: ./docker/redis-6
     networks:
       app-tier:
         aliases:
@@ -709,8 +675,7 @@ services:
   mailhog:
     container_name: mailhog
     build:
-      context: .
-      dockerfile: docker/mailhog/Dockerfile
+      context: ./docker/mailhog
     networks:
       app-tier:
         aliases:
@@ -723,8 +688,7 @@ services:
     container_name: varnish
     env_file: env/varnish.env
     build:
-      context: .
-      dockerfile: docker/varnish/Dockerfile
+      context: ./docker/varnish
     networks:
       app-tier:
         aliases:
@@ -737,8 +701,7 @@ services:
   elastic-56:
     container_name: elastic-56
     build:
-      context: .
-      dockerfile: docker/elastic-56/Dockerfile
+      context: ./docker/elastic-56
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -756,8 +719,7 @@ services:
   elastic-64:
     container_name: elastic-64
     build:
-      context: .
-      dockerfile: docker/elastic-64/Dockerfile
+      context: ./docker/elastic-64
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -775,8 +737,7 @@ services:
   elastic-68:
     container_name: elastic-68
     build:
-      context: .
-      dockerfile: docker/elastic-68/Dockerfile
+      context: ./docker/elastic-68
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -794,8 +755,7 @@ services:
   elastic-71:
     container_name: elastic-71
     build:
-      context: .
-      dockerfile: docker/elastic-71/Dockerfile
+      context: ./docker/elastic-71
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -813,8 +773,7 @@ services:
   elastic-73:
     container_name: elastic-73
     build:
-      context: .
-      dockerfile: docker/elastic-73/Dockerfile
+      context: ./docker/elastic-73
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -832,8 +791,7 @@ services:
   elastic-76:
     container_name: elastic-76
     build:
-      context: .
-      dockerfile: docker/elastic-76/Dockerfile
+      context: ./docker/elastic-76
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -851,8 +809,7 @@ services:
   elastic-710:
     container_name: elastic-710
     build:
-      context: .
-      dockerfile: docker/elastic-710/Dockerfile
+      context: ./docker/elastic-710
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -870,8 +827,7 @@ services:
   elastic-716:
     container_name: elastic-716
     build:
-      context: .
-      dockerfile: docker/elastic-716/Dockerfile
+      context: ./docker/elastic-716
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
@@ -889,8 +845,7 @@ services:
   esadmin:
     container_name: esadmin
     build:
-      context: .
-      dockerfile: docker/esadmin/Dockerfile
+      context: ./docker/esadmin
     networks:
       app-tier:
         aliases:
@@ -1001,8 +956,7 @@ services:
   selenium-side-runner:
     container_name: selenium-side-runner
     build:
-      context: .
-      dockerfile: docker/selenium-side-runner/Dockerfile
+      context: ./docker/selenium-side-runner
       args:
         - USER_ID=${USER_ID}
         - GROUP_ID=${GROUP_ID}
