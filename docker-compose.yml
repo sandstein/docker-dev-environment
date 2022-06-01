@@ -672,6 +672,28 @@ services:
     ports:
       - 6380:6379
 
+  rabbit-39:
+    container_name: rabbit-39
+    build:
+      context: ./docker/rabbit-39
+    networks:
+      app-tier:
+        aliases:
+          - rabbit-39
+    ports:
+      - 5672:5672
+
+  rabbit-310:
+    container_name: rabbit-310
+    build:
+      context: ./docker/rabbit-310
+    networks:
+      app-tier:
+        aliases:
+          - rabbit-310
+    ports:
+      - 5673:5672
+
   mailhog:
     container_name: mailhog
     build:
