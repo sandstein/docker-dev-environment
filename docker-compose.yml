@@ -23,6 +23,8 @@ services:
     volumes:
       - data_mysql_55:/var/lib/mysql
       - config_mysql_55_etc:/etc/mysql/conf.d
+    cap_add:
+      - SYS_NICE
 
   mysql-56:
     container_name: mysql-56
@@ -41,6 +43,8 @@ services:
     volumes:
       - data_mysql_56:/var/lib/mysql
       - config_mysql_56_etc:/etc/mysql/conf.d
+    cap_add:
+      - SYS_NICE
 
   mysql-57:
     container_name: mysql-57
@@ -59,6 +63,8 @@ services:
     volumes:
       - data_mysql_57:/var/lib/mysql
       - config_mysql_57_etc:/etc/mysql/conf.d
+    cap_add:
+      - SYS_NICE
 
   mysql-80:
     container_name: mysql-80
@@ -78,6 +84,8 @@ services:
       - data_mysql_80:/var/lib/mysql
       - config_mysql_80_etc:/etc/mysql/conf.d
     command: mysqld --default-authentication-plugin=mysql_native_password --skip-mysqlx
+    cap_add:
+      - SYS_NICE
 
   percona-57:
     container_name: percona-57
@@ -96,6 +104,8 @@ services:
     volumes:
       - data_percona_57:/var/lib/mysql
       - config_percona_57_etc:/etc/mysql/conf.d
+    cap_add:
+      - SYS_NICE
 
   percona-80:
     container_name: percona-80
@@ -115,6 +125,8 @@ services:
       - data_percona_80:/var/lib/mysql
       - config_percona_80_etc:/etc/mysql/conf.d
     command: mysqld --default-authentication-plugin=mysql_native_password --skip-mysqlx
+    cap_add:
+      - SYS_NICE
 
   mariadb-55:
     container_name: mariadb-55
@@ -133,6 +145,8 @@ services:
     volumes:
       - data_mariadb_55:/var/lib/mysql
       - config_mariadb_55_etc:/etc/mysql/conf.d
+    cap_add:
+      - SYS_NICE
 
   mariadb-100:
     container_name: mariadb-100
@@ -151,6 +165,8 @@ services:
     volumes:
       - data_mariadb_100:/var/lib/mysql
       - config_mariadb_100_etc:/etc/mysql/conf.d
+    cap_add:
+      - SYS_NICE
 
   mariadb-101:
     container_name: mariadb-101
@@ -169,6 +185,8 @@ services:
     volumes:
       - data_mariadb_101:/var/lib/mysql
       - config_mariadb_101_etc:/etc/mysql/conf.d
+    cap_add:
+      - SYS_NICE
 
   mariadb-102:
     container_name: mariadb-102
@@ -187,6 +205,8 @@ services:
     volumes:
       - data_mariadb_102:/var/lib/mysql
       - config_mariadb_102_etc:/etc/mysql/conf.d
+    cap_add:
+      - SYS_NICE
 
   mariadb-103:
     container_name: mariadb-103
@@ -205,6 +225,8 @@ services:
     volumes:
       - data_mariadb_103:/var/lib/mysql
       - config_mariadb_103_etc:/etc/mysql/conf.d
+    cap_add:
+      - SYS_NICE
 
   mariadb-104:
     container_name: mariadb-104
@@ -223,6 +245,8 @@ services:
     volumes:
       - data_mariadb_104:/var/lib/mysql
       - config_mariadb_100_etc:/etc/mysql/conf.d
+    cap_add:
+      - SYS_NICE
 
   php-fpm-56:
     container_name: php-fpm-56
