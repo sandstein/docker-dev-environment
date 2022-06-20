@@ -696,6 +696,28 @@ services:
     ports:
       - 6380:6379
 
+  rabbit-39:
+    container_name: rabbit-39
+    build:
+      context: ./docker/rabbit-39
+    networks:
+      app-tier:
+        aliases:
+          - rabbit-39
+    ports:
+      - 5672:5672
+
+  rabbit-310:
+    container_name: rabbit-310
+    build:
+      context: ./docker/rabbit-310
+    networks:
+      app-tier:
+        aliases:
+          - rabbit-310
+    ports:
+      - 5673:5672
+
   mailhog:
     container_name: mailhog
     build:
@@ -866,6 +888,25 @@ services:
     volumes:
       - data_elastic_716:/usr/share/elasticsearch/data
 
+  opensearch-12:
+    container_name: opensearch-12
+    build:
+      context: ./docker/opensearch-12
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - opensearch-12
+    env_file: env/opensearch.env
+    ports:
+      - 9212:9200
+      - 9312:9300
+    volumes:
+      - data_opensearch_12:/usr/share/opensearch/data
+      - config_opensearch_12:/usr/share/opensearch/config
+
   esadmin:
     container_name: esadmin
     build:
@@ -988,6 +1029,24 @@ services:
       app-tier:
         aliases:
           - selenium-side-runner
+    volumes:
+      - vhosts:/var/www/vhosts
+    user: $USER_ID:$GROUP_ID
+    tty: true
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+  python-310:
+    container_name: python-310
+    build:
+      context: ./docker/python-310
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - python-310
     volumes:
       - vhosts:/var/www/vhosts
     user: $USER_ID:$GROUP_ID
@@ -1391,6 +1450,18 @@ volumes:
     driver_opts:
       type: none
       device: ${DOCKER_VOLUME_BASE_PATH}/data/elastic-716
+      o: bind
+  data_opensearch_12:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/data/opensearch-12
+      o: bind
+  config_opensearch_12:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/opensearch-12/config
       o: bind
   config_ssh_tunnel:
     driver: local
