@@ -1,6 +1,6 @@
 FROM sandstein/apache:2.4
 
-COPY config/apache-24/httpd.conf /usr/local/apache2/conf/httpd.conf
+COPY config/httpd.conf /usr/local/apache2/conf/httpd.conf
 
 VOLUME /var/www/vhosts
 
