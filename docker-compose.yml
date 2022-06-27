@@ -1085,6 +1085,60 @@ services:
     extra_hosts:
       - host.docker.internal:host-gateway
 
+  node-16:
+    container_name: node-16
+    build:
+      context: ./docker/node-16
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - node-16
+    volumes:
+      - vhosts:/var/www/vhosts
+    user: $USER_ID:$GROUP_ID
+    tty: true
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+  node-17:
+    container_name: node-17
+    build:
+      context: ./docker/node-17
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - node-17
+    volumes:
+      - vhosts:/var/www/vhosts
+    user: $USER_ID:$GROUP_ID
+    tty: true
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+  node-18:
+    container_name: node-18
+    build:
+      context: ./docker/node-18
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - node-18
+    volumes:
+      - vhosts:/var/www/vhosts
+    user: $USER_ID:$GROUP_ID
+    tty: true
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
 volumes:
   config_mysql_55_etc:
     driver: local
