@@ -19,7 +19,7 @@ services:
         aliases:
           - mysql-55
     ports:
-      - 3355:3306
+      - "3355:3306"
     volumes:
       - data_mysql_55:/var/lib/mysql
       - config_mysql_55_etc:/etc/mysql/conf.d
@@ -39,7 +39,7 @@ services:
         aliases:
           - mysql-56
     ports:
-      - 3356:3306
+      - "3356:3306"
     volumes:
       - data_mysql_56:/var/lib/mysql
       - config_mysql_56_etc:/etc/mysql/conf.d
@@ -59,7 +59,7 @@ services:
         aliases:
           - mysql-57
     ports:
-      - 3357:3306
+      - "3357:3306"
     volumes:
       - data_mysql_57:/var/lib/mysql
       - config_mysql_57_etc:/etc/mysql/conf.d
@@ -79,7 +79,7 @@ services:
         aliases:
           - mysql-80
     ports:
-      - 3380:3306
+      - "3380:3306"
     volumes:
       - data_mysql_80:/var/lib/mysql
       - config_mysql_80_etc:/etc/mysql/conf.d
@@ -100,7 +100,7 @@ services:
         aliases:
           - percona-57
     ports:
-      - 3457:3306
+      - "3457:3306"
     volumes:
       - data_percona_57:/var/lib/mysql
       - config_percona_57_etc:/etc/mysql/conf.d
@@ -120,7 +120,7 @@ services:
         aliases:
           - percona-80
     ports:
-      - 3480:3306
+      - "3480:3306"
     volumes:
       - data_percona_80:/var/lib/mysql
       - config_percona_80_etc:/etc/mysql/conf.d
@@ -141,7 +141,7 @@ services:
         aliases:
           - mariadb-55
     ports:
-      - 3555:3306
+      - "3555:3306"
     volumes:
       - data_mariadb_55:/var/lib/mysql
       - config_mariadb_55_etc:/etc/mysql/conf.d
@@ -161,7 +161,7 @@ services:
         aliases:
           - mariadb-100
     ports:
-      - 3500:3306
+      - "3500:3306"
     volumes:
       - data_mariadb_100:/var/lib/mysql
       - config_mariadb_100_etc:/etc/mysql/conf.d
@@ -181,7 +181,7 @@ services:
         aliases:
           - mariadb-101
     ports:
-      - 3501:3306
+      - "3501:3306"
     volumes:
       - data_mariadb_101:/var/lib/mysql
       - config_mariadb_101_etc:/etc/mysql/conf.d
@@ -201,7 +201,7 @@ services:
         aliases:
           - mariadb-102
     ports:
-      - 3502:3306
+      - "3502:3306"
     volumes:
       - data_mariadb_102:/var/lib/mysql
       - config_mariadb_102_etc:/etc/mysql/conf.d
@@ -221,7 +221,7 @@ services:
         aliases:
           - mariadb-103
     ports:
-      - 3503:3306
+      - "3503:3306"
     volumes:
       - data_mariadb_103:/var/lib/mysql
       - config_mariadb_103_etc:/etc/mysql/conf.d
@@ -241,7 +241,7 @@ services:
         aliases:
           - mariadb-104
     ports:
-      - 3504:3306
+      - "3504:3306"
     volumes:
       - data_mariadb_104:/var/lib/mysql
       - config_mariadb_100_etc:/etc/mysql/conf.d
@@ -260,7 +260,7 @@ services:
         aliases:
           - php-fpm-56
     ports:
-      - 9056:9000
+      - "9056:9000"
     volumes:
       - vhosts:/var/www/vhosts
       - config_php_fpm_56:/usr/local/etc/php
@@ -279,7 +279,7 @@ services:
         aliases:
           - php-fpm-70
     ports:
-      - 9070:9000
+      - "9070:9000"
     volumes:
       - vhosts:/var/www/vhosts
       - config_php_fpm_70:/usr/local/etc/php
@@ -298,7 +298,7 @@ services:
         aliases:
           - php-fpm-71
     ports:
-      - 9071:9000
+      - "9071:9000"
     volumes:
       - vhosts:/var/www/vhosts
       - config_php_fpm_71:/usr/local/etc/php
@@ -317,7 +317,7 @@ services:
         aliases:
           - php-fpm-72
     ports:
-      - 9072:9000
+      - "9072:9000"
     volumes:
       - vhosts:/var/www/vhosts
       - config_php_fpm_72:/usr/local/etc/php
@@ -336,7 +336,7 @@ services:
         aliases:
           - php-fpm-73
     ports:
-      - 9073:9000
+      - "9073:9000"
     volumes:
       - vhosts:/var/www/vhosts
       - config_php_fpm_73:/usr/local/etc/php
@@ -355,7 +355,7 @@ services:
         aliases:
           - php-fpm-74
     ports:
-      - 9074:9000
+      - "9074:9000"
     volumes:
       - vhosts:/var/www/vhosts
       - config_php_fpm_74:/usr/local/etc/php
@@ -374,7 +374,7 @@ services:
         aliases:
           - php-fpm-80
     ports:
-      - 9080:9000
+      - "9080:9000"
     volumes:
       - vhosts:/var/www/vhosts
       - config_php_fpm_80:/usr/local/etc/php
@@ -393,7 +393,7 @@ services:
         aliases:
           - php-fpm-81
     ports:
-      - 9081:9000
+      - "9081:9000"
     volumes:
       - vhosts:/var/www/vhosts
       - config_php_fpm_81:/usr/local/etc/php
@@ -635,11 +635,42 @@ services:
         aliases:
           - solr-771
     ports:
-      - 8983:8983
+      - "8983:8983"
     volumes:
       - vhosts:/var/www/vhosts
-      - data_solr_771:/bitnami/solr/data
-      - solr_771_lib:/var/www/solr/lib
+#      - data_solr_771:/bitnami/solr/data
+#      - solr_771_lib:/var/www/solr/lib
+
+  solr-77:
+    container_name: solr-77
+    build:
+      context: ./docker/solr-77
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - solr-77
+    ports:
+      - "8977:8983"
+    volumes:
+      - vhosts:/var/www/vhosts
+
+  solr-89:
+    container_name: solr-89
+    build:
+      context: ./docker/solr-89
+    networks:
+      app-tier:
+        aliases:
+          - solr-89
+    ports:
+      - "8989:8983"
+    volumes:
+      - vhosts:/var/www/vhosts
+#      - data_solr_771:/bitnami/solr/data
+#      - solr_771_lib:/var/www/solr/lib
 
   tomcat-9:
     container_name: tomcat-9
@@ -650,7 +681,7 @@ services:
         aliases:
           - tomcat-9
     ports:
-      - 8888:8080
+      - "8888:8080"
     volumes:
       - data_tomcat_9:/bitnami
       - vhosts:/var/www/vhosts
@@ -668,7 +699,7 @@ services:
           - apache-24
           - m2.localhost
     ports:
-      - 127.0.0.1:${APACHE_HTTP_PORT}:80
+      - "127".0.0.1:${APACHE_HTTP_PORT}:80
       - 127.0.0.1:${APACHE_HTTPS_PORT}:443
     volumes:
       - config_apache_24_conf_d:/usr/local/apache2/conf/conf.d:ro
@@ -683,7 +714,7 @@ services:
         aliases:
           - redis-5
     ports:
-      - 6379:6379
+      - "6379:6379"
 
   redis-6:
     container_name: redis-6
@@ -694,7 +725,7 @@ services:
         aliases:
           - redis-6
     ports:
-      - 6380:6379
+      - "6380:6379"
 
   rabbit-39:
     container_name: rabbit-39
@@ -705,7 +736,7 @@ services:
         aliases:
           - rabbit-39
     ports:
-      - 5672:5672
+      - "5672:5672"
 
   rabbit-310:
     container_name: rabbit-310
@@ -716,7 +747,7 @@ services:
         aliases:
           - rabbit-310
     ports:
-      - 5673:5672
+      - "5673:5672"
 
   mailhog:
     container_name: mailhog
@@ -727,8 +758,8 @@ services:
         aliases:
           - mailhog
     ports:
-      - 1025:1025
-      - 8025:8025
+      - "1025:1025"
+      - "8025:8025"
 
   varnish:
     container_name: varnish
@@ -740,7 +771,7 @@ services:
         aliases:
           - varnish
     ports:
-      - 127.0.1.1:${VARNISH_HTTP_PORT}:80
+      - "127".0.1.1:${VARNISH_HTTP_PORT}:80
     volumes:
       - config_varnish_etc_varnish:/etc/varnish
 
@@ -757,8 +788,8 @@ services:
           - elastic-56
     env_file: env/elastic.env
     ports:
-      - 9256:9200
-      - 9356:9300
+      - "9256:9200"
+      - "9356:9300"
     volumes:
       - data_elastic_56:/usr/share/elasticsearch/data
 
@@ -775,8 +806,8 @@ services:
           - elastic-64
     env_file: env/elastic.env
     ports:
-      - 9264:9200
-      - 9364:9300
+      - "9264:9200"
+      - "9364:9300"
     volumes:
       - data_elastic_64:/usr/share/elasticsearch/data
 
@@ -793,8 +824,8 @@ services:
           - elastic-68
     env_file: env/elastic.env
     ports:
-      - 9268:9200
-      - 9368:9300
+      - "9268:9200"
+      - "9368:9300"
     volumes:
       - data_elastic_68:/usr/share/elasticsearch/data
 
@@ -811,8 +842,8 @@ services:
           - elastic-71
     env_file: env/elastic.env
     ports:
-      - 9271:9200
-      - 9371:9300
+      - "9271:9200"
+      - "9371:9300"
     volumes:
       - data_elastic_71:/usr/share/elasticsearch/data
 
@@ -829,8 +860,8 @@ services:
           - elastic-73
     env_file: env/elastic.env
     ports:
-      - 9273:9200
-      - 9373:9300
+      - "9273:9200"
+      - "9373:9300"
     volumes:
       - data_elastic_73:/usr/share/elasticsearch/data
 
@@ -847,8 +878,8 @@ services:
           - elastic-76
     env_file: env/elastic.env
     ports:
-      - 9276:9200
-      - 9376:9300
+      - "9276:9200"
+      - "9376:9300"
     volumes:
       - data_elastic_76:/usr/share/elasticsearch/data
 
@@ -865,8 +896,8 @@ services:
           - elastic-710
     env_file: env/elastic.env
     ports:
-      - 9280:9200
-      - 9380:9300
+      - "9280:9200"
+      - "9380:9300"
     volumes:
       - data_elastic_710:/usr/share/elasticsearch/data
 
@@ -883,8 +914,8 @@ services:
           - elastic-716
     env_file: env/elastic.env
     ports:
-      - 9286:9200
-      - 9386:9300
+      - "9286:9200"
+      - "9386:9300"
     volumes:
       - data_elastic_716:/usr/share/elasticsearch/data
 
@@ -901,8 +932,8 @@ services:
           - opensearch-12
     env_file: env/opensearch.env
     ports:
-      - 9212:9200
-      - 9312:9300
+      - "9212:9200"
+      - "9312:9300"
     volumes:
       - data_opensearch_12:/usr/share/opensearch/data
       - config_opensearch_12:/usr/share/opensearch/config
@@ -917,7 +948,7 @@ services:
           - esadmin
     env_file: env/esadmin.env
     ports:
-      - 8181:8080
+      - "8181:8080"
 
   chrome-standalone:
     container_name: chrome-standalone
@@ -1055,12 +1086,6 @@ services:
       - host.docker.internal:host-gateway
 
 volumes:
-  data_mysql_55:
-    driver: local
-    driver_opts:
-      type: none
-      device: ${DOCKER_VOLUME_BASE_PATH}/data/mysql-55
-      o: bind
   config_mysql_55_etc:
     driver: local
     driver_opts:
@@ -1091,6 +1116,12 @@ volumes:
         type: none
         device: ${DOCKER_VOLUME_BASE_PATH}/config/mysql-57/etc
         o: bind
+  data_mysql_55:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/data/mysql-55
+      o: bind
   data_mysql_80:
     driver: local
     driver_opts:
@@ -1383,7 +1414,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: ${DOCKER_VOLUME_BASE_PATH}/solr-771-lib
+      device: ${DOCKER_VOLUME_BASE_PATH}/lib/solr-771
       o: bind
   data_tomcat_9:
     driver: local
