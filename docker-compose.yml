@@ -1054,6 +1054,60 @@ services:
     extra_hosts:
       - host.docker.internal:host-gateway
 
+  node-11:
+    container_name: node-11
+    build:
+      context: ./docker/node-11
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - node-11
+    volumes:
+      - vhosts:/var/www/vhosts
+    user: $USER_ID:$GROUP_ID
+    tty: true
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+  node-12:
+    container_name: node-12
+    build:
+      context: ./docker/node-12
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - node-12
+    volumes:
+      - vhosts:/var/www/vhosts
+    user: $USER_ID:$GROUP_ID
+    tty: true
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+  node-14:
+    container_name: node-14
+    build:
+      context: ./docker/node-14
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - node-14
+    volumes:
+      - vhosts:/var/www/vhosts
+    user: $USER_ID:$GROUP_ID
+    tty: true
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
   node-16:
     container_name: node-16
     build:
