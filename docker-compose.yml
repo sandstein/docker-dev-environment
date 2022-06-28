@@ -626,21 +626,6 @@ services:
       - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
       - ssh_base:/home/ssh/.ssh
 
-  solr-771:
-    container_name: solr-771
-    build:
-      context: ./docker/solr-771
-    networks:
-      app-tier:
-        aliases:
-          - solr-771
-    ports:
-      - "8983:8983"
-    volumes:
-      - vhosts:/var/www/vhosts
-#      - data_solr_771:/bitnami/solr/data
-#      - solr_771_lib:/var/www/solr/lib
-
   solr-77:
     container_name: solr-77
     build:
@@ -699,7 +684,7 @@ services:
           - apache-24
           - m2.localhost
     ports:
-      - "127".0.0.1:${APACHE_HTTP_PORT}:80
+      - 127.0.0.1:${APACHE_HTTP_PORT}:80
       - 127.0.0.1:${APACHE_HTTPS_PORT}:443
     volumes:
       - config_apache_24_conf_d:/usr/local/apache2/conf/conf.d:ro
@@ -771,7 +756,7 @@ services:
         aliases:
           - varnish
     ports:
-      - "127".0.1.1:${VARNISH_HTTP_PORT}:80
+      - 127.0.1.1:${VARNISH_HTTP_PORT}:80
     volumes:
       - config_varnish_etc_varnish:/etc/varnish
 
@@ -1458,17 +1443,29 @@ volumes:
       type: none
       device: $SSH_AUTH_SOCK_BASE
       o: bind
-  data_solr_771:
+  data_solr_77:
     driver: local
     driver_opts:
         type: none
-        device: ${DOCKER_VOLUME_BASE_PATH}/data/solr-771
+        device: ${DOCKER_VOLUME_BASE_PATH}/data/solr-77
         o: bind
-  solr_771_lib:
+  solr_77_lib:
     driver: local
     driver_opts:
       type: none
-      device: ${DOCKER_VOLUME_BASE_PATH}/lib/solr-771
+      device: ${DOCKER_VOLUME_BASE_PATH}/lib/solr-77
+      o: bind
+  data_solr_89:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/data/solr-89
+      o: bind
+  solr_89_lib:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/lib/solr-89
       o: bind
   data_tomcat_9:
     driver: local
