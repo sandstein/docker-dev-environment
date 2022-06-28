@@ -641,6 +641,7 @@ services:
       - "8977:8983"
     volumes:
       - vhosts:/var/www/vhosts
+      - solr_77_lib:/opt/solr/server/solr/lib
 
   solr-89:
     container_name: solr-89
@@ -654,8 +655,7 @@ services:
       - "8989:8983"
     volumes:
       - vhosts:/var/www/vhosts
-#      - data_solr_771:/bitnami/solr/data
-#      - solr_771_lib:/var/www/solr/lib
+      - solr_89_lib:/opt/solr/server/solr/lib
 
   tomcat-9:
     container_name: tomcat-9
@@ -1507,13 +1507,13 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: ${DOCKER_VOLUME_BASE_PATH}/lib/solr-77
+      device: ${DOCKER_VOLUME_BASE_PATH}/lib/solr/77
       o: bind
   data_solr_89:
     driver: local
     driver_opts:
       type: none
-      device: ${DOCKER_VOLUME_BASE_PATH}/data/solr-89
+      device: ${DOCKER_VOLUME_BASE_PATH}/data/solr/89
       o: bind
   solr_89_lib:
     driver: local
