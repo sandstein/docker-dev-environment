@@ -1,1 +1,1 @@
-FROM node:17-slim
+FROM sandstein/node:17
