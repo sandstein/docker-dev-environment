@@ -261,3 +261,12 @@ to your `.env` file. If you are working as another user, please change according
 dde help: prints general usage
 dde list: list commands
 dde help <command>:
+
+## Solr
+Link the cores from Projekt into /opt/solr/server/solr using
+```
+solr@63c943baa576:/opt/solr/server/solr$  ln -s /var/www/vhosts/project/conf/Solr/core .
+```
+Load cores from webfrontend.
+
+To add additional libs copy them into `lib/solr/xx` where xx is your verison eg. 77 for 7.7

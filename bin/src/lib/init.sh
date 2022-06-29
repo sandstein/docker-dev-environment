@@ -17,5 +17,8 @@ export DOCKER_DEV_ENVIRONMENT_HOME="${REQUESTED_DOCKER_DEV_ENVIRONMENT_HOME}"
 if [[ -d "\${DOCKER_DEV_ENVIRONMENT_HOME}/bin" ]]; then
     PATH="\${DOCKER_DEV_ENVIRONMENT_HOME}/bin:\${PATH}"
 fi
+if [[ -f "${DOCKER_DEV_ENVIRONMENT_HOME}/bin/completions.bash" ]]; then
+    . "${DOCKER_DEV_ENVIRONMENT_HOME}/bin/completions.bash"
+fi
 EOL_PATH
 }

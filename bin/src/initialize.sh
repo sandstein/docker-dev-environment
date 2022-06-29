@@ -81,6 +81,8 @@ function parse_command_args() {
     # determine working dir
     if [ -v "args[--default-working-dir]" ]; then
         WORKINGDIRPART=()
+    elif [ -v "args[--working-dir]" ]; then
+        WORKINGDIRPART=(-w "${args[--working-dir]}")
     elif [ -v "PROJECT_ROOT" ]; then
         WORKINGDIRPART=(-w /var/www/vhosts/${PROJECT_ROOT})
     else
