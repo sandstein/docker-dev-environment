@@ -270,3 +270,27 @@ solr@63c943baa576:/opt/solr/server/solr$  ln -s /var/www/vhosts/project/conf/Sol
 Load cores from webfrontend.
 
 To add additional libs copy them into `lib/solr/xx` where xx is your verison eg. 77 for 7.7
+
+## Apache SSL
+
+Generate CA in Apache-Container
+
+```shell
+www-data@cc59351899ea:/usr/local/apache2/conf/conf.d/ssl$ ca-gen -v -c DE -l Dresden -o SNM  -n local-ca.willi.snmlab.de -e ca@willi.snmlab.de key/ca.key crt/ca.crt
+```
+
+Any name and subject can be used, but has to be rembered
+
+Now import `crt/ca.crt` into your browsers
+
+Then generate Project files
+```shell
+www-data@cc59351899ea:/usr/local/apache2/conf/conf.d/ssl$ cert-gen -v -c DE -l Dresden -o SNM -n bmbb.localhost -e admin@bmbb.localhost -a '*.bmbb.localhost' key/ca.key crt/ca.crt key/bmbb.key csr/bmbb.csr crt/bmbb.crt
+```
+
+use anything for bbmb, in vhost conf add
+
+```apacheconf
+Use SSL ca bmbb
+```
+USE
