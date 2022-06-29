@@ -8,14 +8,15 @@ _dde_completions() {
   local comp_line="${COMP_WORDS[@]:1}"
 
   case "$comp_line" in
-    'command'*) COMPREPLY=($(compgen -W "--help --root --run -h -r -s" -- "$cur")) ;;
-    'build'*) COMPREPLY=($(compgen -W "--all --help -a -h" -- "$cur")) ;;
-    'start'*) COMPREPLY=($(compgen -W "--help -h" -- "$cur")) ;;
+    'restart'*) COMPREPLY=($(compgen -W "--help -h" -- "$cur")) ;;
+    'command'*) COMPREPLY=($(compgen -W "--default-working-dir --help --no-tty --root --run --service --working-dir -T -d -h -o -r -s -w" -- "$cur")) ;;
+    'build'*) COMPREPLY=($(compgen -W "--all --help --restart -a -h -r" -- "$cur")) ;;
+    'start'*) COMPREPLY=($(compgen -W "--help --restart -h -r" -- "$cur")) ;;
     'init'*) COMPREPLY=($(compgen -W "--help -h" -- "$cur")) ;;
     'list'*) COMPREPLY=($(compgen -W "--help -h" -- "$cur")) ;;
-    'test'*) COMPREPLY=($(compgen -W "--help -h" -- "$cur")) ;;
-    'bash'*) COMPREPLY=($(compgen -W "--help --root --run -h -r -s" -- "$cur")) ;;
-    ''*) COMPREPLY=($(compgen -W "--help --version -h -v bash build command init list start test" -- "$cur")) ;;
+    'test'*) COMPREPLY=($(compgen -W "--help --service -h -s" -- "$cur")) ;;
+    'bash'*) COMPREPLY=($(compgen -W "--default-working-dir --help --root --run --service --working-dir -d -h -o -r -s -w" -- "$cur")) ;;
+    ''*) COMPREPLY=($(compgen -W "--help --version -h -v bash build command init list restart start test" -- "$cur")) ;;
   esac
 }
 

@@ -297,12 +297,17 @@ dde_bash_usage() {
 
     # :flag.usage
     echo "  --default-working-dir, -d"
-    printf "    Uses default working dir rather than project root\n"
+    printf "    Uses default working dir of the container rather than the project root\n"
+    echo
+
+    # :flag.usage
+    echo "  --working-dir, -w WORKING_DIR"
+    printf "    The working dir to execute the bash in. If not specified the project root is\n    used.\n"
     echo
 
     # :flag.usage
     echo "  --service, -s SERVICE"
-    printf "    The service to execute the command in, defaults to the one \n     defined in $DEFAULT_CONTAINER\n"
+    printf "    The service to execute the command in, defaults to the one \n     defined in \$DEFAULT_CONTAINER\n"
     echo
 
     # :command.usage_examples
@@ -354,12 +359,17 @@ dde_command_usage() {
 
     # :flag.usage
     echo "  --default-working-dir, -d"
-    printf "    Uses default working dir rather than project root\n"
+    printf "    Uses default working dir of the container rather than the project root\n"
+    echo
+
+    # :flag.usage
+    echo "  --working-dir, -w WORKING_DIR"
+    printf "    The working dir to execute the command in. If not specified the project root\n    is used.\n"
     echo
 
     # :flag.usage
     echo "  --service, -s SERVICE"
-    printf "    The service to execute the command in, defaults to the one \n     defined in $DEFAULT_CONTAINER\n"
+    printf "    The service to execute the command in, defaults to the one \n     defined in \$DEFAULT_CONTAINER\n"
     echo
 
     # :flag.usage
@@ -1105,6 +1115,20 @@ dde_bash_parse_requirements() {
       ;;
 
     # :flag.case
+    --working-dir | -w )
+      # :flag.conflicts
+      if [[ -n ${2+x} ]]; then
+        # :flag.validations
+        args[--working-dir]="$2"
+        shift
+        shift
+      else
+        printf "%s\n" "--working-dir requires an argument: --working-dir, -w WORKING_DIR"
+        exit 1
+      fi
+      ;;
+
+    # :flag.case
     --service | -s )
       # :flag.conflicts
       if [[ -n ${2+x} ]]; then
@@ -1177,6 +1201,20 @@ dde_command_parse_requirements() {
       # :flag.conflicts
       args[--default-working-dir]=1
       shift
+      ;;
+
+    # :flag.case
+    --working-dir | -w )
+      # :flag.conflicts
+      if [[ -n ${2+x} ]]; then
+        # :flag.validations
+        args[--working-dir]="$2"
+        shift
+        shift
+      else
+        printf "%s\n" "--working-dir requires an argument: --working-dir, -w WORKING_DIR"
+        exit 1
+      fi
       ;;
 
     # :flag.case
@@ -1385,6 +1423,8 @@ initialize() {
       # determine working dir
       if [ -v "args[--default-working-dir]" ]; then
           WORKINGDIRPART=()
+      elif [ -v "args[--working-dir]" ]; then
+          WORKINGDIRPART=(-w "${args[--working-dir]}")
       elif [ -v "PROJECT_ROOT" ]; then
           WORKINGDIRPART=(-w /var/www/vhosts/${PROJECT_ROOT})
       else

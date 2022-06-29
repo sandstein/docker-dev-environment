@@ -87,12 +87,16 @@ commands:
     help: "Starts command as root user"
   - long: --default-working-dir
     short: -d
-    help: "Uses default working dir rather than project root"
+    help: "Uses default working dir of the container rather than the project root"
+  - long: --working-dir
+    short: -w
+    arg: working_dir
+    help: "The working dir to execute the bash in. If not specified the project root is used."
   - long: --service
     short: -s
     arg: service
     help: "The service to execute the command in, defaults to the one \n
-            defined in $DEFAULT_CONTAINER"
+            defined in \\$DEFAULT_CONTAINER"
 
   examples:
   - "dde bash: Starts ab bash on the running default service"
@@ -115,12 +119,16 @@ commands:
       help: "Starts command as root user"
     - long: --default-working-dir
       short: -d
-      help: "Uses default working dir rather than project root"
+      help: "Uses default working dir of the container rather than the project root"
+    - long: --working-dir
+      short: -w
+      arg: working_dir
+      help: "The working dir to execute the command in. If not specified the project root is used."
     - long: --service
       short: -s
       arg: service
       help: "The service to execute the command in, defaults to the one \n
-            defined in $DEFAULT_CONTAINER"
+            defined in \\$DEFAULT_CONTAINER"
     - long: --no-tty
       short: -T
       help: "Do not allocate tty while executing command. This is needed for execution of cronjobs.\n
