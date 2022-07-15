@@ -560,6 +560,9 @@ export DOCKER_DEV_ENVIRONMENT_HOME="${REQUESTED_DOCKER_DEV_ENVIRONMENT_HOME}"
 if [[ -d "\${DOCKER_DEV_ENVIRONMENT_HOME}/bin" ]]; then
     PATH="\${DOCKER_DEV_ENVIRONMENT_HOME}/bin:\${PATH}"
 fi
+if [[ -f "${DOCKER_DEV_ENVIRONMENT_HOME}/bin/completions.bash" ]]; then
+    . "${DOCKER_DEV_ENVIRONMENT_HOME}/bin/completions.bash"
+fi
 EOL_PATH
 }
 
@@ -1340,6 +1343,9 @@ initialize() {
   set -e
 
   # src/initialize.sh
+  # use extended globbing
+  shopt -s extglob
+
   # where is this file located
   SCRIPT_PATH=$(readlink -f "$0")
   MY_PATH=$(dirname "$SCRIPT_PATH")
@@ -1428,7 +1434,9 @@ initialize() {
       elif [ -v "PROJECT_ROOT" ]; then
           WORKINGDIRPART=(-w /var/www/vhosts/${PROJECT_ROOT})
       else
-          WORKINGDIRPART=()
+          VHOSTS_BASE=$(realpath "${DOCKER_DEV_ENVIRONMENT_HOME}"/vhosts)
+          REL_PATH=${PWD#@($VHOSTS_BASE/)}
+          WORKINGDIRPART=(-w "/var/www/vhosts/${REL_PATH}")
       fi
 
       # set root user if desired

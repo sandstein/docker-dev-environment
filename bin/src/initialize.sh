@@ -1,3 +1,6 @@
+# use extended globbing
+shopt -s extglob
+
 # where is this file located
 SCRIPT_PATH=$(readlink -f "$0")
 MY_PATH=$(dirname "$SCRIPT_PATH")
@@ -86,7 +89,9 @@ function parse_command_args() {
     elif [ -v "PROJECT_ROOT" ]; then
         WORKINGDIRPART=(-w /var/www/vhosts/${PROJECT_ROOT})
     else
-        WORKINGDIRPART=()
+        VHOSTS_BASE=$(realpath "${DOCKER_DEV_ENVIRONMENT_HOME}"/vhosts)
+        REL_PATH=${PWD#@($VHOSTS_BASE/)}
+        WORKINGDIRPART=(-w "/var/www/vhosts/${REL_PATH}")
     fi
 
     # set root user if desired
