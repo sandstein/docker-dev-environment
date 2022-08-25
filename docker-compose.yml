@@ -1375,7 +1375,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-80/etc/php
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-81/etc/php
       o: bind
   config_php_cli_56:
     driver: local
