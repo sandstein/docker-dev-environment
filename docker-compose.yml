@@ -722,6 +722,7 @@ services:
           - rabbit-39
     ports:
       - "5672:5672"
+      - "15672:15672"
 
   rabbit-310:
     container_name: rabbit-310
