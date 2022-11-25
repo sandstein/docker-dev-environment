@@ -721,8 +721,8 @@ services:
         aliases:
           - rabbit-39
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - "5609:5672"
+      - "15609:15672"
 
   rabbit-310:
     container_name: rabbit-310
@@ -733,7 +733,8 @@ services:
         aliases:
           - rabbit-310
     ports:
-      - "5673:5672"
+      - "5610:5672"
+      - "15610:15672"
 
   mailhog:
     container_name: mailhog
