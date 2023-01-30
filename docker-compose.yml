@@ -906,6 +906,23 @@ services:
     volumes:
       - data_elastic_716:/usr/share/elasticsearch/data
 
+  elastic-717:
+    container_name: elastic-717
+    build:
+      context: ./docker/elastic-717
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - elastic-717
+    env_file: env/elastic.env
+    ports:
+      - "9287:9200"
+      - "9387:9300"
+    volumes:
+      - data_elastic_717:/usr/share/elasticsearch/data
   opensearch-12:
     container_name: opensearch-12
     build:
@@ -1588,6 +1605,12 @@ volumes:
     driver_opts:
       type: none
       device: ${DOCKER_VOLUME_BASE_PATH}/data/elastic-716
+      o: bind
+  data_elastic_717:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/data/elastic-717
       o: bind
   data_opensearch_12:
     driver: local
