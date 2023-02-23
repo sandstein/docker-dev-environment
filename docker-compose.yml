@@ -748,19 +748,74 @@ services:
       - "1025:1025"
       - "8025:8025"
 
-  varnish:
-    container_name: varnish
+  varnish-60:
+    container_name: varnish-60
     env_file: env/varnish.env
     build:
-      context: ./docker/varnish
+      context: ./docker/varnish-60
     networks:
       app-tier:
         aliases:
-          - varnish
+          - varnish-60
     ports:
       - 127.0.1.1:${VARNISH_HTTP_PORT}:80
     volumes:
-      - config_varnish_etc_varnish:/etc/varnish
+      - config_varnish_etc_varnish_60:/etc/varnish
+  varnish-65:
+    container_name: varnish-65
+    env_file: env/varnish.env
+    build:
+      context: ./docker/varnish-65
+    networks:
+      app-tier:
+        aliases:
+          - varnish-65
+    ports:
+      - 127.0.2.1:${VARNISH_HTTP_PORT}:80
+    volumes:
+      - config_varnish_etc_varnish_65:/etc/varnish
+
+  varnish-66:
+    container_name: varnish-66
+    env_file: env/varnish.env
+    build:
+      context: ./docker/varnish-66
+    networks:
+      app-tier:
+        aliases:
+          - varnish-66
+    ports:
+      - 127.0.3.1:${VARNISH_HTTP_PORT}:80
+    volumes:
+      - config_varnish_etc_varnish_66:/etc/varnish
+
+  varnish-71:
+    container_name: varnish-71
+    env_file: env/varnish.env
+    build:
+      context: ./docker/varnish-71
+    networks:
+      app-tier:
+        aliases:
+          - varnish-71
+    ports:
+      - 127.0.4.1:${VARNISH_HTTP_PORT}:80
+    volumes:
+      - config_varnish_etc_varnish_71:/etc/varnish
+
+  varnish-72:
+    container_name: varnish-72
+    env_file: env/varnish.env
+    build:
+      context: ./docker/varnish-72
+    networks:
+      app-tier:
+        aliases:
+          - varnish-72
+    ports:
+      - 127.0.5.1:${VARNISH_HTTP_PORT}:80
+    volumes:
+      - config_varnish_etc_varnish_72:/etc/varnish
 
   elastic-56:
     container_name: elastic-56
@@ -1552,11 +1607,35 @@ volumes:
         type: none
         device: ${DOCKER_VOLUME_BASE_PATH}/config/apache-24/conf.d
         o: bind
-  config_varnish_etc_varnish:
+  config_varnish_etc_varnish_60:
     driver: local
     driver_opts:
       type: none
-      device: ${DOCKER_VOLUME_BASE_PATH}/config/varnish/etc/varnish
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/varnish-60/etc/varnish
+      o: bind
+  config_varnish_etc_varnish_65:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/varnish-65/etc/varnish
+      o: bind
+  config_varnish_etc_varnish_66:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/varnish-66/etc/varnish
+      o: bind
+  config_varnish_etc_varnish_71:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/varnish-71/etc/varnish
+      o: bind
+  config_varnish_etc_varnish_72:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/varnish-72/etc/varnish
       o: bind
   data_elastic_56:
     driver: local
