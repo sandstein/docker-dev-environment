@@ -1,0 +1,8 @@
+server {
+    listen 80;
+    server_name xxx.localhost;
+
+    set $MAGE_ROOT /var/www/vhosts/magento2/xxxx;
+    set $PHP_BACKEND fastcgi_backend_81;
+    include conf.d/includes/magento2.nginx;
+}
