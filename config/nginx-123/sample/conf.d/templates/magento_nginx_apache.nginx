@@ -1,0 +1,10 @@
+server {
+    listen 80;
+    server_name xxx.localhost;
+
+    set $PHP_BACKEND php-fpm-81:9000;
+    set $MAGE_ROOT  /var/www/vhosts/magento2/xxx;
+
+    include conf.d/includes/magento2.nginx;
+}
+

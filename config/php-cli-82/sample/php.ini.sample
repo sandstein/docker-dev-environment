@@ -1,0 +1,4 @@
+#
+# Use these settings for debugging
+#
+memory_limit=1G
