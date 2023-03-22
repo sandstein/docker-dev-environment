@@ -1,0 +1,12 @@
+
+server {
+    listen 80;
+    server_name xxx.localhost;
+
+    location / {
+        set $target http://apache-24:80;
+        proxy_pass $target;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $remote_addr;
+    }
+}

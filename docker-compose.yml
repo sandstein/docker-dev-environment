@@ -684,8 +684,8 @@ services:
           - apache-24
           - m2.localhost
     ports:
-      - 127.0.0.1:${APACHE_HTTP_PORT}:80
-      - 127.0.0.1:${APACHE_HTTPS_PORT}:443
+      - 127.0.0.1:${APACHE_24_HTTP_PORT}:80
+      - 127.0.0.1:${APACHE_24_HTTPS_PORT}:443
     volumes:
       - config_apache_24_conf_d:/usr/local/apache2/conf/conf.d
       - vhosts:/var/www/vhosts
@@ -758,9 +758,10 @@ services:
         aliases:
           - varnish-60
     ports:
-      - 127.0.1.1:${VARNISH_HTTP_PORT}:80
+      - 127.0.0.1:${VARNISH_60_HTTP_PORT}:80
     volumes:
       - config_varnish_etc_varnish_60:/etc/varnish
+
   varnish-65:
     container_name: varnish-65
     env_file: env/varnish.env
@@ -771,7 +772,7 @@ services:
         aliases:
           - varnish-65
     ports:
-      - 127.0.2.1:${VARNISH_HTTP_PORT}:80
+      - 127.0.0.1:${VARNISH_65_HTTP_PORT}:80
     volumes:
       - config_varnish_etc_varnish_65:/etc/varnish
 
@@ -785,7 +786,7 @@ services:
         aliases:
           - varnish-66
     ports:
-      - 127.0.3.1:${VARNISH_HTTP_PORT}:80
+      - 127.0.0.1:${VARNISH_66_HTTP_PORT}:80
     volumes:
       - config_varnish_etc_varnish_66:/etc/varnish
 
@@ -799,7 +800,7 @@ services:
         aliases:
           - varnish-71
     ports:
-      - 127.0.4.1:${VARNISH_HTTP_PORT}:80
+      - 127.0.0.1:${VARNISH_71_HTTP_PORT}:80
     volumes:
       - config_varnish_etc_varnish_71:/etc/varnish
 
@@ -813,7 +814,7 @@ services:
         aliases:
           - varnish-72
     ports:
-      - 127.0.5.1:${VARNISH_HTTP_PORT}:80
+      - 127.0.0.1:${VARNISH_72_HTTP_PORT}:80
     volumes:
       - config_varnish_etc_varnish_72:/etc/varnish
 
@@ -978,6 +979,7 @@ services:
       - "9387:9300"
     volumes:
       - data_elastic_717:/usr/share/elasticsearch/data
+
   opensearch-12:
     container_name: opensearch-12
     build:
@@ -1251,6 +1253,36 @@ services:
     tty: true
     extra_hosts:
       - host.docker.internal:host-gateway
+
+  nginx-122:
+    container_name: nginx-122
+    build:
+      context: ./docker/nginx-122
+    networks:
+      app-tier:
+        aliases:
+          - nginx-122
+    ports:
+      - 127.0.0.1:${NGINX_122_HTTP_PORT}:80
+      - 127.0.0.1:${NGINX_122_HTTPS_PORT}:443
+    volumes:
+      - config_nginx_122_conf_d:/etc/nginx/conf.d
+      - vhosts:/var/www/vhosts
+
+  nginx-123:
+    container_name: nginx-123
+    build:
+      context: ./docker/nginx-123
+    networks:
+      app-tier:
+        aliases:
+          - nginx-123
+    ports:
+      - 127.0.0.1:${NGINX_123_HTTP_PORT}:80
+      - 127.0.0.1:${NGINX_123_HTTPS_PORT}:443
+    volumes:
+      - config_nginx_123_conf_d:/etc/nginx/conf.d
+      - vhosts:/var/www/vhosts
 
 volumes:
   config_mysql_55_etc:
@@ -1708,4 +1740,16 @@ volumes:
     driver_opts:
       type: none
       device: ${DOCKER_VOLUME_BASE_PATH}/config/ssh
+      o: bind
+  config_nginx_122_conf_d:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/nginx-122/etc/nginx/conf.d
+      o: bind
+  config_nginx_123_conf_d:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/nginx-123/etc/nginx/conf.d
       o: bind
