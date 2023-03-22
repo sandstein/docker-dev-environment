@@ -1,3 +1,0 @@
-upstream fastcgi_backend_80 {
-    server  php-fpm-80:9000;
-}

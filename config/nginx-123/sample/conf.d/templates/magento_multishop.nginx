@@ -1,0 +1,19 @@
+
+map $http_host $MAGE_RUN_CODE {
+    aaa.localhost aaa;
+    bbb.localhost bbb;
+    ccc.localhost ccc;
+    ddd.localhost ddd;
+}
+
+server {
+    listen 80;
+    server_name aaa.localhost;
+    server_name bbb.localhost;
+    server_name ccc.localhost;
+    server_name ddd.localhost;
+
+    set $PHP_BACKEND php-fpm-81:9000;
+    set $MAGE_ROOT /var/www/vhosts/magento2/aaa;
+    include conf.d/includes/magento2-multishop.nginx;
+}

@@ -1,10 +1,7 @@
-
 server {
-    listen 80;
-    server_name xxx.localhost;
-
+    server_name xxxx.localhost;
     location / {
-        set $target http://apache-24:80;
+        set $target http://varnish-72:80;
         proxy_pass $target;
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-For $remote_addr;
