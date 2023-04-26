@@ -6,15 +6,12 @@ environment_variables:
 
 commands:
 - name: init
-  short: i
   help: "Initializes dde. Only has to be run once from directory docker-dev-environment is installed"
 
 - name: list
-  short: l
   help: "Lists all available services"
 
 - name: start
-  short: s
   help: "Starts or restarts (if flag -r is given) one or several \n
         containers if provided. Use colon seperated list for multiple containers. \n
         If no containers are given all the containers needed for \n
@@ -35,7 +32,6 @@ commands:
     - "\"dde start -r apache-24,php-fpm-81\": restarts the two given containers"
 
 - name: restart
-  short: r
   help: "Shortcut for dde start -r"
 
   args:
@@ -43,7 +39,6 @@ commands:
       help: "Name of container(s), see dde start -h for more help"
 
 - name: build
-  short: x
   help: "Builds or rebuilds one or multiple containers. \n
           If multiple container building is desired use colon seperated list.\n
           If container list is omitted, all containers needed for your\n
@@ -75,7 +70,6 @@ commands:
       help: "restarts (or starts) the (re)built container"
 
 - name: bash
-  short: b
   help: "Starts bash in default cli container or alternative container if given"
 
   flags:
@@ -103,7 +97,6 @@ commands:
   - "dde bash -r -o -s mysql-80: Starts a bash in a newly created mysql-80 service as root"
 
 - name: command
-  short: c
   help: "Executes a specific command on the default (or given via --service) service"
   args:
     - name: command
@@ -139,7 +132,6 @@ commands:
     - "dde c -T -s redis-5 redis-cli flushall: flushes the redis cache from a cron job (i.e. without tty)"
 
 - name: test
-  short: t
   help: Test command for development
   args:
     - name: command
