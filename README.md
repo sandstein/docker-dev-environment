@@ -1,103 +1,80 @@
 # Docker Development Environment
 
+## About
+
+[...]
+
+## Prerequisites
+
+In order to use the docker develop environment, you need a proper configured
+docker environment. For now only linux is supported.
+
+## Getting started
+
+Clone repository, copy `.env.sample` to `.env`, edit `.env` to your needs.
+
+Create any volume missing from this list:
+
+```bash
+CONFIG_BASE=~/.config
+SSH_BASE=~/.ssh
+COMPOSER_BASE=~/.composer
+```
+
+then run
+```bash
+bin/dde init
+```
+
+Finish the setup with
+```bash
+source ~/.bashrc
+```
+
+Finally, create a symlink from your
+`${DOCKER_VOLUME_BASE_PATH}/vhosts` to the base directory containing your projects, e.g.:
+
+```bash
+ln -s ~/workspace vhosts
+```
+
+The docker develop environment is now ready to go, try it out by creating a
+new project and copying `.env.dde.sample` to the new project directory as `.env.dde`. Then
+add some containers to the variable `DOCKER_CONTAINER`, e.g. `php-cli-82`,  and some containers
+to the `DEFAULT_CONTAINER` variable. Multiple containers can be added to the first by giving a comma separated list,
+only one container is supported for the second variable.
+You can get a list of available services by typing
+```bash
+dde list
+```
+or search for supported PHP-Versions by typing
+```bash
+dde list | grep php
+```
+When changing in your freshly created project directory, type
+
+```bash
+dde start
+```
+
+to start any of the services defined in the `DOCKER_CONTAINER` variable. Once the image is
+pulled and the container started, type
+
+```bash
+dde bash
+```
+
+to start an interactive bash session into that container.
+
+
+
+## Contributing
 Refactored with bashly
 init with
 
 $ alias bashly='docker run --rm -it --user $(id -u):$(id -g) --volume "$PWD:/app" dannyben/bashly'
 $ bashly generate
 
-## Possible containers
-
-Dockerfiles exist for the following
-
-<table style="width:100%">
-    <tr>
-        <th>Webserver</th>
-        <th>PHP modules</th>
-        <th>Database modules</th>
-        <th>Additional services</th>
-    </tr>
-    <tr>
-        <td>
-            apache24
-        </td>
-        <td>
-            php-fpm-57<br>
-            php-fpm-71<br>
-            php-fpm-72<br>
-            php-fpm-73<br>
-            php-fpm-74<br>
-            php-fpm-80<br>
-            php-fpm-81<br>
-        </td>
-        <td>
-            mysql-55<br>
-            mysql-56<br>
-            mysql-57<br>
-            mysql-80<br>
-        </td>
-        <td>
-            ssh (for automatic tunnels)<br>
-            solr-771<br>
-            tomcat-9<br>
-            redis-5<br>
-            mailhog<br>
-            varnish<br>
-        </td>
-    </tr>
-    <tr>
-        <td>
-        </td>
-        <td>
-            php-cli-57<br>
-            php-cli-71<br>
-            php-cli-72<br>
-            php-cli-73<br>
-            php-cli-74<br>
-            php-cli-80<br>
-            php-cli-81<br>
-        </td>
-        <td>
-            mariadb-55<br>
-            mariadb-100<br>
-            mariadb-101<br>
-            mariadb-102<br>
-            mariadb-103<br>
-            mariadb-104<br>
-        </td>
-        <td>
-            elastic-56<br>
-            elastic-64<br>
-            elastic-71<br>
-            elastic-73<br>
-            elastic-76<br>
-            elastic-710<br>
-            elastic-716<br>
-            esadmin
-        </td>
-    </tr>
-    <tr>
-        <td>
-        </td>
-        <td>
-        </td>
-        <td>
-            percona-57<br>
-            peronca-80<br>
-        </td>
-        <td>
-            <strong>Selenium</strong>:<br>
-            chrome-standalone<br>
-            edge-standalone<br>
-            firefox-standalone<br>
-            chrome<br>
-            edge<br>
-            firefox<br>
-            selenium-hub<br>
-            selenium-side-runner<br>
-        </td>
-</tr>
-</table>
 
 Your local projects are mounted into the respective containers from the mount point
 `/path/to/this/repo/vhosts`
