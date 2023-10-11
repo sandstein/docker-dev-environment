@@ -23,8 +23,10 @@ touchConfigFile () {
   if [[ -n "${configFile}" && ! -f "${configFile}" ]]; then
     if [[ $1 =~ "php" ]]; then
       echo 'Copying ini files, adopt to your needs'
-      cp "${DOCKER_DEV_ENVIRONMENT_HOME}/config/$1/sample/conf.d/*.ini" \
+      cp "${DOCKER_DEV_ENVIRONMENT_HOME}/config/$1/sample/conf.d/"*.ini \
          "${DOCKER_DEV_ENVIRONMENT_HOME}/config/$1/etc/php/conf.d"
+      cp "${DOCKER_DEV_ENVIRONMENT_HOME}/config/$1/sample/php.ini.sample" \
+         "${DOCKER_DEV_ENVIRONMENT_HOME}/config/$1/etc/php/php.ini"
     elif [[ $1 =~ "nginx" ]]; then
         echo 'Copying config file, adopt to your needs'
         cp -R "${DOCKER_DEV_ENVIRONMENT_HOME}/config/$1/sample/conf.d/default.conf" \
