@@ -25,7 +25,7 @@ else
 fi
 
 # initializes the specific container needs for a given project
-# see .env.project-sample
+# see .env.dde.sample
 if [ -f "${PWD}/.env.dde" ]; then
   set -a
   . "${PWD}/.env.dde"

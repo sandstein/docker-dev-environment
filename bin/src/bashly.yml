@@ -51,9 +51,9 @@ commands:
           as there are too many containers to be run at\n
           the same time.\n\n
           The command uses the --force-rm --no-cache --pull options from\n
-          docker-compose build and therefor takes some time. \n
+         ${DOCKER_COMPOSE_COMMAND} build and therefor takes some time. \n
           For more fine grained tuning use\n\n
-          docker-compose build -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml build\n\n
+         ${DOCKER_COMPOSE_COMMAND} build -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml build\n\n
           with the options that suite you best."
 
   args:
