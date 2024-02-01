@@ -458,7 +458,7 @@ services:
       - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
-      - composer_base:/home/phpcli/.composer
+      - composer_base_56:/home/phpcli/.composer
       - php_cli_56_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
     extra_hosts:
@@ -483,7 +483,7 @@ services:
       - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
-      - composer_base:/home/phpcli/.composer
+      - composer_base_70:/home/phpcli/.composer
       - php_cli_70_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
     tty: true
@@ -509,7 +509,7 @@ services:
       - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
-      - composer_base:/home/phpcli/.composer
+      - composer_base_71:/home/phpcli/.composer
       - php_cli_71_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
     tty: true
@@ -535,7 +535,7 @@ services:
       - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
-      - composer_base:/home/phpcli/.composer
+      - composer_base_72:/home/phpcli/.composer
       - php_cli_72_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
     tty: true
@@ -561,7 +561,7 @@ services:
       - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
-      - composer_base:/home/phpcli/.composer
+      - composer_base_73:/home/phpcli/.composer
       - php_cli_73_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
     tty: true
@@ -587,7 +587,7 @@ services:
       - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
-      - composer_base:/home/phpcli/.composer
+      - composer_base_74:/home/phpcli/.composer
       - php_cli_74_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
     tty: true
@@ -613,7 +613,7 @@ services:
       - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
-      - composer_base:/home/phpcli/.composer
+      - composer_base_80:/home/phpcli/.composer
       - php_cli_80_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
     tty: true
@@ -639,34 +639,8 @@ services:
       - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
-      - composer_base:/home/phpcli/.composer
+      - composer_base_81:/home/phpcli/.composer
       - php_cli_81_bin:/home/phpcli/bin
-    user: $USER_ID:$GROUP_ID
-    tty: true
-    extra_hosts:
-      - host.docker.internal:host-gateway
-
-  php-cli-81-node:
-    container_name: php-cli-81-node
-    environment:
-      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
-    build:
-      context: ./docker/php-cli-81-node
-      args:
-        - USER_ID=${USER_ID}
-        - GROUP_ID=${GROUP_ID}
-    networks:
-      app-tier:
-        aliases:
-          - php-cli-81-node
-    volumes:
-      - vhosts:/var/www/vhosts
-      - config_php_cli_81_node:/usr/local/etc/php
-      - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
-      - config_base:/home/phpcli/.config
-      - ssh_base:/home/phpcli/.ssh
-      - composer_base:/home/phpcli/.composer
-      - php_cli_81_bin_node:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
     tty: true
     extra_hosts:
@@ -691,7 +665,7 @@ services:
       - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
-      - composer_base:/home/phpcli/.composer
+      - composer_base_82:/home/phpcli/.composer
       - php_cli_82_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
     tty: true
@@ -1782,11 +1756,59 @@ volumes:
       type: none
       device: $SSH_BASE
       o: bind
-  composer_base:
+  composer_base_56:
     driver: local
     driver_opts:
       type: none
-      device: $COMPOSER_BASE
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-56/composer
+      o: bind
+  composer_base_70:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-70/composer
+      o: bind
+  composer_base_71:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-71/composer
+      o: bind
+  composer_base_72:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-72/composer
+      o: bind
+  composer_base_73:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-73/composer
+      o: bind
+  composer_base_74:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-74/composer
+      o: bind
+  composer_base_80:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-80/composer
+      o: bind
+  composer_base_81:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-81/composer
+      o: bind
+  composer_base_82:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-82/composer
       o: bind
   ssh_auth_sock_base:
     driver: local
