@@ -244,7 +244,27 @@ services:
       - "3504:3306"
     volumes:
       - data_mariadb_104:/var/lib/mysql
-      - config_mariadb_100_etc:/etc/mysql/conf.d
+      - config_mariadb_104_etc:/etc/mysql/conf.d
+    cap_add:
+      - SYS_NICE
+
+  mariadb-106:
+    container_name: mariadb-106
+    env_file: env/db.env
+    build:
+      context: ./docker/mariadb-106
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - mariadb-106
+    ports:
+      - "3506:3306"
+    volumes:
+      - data_mariadb_106:/var/lib/mysql
+      - config_mariadb_106_etc:/etc/mysql/conf.d
     cap_add:
       - SYS_NICE
 
@@ -818,6 +838,18 @@ services:
       - "5610:5672"
       - "15610:15672"
 
+  rabbit-311:
+    container_name: rabbit-311
+    build:
+      context: ./docker/rabbit-311
+    networks:
+      app-tier:
+        aliases:
+          - rabbit-311
+    ports:
+      - "5611:5672"
+      - "15611:15672"
+
   mailhog:
     container_name: mailhog
     build:
@@ -899,6 +931,20 @@ services:
       - 127.0.0.1:${VARNISH_72_HTTP_PORT}:80
     volumes:
       - config_varnish_etc_varnish_72:/etc/varnish
+
+  varnish-73:
+    container_name: varnish-73
+    env_file: env/varnish.env
+    build:
+      context: ./docker/varnish-73
+    networks:
+      app-tier:
+        aliases:
+          - varnish-73
+    ports:
+      - 127.0.0.1:${VARNISH_73_HTTP_PORT}:80
+    volumes:
+      - config_varnish_etc_varnish_73:/etc/varnish
 
   elastic-56:
     container_name: elastic-56
@@ -1526,12 +1572,24 @@ volumes:
         type: none
         device: ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-104
         o: bind
+  data_mariadb_106:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-106
+      o: bind
   config_mariadb_104_etc:
     driver: local
     driver_opts:
         type: none
         device: ${DOCKER_VOLUME_BASE_PATH}/config/mariadb-104/etc
         o: bind
+  config_mariadb_106_etc:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/mariadb-106/etc
+      o: bind
   vhosts:
     driver: local
     driver_opts:
@@ -1801,6 +1859,12 @@ volumes:
     driver_opts:
       type: none
       device: ${DOCKER_VOLUME_BASE_PATH}/config/varnish-72/etc/varnish
+      o: bind
+  config_varnish_etc_varnish_73:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/varnish-73/etc/varnish
       o: bind
   data_elastic_56:
     driver: local
