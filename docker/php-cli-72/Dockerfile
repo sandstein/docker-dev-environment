@@ -1,5 +1,7 @@
 FROM sandstein/php:cli-7.2
 
+COPY env/* /home/phpcli/
+
 ARG USER_ID=1000
 ARG GROUP_ID=1000
 RUN chown phpcli.phpcli /home/phpcli/.[a-zA-Z]*  \
