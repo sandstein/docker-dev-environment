@@ -1,7 +1,6 @@
 *
 !00_httpd.conf
 !01_macro.conf
-!mailhog.conf
 !ssl/
 !ssl/crt/
 !ssl/key/

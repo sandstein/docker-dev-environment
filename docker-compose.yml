@@ -834,6 +834,17 @@ services:
       - "1025:1025"
       - "8025:8025"
 
+  mailpit:
+    container_name: mailpit
+    build:
+      context: ./docker/mailpit
+    networks:
+      app-tier:
+        aliases:
+          - mailpit
+    ports:
+      - "1026:1025"
+      - "8026:8025"
   varnish-60:
     container_name: varnish-60
     env_file: env/varnish.env
