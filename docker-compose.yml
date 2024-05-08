@@ -437,6 +437,25 @@ services:
     extra_hosts:
       - host.docker.internal:host-gateway
 
+  php-fpm-83:
+    container_name: php-fpm-83
+    build:
+      context: ./docker/php-fpm-83
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - php-fpm-83
+    ports:
+      - "9083:9000"
+    volumes:
+      - vhosts:/var/www/vhosts
+      - config_php_fpm_83:/usr/local/etc/php
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
   php-cli-56:
     container_name: php-cli-56
     environment:
@@ -665,6 +684,32 @@ services:
       - ssh_base:/home/phpcli/.ssh
       - composer_base_82:/home/phpcli/.composer
       - php_cli_82_bin:/home/phpcli/bin
+    user: $USER_ID:$GROUP_ID
+    tty: true
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+  php-cli-83:
+    container_name: php-cli-83
+    environment:
+      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+    build:
+      context: ./docker/php-cli-83
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - php-cli-83
+    volumes:
+      - vhosts:/var/www/vhosts
+      - config_php_cli_83:/usr/local/etc/php
+      - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
+      - config_base:/home/phpcli/.config
+      - ssh_base:/home/phpcli/.ssh
+      - composer_base_83:/home/phpcli/.composer
+      - php_cli_83_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
     tty: true
     extra_hosts:
@@ -1633,6 +1678,12 @@ volumes:
       type: none
       device: ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-82/etc/php
       o: bind
+  config_php_fpm_83:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-83/etc/php
+      o: bind
   config_php_cli_56:
     driver: local
     driver_opts:
@@ -1693,6 +1744,12 @@ volumes:
       type: none
       device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-82/etc/php
       o: bind
+  config_php_cli_83:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-83/etc/php
+      o: bind
   php_cli_56_bin:
     driver: local
     driver_opts:
@@ -1752,6 +1809,12 @@ volumes:
     driver_opts:
       type: none
       device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-82/bin
+      o: bind
+  php_cli_83_bin:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-83/bin
       o: bind
   config_base:
     driver: local
@@ -1818,6 +1881,12 @@ volumes:
     driver_opts:
       type: none
       device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-82/composer
+      o: bind
+  composer_base_83:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-83/composer
       o: bind
   ssh_auth_sock_base:
     driver: local
