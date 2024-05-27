@@ -792,8 +792,8 @@ services:
           - apache-24
           - m2.localhost
     ports:
-      - 127.0.0.1:${APACHE_24_HTTP_PORT}:80
-      - 127.0.0.1:${APACHE_24_HTTPS_PORT}:443
+      - "${APACHE_24_IP}:${APACHE_24_HTTP_PORT}:80"
+      - "${APACHE_24_IP}:${APACHE_24_HTTPS_PORT}:443"
     volumes:
       - config_apache_24_conf_d:/usr/local/apache2/conf/conf.d
       - vhosts:/var/www/vhosts
@@ -876,8 +876,8 @@ services:
         aliases:
           - mailhog
     ports:
-      - "1025:1025"
-      - "8025:8025"
+      - "${MAILHOG_IP}:1025:1025"
+      - "${MAILHOG_IP}:8025:8025"
 
   mailpit:
     container_name: mailpit
@@ -888,8 +888,8 @@ services:
         aliases:
           - mailpit
     ports:
-      - "1026:1025"
-      - "8026:8025"
+      - "${MAILPIT_IP}:1025:1025"
+      - "${MAILPIT_IP}:8025:8025"
   varnish-60:
     container_name: varnish-60
     env_file: env/varnish.env
@@ -1440,8 +1440,8 @@ services:
         aliases:
           - nginx-122
     ports:
-      - 127.0.0.1:${NGINX_122_HTTP_PORT}:80
-      - 127.0.0.1:${NGINX_122_HTTPS_PORT}:443
+      - "${NGINX_122_IP}:${NGINX_122_HTTP_PORT}:80"
+      - "${NGINX_122_IP}:${NGINX_122_HTTPS_PORT}:443"
     volumes:
       - config_nginx_122_conf_d:/etc/nginx/conf.d
       - vhosts:/var/www/vhosts
@@ -1455,8 +1455,8 @@ services:
         aliases:
           - nginx-123
     ports:
-      - 127.0.0.1:${NGINX_123_HTTP_PORT}:80
-      - 127.0.0.1:${NGINX_123_HTTPS_PORT}:443
+      - "${NGINX_123_IP}:${NGINX_123_HTTP_PORT}:80"
+      - "${NGINX_123_IP}:${NGINX_123_HTTPS_PORT}:443"
     volumes:
       - config_nginx_123_conf_d:/etc/nginx/conf.d
       - vhosts:/var/www/vhosts
