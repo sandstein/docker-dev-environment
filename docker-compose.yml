@@ -85,6 +85,26 @@ services:
     cap_add:
       - SYS_NICE
 
+  mysql-84:
+    container_name: mysql-84
+    env_file: env/db.env
+    build:
+      context: ./docker/mysql-84
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - mysql-84
+    ports:
+      - "3384:3306"
+    volumes:
+      - data_mysql_84:/var/lib/mysql
+      - config_mysql_84_etc:/etc/mysql/conf.d
+    cap_add:
+      - SYS_NICE
+
   percona-57:
     container_name: percona-57
     env_file: env/db.env
@@ -1529,6 +1549,18 @@ volumes:
         type: none
         device: ${DOCKER_VOLUME_BASE_PATH}/config/mysql-80/etc
         o: bind
+  data_mysql_84:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/data/mysql-84
+      o: bind
+  config_mysql_84_etc:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/mysql-84/etc
+      o: bind
   data_percona_57:
     driver: local
     driver_opts:
