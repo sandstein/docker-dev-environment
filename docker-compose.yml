@@ -85,6 +85,26 @@ services:
     cap_add:
       - SYS_NICE
 
+  mysql-84:
+    container_name: mysql-84
+    env_file: env/db.env
+    build:
+      context: ./docker/mysql-84
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - mysql-84
+    ports:
+      - "3384:3306"
+    volumes:
+      - data_mysql_84:/var/lib/mysql
+      - config_mysql_84_etc:/etc/mysql/conf.d
+    cap_add:
+      - SYS_NICE
+
   percona-57:
     container_name: percona-57
     env_file: env/db.env
@@ -263,6 +283,25 @@ services:
     volumes:
       - data_mariadb_106:/var/lib/mysql
       - config_mariadb_106_etc:/etc/mysql/conf.d
+    cap_add:
+      - SYS_NICE
+  mariadb-114:
+    container_name: mariadb-114
+    env_file: env/db.env
+    build:
+      context: ./docker/mariadb-114
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - mariadb-114
+    ports:
+      - "3514:3306"
+    volumes:
+      - data_mariadb_114:/var/lib/mysql
+      - config_mariadb_114_etc:/etc/mysql/conf.d
     cap_add:
       - SYS_NICE
 
@@ -1510,6 +1549,18 @@ volumes:
         type: none
         device: ${DOCKER_VOLUME_BASE_PATH}/config/mysql-80/etc
         o: bind
+  data_mysql_84:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/data/mysql-84
+      o: bind
+  config_mysql_84_etc:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/mysql-84/etc
+      o: bind
   data_percona_57:
     driver: local
     driver_opts:
@@ -1606,6 +1657,12 @@ volumes:
       type: none
       device: ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-106
       o: bind
+  data_mariadb_114:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-114
+      o: bind
   config_mariadb_104_etc:
     driver: local
     driver_opts:
@@ -1617,6 +1674,12 @@ volumes:
     driver_opts:
       type: none
       device: ${DOCKER_VOLUME_BASE_PATH}/config/mariadb-106/etc
+      o: bind
+  config_mariadb_114_etc:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/mariadb-114/etc
       o: bind
   vhosts:
     driver: local
