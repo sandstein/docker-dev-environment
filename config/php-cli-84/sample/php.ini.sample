@@ -1,0 +1,12 @@
+#
+# base settings
+#
+memory_limit=1G
+date.timezone=Europe/Berlin
+#
+# debugging
+#
+#xdebug.mode=develop,debug
+#xdebug.client_host=host.docker.internal
+#xdebug.start_with_request=yes
+#xdebug.log=/tmp/xdebug.log
