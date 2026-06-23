@@ -304,7 +304,25 @@ services:
       - config_mariadb_114_etc:/etc/mysql/conf.d
     cap_add:
       - SYS_NICE
-
+  mariadb-118:
+    container_name: mariadb-118
+    env_file: env/db.env
+    build:
+      context: ./docker/mariadb-118
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - mariadb-118
+    ports:
+      - "3518:3306"
+    volumes:
+      - data_mariadb_118:/var/lib/mysql
+      - config_mariadb_118_etc:/etc/mysql/conf.d
+    cap_add:
+      - SYS_NICE
   php-fpm-56:
     container_name: php-fpm-56
     build:
@@ -1708,6 +1726,12 @@ volumes:
       type: none
       device: ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-114
       o: bind
+  data_mariadb_118:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/data/mariadb-118
+      o: bind
   config_mariadb_104_etc:
     driver: local
     driver_opts:
@@ -1725,6 +1749,12 @@ volumes:
     driver_opts:
       type: none
       device: ${DOCKER_VOLUME_BASE_PATH}/config/mariadb-114/etc
+      o: bind
+  config_mariadb_118_etc:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/mariadb-118/etc
       o: bind
   vhosts:
     driver: local
