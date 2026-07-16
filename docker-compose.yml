@@ -532,6 +532,26 @@ services:
     extra_hosts:
       - host.docker.internal:host-gateway
 
+  php-fpm-85:
+    container_name: php-fpm-85
+    build:
+      context: ./docker/php-fpm-85
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - php-fpm-84
+    ports:
+      - "9085:9000"
+    volumes:
+      - vhosts:/var/www/vhosts
+      - config_php_fpm_85:/usr/local/etc/php
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+
   php-cli-56:
     container_name: php-cli-56
     environment:
@@ -759,8 +779,12 @@ services:
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
       - composer_base_82:/home/phpcli/.composer
+      - nvm_base:/home/phpcli/.nvm
+      - ai_base:/home/phpcli/.ai
       - php_cli_82_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
+    ports:
+      - "44482:8082"
     tty: true
     extra_hosts:
       - host.docker.internal:host-gateway
@@ -785,8 +809,13 @@ services:
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
       - composer_base_83:/home/phpcli/.composer
+      - nvm_base:/home/phpcli/.nvm
+      - ai_base:/home/phpcli/.ai
+      - local_php_cli_83:/home/phpcli/.local
       - php_cli_83_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
+    ports:
+      - "44483:8082"
     tty: true
     extra_hosts:
       - host.docker.internal:host-gateway
@@ -811,8 +840,42 @@ services:
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
       - composer_base_84:/home/phpcli/.composer
-      - php_cli_84_bin:/home/phpcli/bin
+      - nvm_base:/home/phpcli/.nvm
+      - ai_base:/home/phpcli/.ai
+      - php_cli_84_bin:/home/phpcli/bincomposer_base_84
     user: $USER_ID:$GROUP_ID
+    ports:
+      - "44484:8082"
+    tty: true
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+  php-cli-85:
+    container_name: php-cli-85
+    environment:
+      - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+    build:
+      context: ./docker/php-cli-85
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - php-cli-85
+    volumes:
+      - vhosts:/var/www/vhosts
+      - config_php_cli_85/usr/local/etc/php
+      - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
+      - config_base:/home/phpcli/.config
+      - ssh_base:/home/phpcli/.ssh
+      - composer_base_85:/home/phpcli/.composer
+      - nvm_base:/home/phpcli/.nvm
+      - ai_base:/home/phpcli/.ai
+      - php_cli_85_bin:/home/phpcli/bin
+    user: $USER_ID:$GROUP_ID
+    ports:
+      - "44485:8082"
     tty: true
     extra_hosts:
       - host.docker.internal:host-gateway
@@ -969,6 +1032,18 @@ services:
       - "5611:5672"
       - "15611:15672"
 
+  rabbit-41:
+    container_name: rabbit-41
+    build:
+      context: ./docker/rabbit-41
+    networks:
+      app-tier:
+        aliases:
+          - rabbit-41
+    ports:
+      - "5701:5672"
+      - "15701:15672"
+
   mailhog:
     container_name: mailhog
     build:
@@ -1075,6 +1150,20 @@ services:
       - 127.0.0.1:${VARNISH_73_HTTP_PORT}:80
     volumes:
       - config_varnish_etc_varnish_73:/etc/varnish
+
+  varnish-77:
+    container_name: varnish-77
+    env_file: env/varnish.env
+    build:
+      context: ./docker/varnish-77
+    networks:
+      app-tier:
+        aliases:
+          - varnish-77
+    ports:
+      - 127.0.0.1:${VARNISH_77_HTTP_PORT}:80
+    volumes:
+      - config_varnish_etc_varnish_77:/etc/varnish
 
   elastic-56:
     container_name: elastic-56
@@ -1275,6 +1364,25 @@ services:
     volumes:
       - data_opensearch_25:/usr/share/opensearch/data
       - config_opensearch_25:/usr/share/opensearch/config
+
+  opensearch-37:
+    container_name: opensearch-37
+    build:
+      context: ./docker/opensearch-37
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+    networks:
+      app-tier:
+        aliases:
+          - opensearch-37
+    env_file: env/opensearch-37.env
+    ports:
+      - "9237:9200"
+      - "9337:9300"
+    volumes:
+      - data_opensearch_37:/usr/share/opensearch/data
+      - config_opensearch_37:/usr/share/opensearch/config
 
   esadmin:
     container_name: esadmin
@@ -1828,6 +1936,12 @@ volumes:
       type: none
       device: ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-84/etc/php
       o: bind
+  config_php_fpm_85:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-fpm-85/etc/php
+      o: bind
   config_php_cli_56:
     driver: local
     driver_opts:
@@ -1894,11 +2008,23 @@ volumes:
       type: none
       device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-83/etc/php
       o: bind
+  local_php_cli_83:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-83/local
+      o: bind
   config_php_cli_84:
     driver: local
     driver_opts:
       type: none
       device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-84/etc/php
+      o: bind
+  config_php_cli_85:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-85/etc/php
       o: bind
   php_cli_56_bin:
     driver: local
@@ -1972,6 +2098,12 @@ volumes:
       type: none
       device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-84/bin
       o: bind
+  php_cli_85_bin:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-85/bin
+      o: bind
   config_base:
     driver: local
     driver_opts:
@@ -1983,6 +2115,18 @@ volumes:
     driver_opts:
       type: none
       device: $SSH_BASE
+      o: bind
+  nvm_base:
+    driver: local
+    driver_opts:
+      type: none
+      device: $NVM_BASE
+      o: bind
+  ai_base:
+    driver: local
+    driver_opts:
+      type: none
+      device: $AI_BASE
       o: bind
   composer_base_56:
     driver: local
@@ -2045,6 +2189,12 @@ volumes:
       device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-83/composer
       o: bind
   composer_base_84:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-84/composer
+      o: bind
+  composer_base_85:
     driver: local
     driver_opts:
       type: none
@@ -2128,6 +2278,12 @@ volumes:
       type: none
       device: ${DOCKER_VOLUME_BASE_PATH}/config/varnish-73/etc/varnish
       o: bind
+  config_varnish_etc_varnish_77:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/varnish-77/etc/varnish
+      o: bind
   data_elastic_56:
     driver: local
     driver_opts:
@@ -2205,6 +2361,18 @@ volumes:
     driver_opts:
       type: none
       device: ${DOCKER_VOLUME_BASE_PATH}/config/opensearch-25/config
+      o: bind
+  data_opensearch_37:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/data/opensearch-37
+      o: bind
+  config_opensearch_37:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/opensearch-37/config
       o: bind
   config_ssh_tunnel:
     driver: local
