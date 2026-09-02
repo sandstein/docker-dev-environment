@@ -11,7 +11,7 @@ if [[ -z "${DOCKER_DEV_ENVIRONMENT_HOME+x}" || "${REQUESTED_DOCKER_DEV_ENVIRONME
     # check if source command is included in .bashrc if the file exists
     #
     if [[ -f $BASHRC_FILE  && "$(grep -c ".docker/.dderc" "${BASHRC_FILE}")" = "0" ]]; then
-        init_rc
+        init_rc "${BASHRC_FILE}"
     fi
 
     ZSHRC_FILE="${HOME}/.zshrc"
@@ -19,7 +19,7 @@ if [[ -z "${DOCKER_DEV_ENVIRONMENT_HOME+x}" || "${REQUESTED_DOCKER_DEV_ENVIRONME
     # check if source command is included in .zshrc if the file exists
     #
     if [[ -f $ZSHRC_FILE  && "$(grep -c ".docker/.dderc" "${ZSHRC_FILE}")" = "0" ]]; then
-        init_rc
+        init_rc "${ZSHRC_FILE}"
     fi
 
     #
