@@ -780,7 +780,6 @@ services:
       - ssh_base:/home/phpcli/.ssh
       - composer_base_82:/home/phpcli/.composer
       - nvm_base:/home/phpcli/.nvm
-      - ai_base:/home/phpcli/.ai
       - php_cli_82_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
     ports:
@@ -810,7 +809,6 @@ services:
       - ssh_base:/home/phpcli/.ssh
       - composer_base_83:/home/phpcli/.composer
       - nvm_base:/home/phpcli/.nvm
-      - ai_base:/home/phpcli/.ai
       - local_php_cli_83:/home/phpcli/.local
       - php_cli_83_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
@@ -841,7 +839,6 @@ services:
       - ssh_base:/home/phpcli/.ssh
       - composer_base_84:/home/phpcli/.composer
       - nvm_base:/home/phpcli/.nvm
-      - ai_base:/home/phpcli/.ai
       - php_cli_84_bin:/home/phpcli/bincomposer_base_84
     user: $USER_ID:$GROUP_ID
     ports:
@@ -871,7 +868,6 @@ services:
       - ssh_base:/home/phpcli/.ssh
       - composer_base_85:/home/phpcli/.composer
       - nvm_base:/home/phpcli/.nvm
-      - ai_base:/home/phpcli/.ai
       - php_cli_85_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
     ports:
@@ -2121,12 +2117,6 @@ volumes:
     driver_opts:
       type: none
       device: $NVM_BASE
-      o: bind
-  ai_base:
-    driver: local
-    driver_opts:
-      type: none
-      device: $AI_BASE
       o: bind
   composer_base_56:
     driver: local
