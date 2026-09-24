@@ -1,6 +1,12 @@
 init_rc() {
+  local target_file="$1"
 
-  cat >> "${BASHRC_FILE}" <<EOL_SH
+  if [[ -z "${target_file}" ]]; then
+    red "Error: Target file is not provided to init_rc"
+    exit 1
+  fi
+
+  cat >> "${target_file}" <<EOL_SH
 #
 # initialising docker dev environment
 #
