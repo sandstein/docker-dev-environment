@@ -542,7 +542,7 @@ services:
     networks:
       app-tier:
         aliases:
-          - php-fpm-84
+          - php-fpm-85
     ports:
       - "9085:9000"
     volumes:
@@ -839,7 +839,7 @@ services:
       - ssh_base:/home/phpcli/.ssh
       - composer_base_84:/home/phpcli/.composer
       - nvm_base:/home/phpcli/.nvm
-      - php_cli_84_bin:/home/phpcli/bincomposer_base_84
+      - php_cli_84_bin:/home/phpcli/bin
     user: $USER_ID:$GROUP_ID
     ports:
       - "44484:8082"
@@ -862,7 +862,7 @@ services:
           - php-cli-85
     volumes:
       - vhosts:/var/www/vhosts
-      - config_php_cli_85/usr/local/etc/php
+      - config_php_cli_85:/usr/local/etc/php
       - ssh_auth_sock_base:$SSH_AUTH_SOCK_BASE
       - config_base:/home/phpcli/.config
       - ssh_base:/home/phpcli/.ssh
@@ -1986,12 +1986,6 @@ volumes:
       type: none
       device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-81/etc/php
       o: bind
-  config_php_cli_81_node:
-    driver: local
-    driver_opts:
-      type: none
-      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-81-node/etc/php
-      o: bind
   config_php_cli_82:
     driver: local
     driver_opts:
@@ -2069,12 +2063,6 @@ volumes:
     driver_opts:
       type: none
       device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-81/bin
-      o: bind
-  php_cli_81_bin_node:
-    driver: local
-    driver_opts:
-      type: none
-      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-81-node/bin
       o: bind
   php_cli_82_bin:
     driver: local
@@ -2188,7 +2176,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-84/composer
+      device: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-85/composer
       o: bind
   ssh_auth_sock_base:
     driver: local
@@ -2196,23 +2184,11 @@ volumes:
       type: none
       device: $SSH_AUTH_SOCK_BASE
       o: bind
-  data_solr_77:
-    driver: local
-    driver_opts:
-        type: none
-        device: ${DOCKER_VOLUME_BASE_PATH}/data/solr-77
-        o: bind
   solr_77_lib:
     driver: local
     driver_opts:
       type: none
       device: ${DOCKER_VOLUME_BASE_PATH}/lib/solr/77
-      o: bind
-  data_solr_89:
-    driver: local
-    driver_opts:
-      type: none
-      device: ${DOCKER_VOLUME_BASE_PATH}/data/solr/89
       o: bind
   solr_89_lib:
     driver: local

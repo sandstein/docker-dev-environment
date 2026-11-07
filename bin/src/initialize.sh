@@ -48,7 +48,7 @@ function parse_command_args() {
     elif [ -v "args[--working-dir]" ]; then
         WORKINGDIRPART=(-w "${args[--working-dir]}")
     elif [ -v "PROJECT_ROOT" ]; then
-        WORKINGDIRPART=(-w /var/www/vhosts/${PROJECT_ROOT})
+        WORKINGDIRPART=(-w "/var/www/vhosts/${PROJECT_ROOT}")
     else
         VHOSTS_BASE=$(realpath "${DOCKER_DEV_ENVIRONMENT_HOME}"/vhosts)
         REL_PATH=${PWD#@($VHOSTS_BASE/)}
@@ -59,7 +59,7 @@ function parse_command_args() {
     if [ -v "args[--root]" ]; then
         USERPART=(-u root)
     else
-        USERPART=(-u ${USER_ID})
+        USERPART=(-u "${USER_ID}")
     fi
 
     # determine run type
