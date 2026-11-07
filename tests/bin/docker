@@ -9,7 +9,7 @@
 # Canned output:
 #   - "compose ... config --services"  prints ${DDE_TEST_SERVICES} (one per line)
 #   - "compose ... config <service>"   prints ${DDE_TEST_CONFIG_DIR}/<service>.yml if present
-#   - "ps ..."                         prints ${DDE_TEST_PS} if set
+#   - "compose ... ps ..."             prints ${DDE_TEST_PS} if set
 #   - "volume ls ..."                  prints ${DDE_TEST_VOLUMES} if set
 #   - "volume inspect ..."             prints ${DDE_TEST_VOLUME_INSPECT} if set
 #   - everything else                  prints nothing
@@ -52,9 +52,9 @@ if [[ "${args[0]}" == "compose" ]]; then
                 fi
             done
         fi
+    elif [[ "${sub}" == "ps" && -n "${DDE_TEST_PS:-}" ]]; then
+        printf '%b\n' "${DDE_TEST_PS}"
     fi
-elif [[ "${args[0]}" == "ps" && -n "${DDE_TEST_PS:-}" ]]; then
-    printf '%s\n' "${DDE_TEST_PS}"
 elif [[ "${args[0]} ${args[1]:-}" == "volume ls" && -n "${DDE_TEST_VOLUMES:-}" ]]; then
     printf '%s\n' ${DDE_TEST_VOLUMES}
 elif [[ "${args[0]} ${args[1]:-}" == "volume inspect" && -n "${DDE_TEST_VOLUME_INSPECT:-}" ]]; then

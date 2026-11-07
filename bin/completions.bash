@@ -9,28 +9,39 @@ _dde_completions_node_flag_state() {
     0:--help|0:-h) return 0 ;;
     0:--version|0:-v) return 0 ;;
     1:--help|1:-h) return 0 ;;
+    1:--build) return 0 ;;
+    1:--force-recreate) return 0 ;;
     2:--help|2:-h) return 0 ;;
+    2:--all|2:-a) return 0 ;;
     3:--help|3:-h) return 0 ;;
-    3:--restart|3:-r) return 0 ;;
+    3:--all|3:-a) return 0 ;;
     4:--help|4:-h) return 0 ;;
     5:--help|5:-h) return 0 ;;
     5:--all|5:-a) return 0 ;;
-    5:--restart|5:-r) return 0 ;;
-    6:--working-dir|6:-w) return 2 ;;
-    6:--service|6:-s) return 2 ;;
+    5:--no-cache) return 0 ;;
+    5:--pull) return 0 ;;
     6:--help|6:-h) return 0 ;;
-    6:--run|6:-r) return 0 ;;
-    6:--root|6:-o) return 0 ;;
-    6:--default-working-dir|6:-d) return 0 ;;
-    7:--working-dir|7:-w) return 2 ;;
-    7:--service|7:-s) return 2 ;;
     7:--help|7:-h) return 0 ;;
-    7:--run|7:-r) return 0 ;;
-    7:--root|7:-o) return 0 ;;
-    7:--default-working-dir|7:-d) return 0 ;;
-    7:--no-tty|7:-T) return 0 ;;
     8:--service|8:-s) return 2 ;;
+    8:--user|8:-u) return 2 ;;
+    8:--workdir|8:-w) return 2 ;;
     8:--help|8:-h) return 0 ;;
+    9:--tail|9:-n) return 2 ;;
+    9:--help|9:-h) return 0 ;;
+    9:--follow|9:-f) return 0 ;;
+    10:--help|10:-h) return 0 ;;
+    10:--all|10:-a) return 0 ;;
+    11:--help|11:-h) return 0 ;;
+    12:--help|12:-h) return 0 ;;
+    13:--help|13:-h) return 0 ;;
+    14:--help|14:-h) return 0 ;;
+    14:--all|14:-a) return 0 ;;
+    15:--help|15:-h) return 0 ;;
+    16:--help|16:-h) return 0 ;;
+    17:--help|17:-h) return 0 ;;
+    18:--help|18:-h) return 0 ;;
+    18:--short) return 0 ;;
+    19:--help|19:-h) return 0 ;;
   esac
 
   return 1
@@ -55,15 +66,19 @@ _dde_completions_resolve_node() {
   local word
   for word in "${non_options[@]}"; do
     case "$node_id:$word" in
-      0:init)
+      0:up)
         node_id=1
         node_word_count=1
         ;;
-      0:list)
+      0:start)
+        node_id=1
+        node_word_count=1
+        ;;
+      0:stop)
         node_id=2
         node_word_count=1
         ;;
-      0:start)
+      0:down)
         node_id=3
         node_word_count=1
         ;;
@@ -75,17 +90,61 @@ _dde_completions_resolve_node() {
         node_id=5
         node_word_count=1
         ;;
-      0:bash)
+      0:exec)
         node_id=6
         node_word_count=1
         ;;
-      0:command)
+      0:run)
         node_id=7
         node_word_count=1
         ;;
-      0:test)
+      0:shell)
         node_id=8
         node_word_count=1
+        ;;
+      0:logs)
+        node_id=9
+        node_word_count=1
+        ;;
+      0:ps)
+        node_id=10
+        node_word_count=1
+        ;;
+      0:ls)
+        node_id=11
+        node_word_count=1
+        ;;
+      0:get)
+        node_id=12
+        node_word_count=1
+        ;;
+      0:compose)
+        node_id=15
+        node_word_count=1
+        ;;
+      0:config)
+        node_id=16
+        node_word_count=1
+        ;;
+      0:list)
+        node_id=17
+        node_word_count=1
+        ;;
+      0:version)
+        node_id=18
+        node_word_count=1
+        ;;
+      0:init)
+        node_id=19
+        node_word_count=1
+        ;;
+      12:services)
+        node_id=13
+        node_word_count=2
+        ;;
+      12:containers)
+        node_id=14
+        node_word_count=2
         ;;
       *)
         break
@@ -147,19 +206,16 @@ _dde_completions() {
   (( invalid_completion )) && return
 
   case "$node_id:$prev" in
-    6:--working-dir|6:-w)
-      return
-      ;;
-    6:--service|6:-s)
-      return
-      ;;
-    7:--working-dir|7:-w)
-      return
-      ;;
-    7:--service|7:-s)
-      return
-      ;;
     8:--service|8:-s)
+      return
+      ;;
+    8:--user|8:-u)
+      return
+      ;;
+    8:--workdir|8:-w)
+      return
+      ;;
+    9:--tail|9:-n)
       return
       ;;
   esac
@@ -167,7 +223,11 @@ _dde_completions() {
   if [[ "${cur:0:1}" != "-" ]] && (( positional_index == 0 )); then
     case "$node_id" in
       0)
-        while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "init list start restart build bash command test" -- "$cur")
+        while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "up start stop down restart build exec run shell logs ps ls get compose config list version init" -- "$cur")
+        return
+        ;;
+      12)
+        while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "services containers" -- "$cur")
         return
         ;;
     esac
@@ -185,19 +245,22 @@ _dde_completions() {
       1)
         local words=()
         _dde_completions_option_seen "--help" "-h" || words+=("--help" "-h")
+        _dde_completions_option_seen "--build" || words+=("--build")
+        _dde_completions_option_seen "--force-recreate" || words+=("--force-recreate")
         while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "${words[*]}" -- "$cur")
         return
         ;;
       2)
         local words=()
         _dde_completions_option_seen "--help" "-h" || words+=("--help" "-h")
+        _dde_completions_option_seen "--all" "-a" || words+=("--all" "-a")
         while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "${words[*]}" -- "$cur")
         return
         ;;
       3)
         local words=()
         _dde_completions_option_seen "--help" "-h" || words+=("--help" "-h")
-        _dde_completions_option_seen "--restart" "-r" || words+=("--restart" "-r")
+        _dde_completions_option_seen "--all" "-a" || words+=("--all" "-a")
         while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "${words[*]}" -- "$cur")
         return
         ;;
@@ -211,30 +274,20 @@ _dde_completions() {
         local words=()
         _dde_completions_option_seen "--help" "-h" || words+=("--help" "-h")
         _dde_completions_option_seen "--all" "-a" || words+=("--all" "-a")
-        _dde_completions_option_seen "--restart" "-r" || words+=("--restart" "-r")
+        _dde_completions_option_seen "--no-cache" || words+=("--no-cache")
+        _dde_completions_option_seen "--pull" || words+=("--pull")
         while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "${words[*]}" -- "$cur")
         return
         ;;
       6)
         local words=()
         _dde_completions_option_seen "--help" "-h" || words+=("--help" "-h")
-        _dde_completions_option_seen "--run" "-r" || words+=("--run" "-r")
-        _dde_completions_option_seen "--root" "-o" || words+=("--root" "-o")
-        _dde_completions_option_seen "--default-working-dir" "-d" || words+=("--default-working-dir" "-d")
-        _dde_completions_option_seen "--working-dir" "-w" || words+=("--working-dir" "-w")
-        _dde_completions_option_seen "--service" "-s" || words+=("--service" "-s")
         while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "${words[*]}" -- "$cur")
         return
         ;;
       7)
         local words=()
         _dde_completions_option_seen "--help" "-h" || words+=("--help" "-h")
-        _dde_completions_option_seen "--run" "-r" || words+=("--run" "-r")
-        _dde_completions_option_seen "--root" "-o" || words+=("--root" "-o")
-        _dde_completions_option_seen "--default-working-dir" "-d" || words+=("--default-working-dir" "-d")
-        _dde_completions_option_seen "--working-dir" "-w" || words+=("--working-dir" "-w")
-        _dde_completions_option_seen "--service" "-s" || words+=("--service" "-s")
-        _dde_completions_option_seen "--no-tty" "-T" || words+=("--no-tty" "-T")
         while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "${words[*]}" -- "$cur")
         return
         ;;
@@ -242,26 +295,114 @@ _dde_completions() {
         local words=()
         _dde_completions_option_seen "--help" "-h" || words+=("--help" "-h")
         _dde_completions_option_seen "--service" "-s" || words+=("--service" "-s")
+        _dde_completions_option_seen "--user" "-u" || words+=("--user" "-u")
+        _dde_completions_option_seen "--workdir" "-w" || words+=("--workdir" "-w")
+        while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "${words[*]}" -- "$cur")
+        return
+        ;;
+      9)
+        local words=()
+        _dde_completions_option_seen "--help" "-h" || words+=("--help" "-h")
+        _dde_completions_option_seen "--follow" "-f" || words+=("--follow" "-f")
+        _dde_completions_option_seen "--tail" "-n" || words+=("--tail" "-n")
+        while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "${words[*]}" -- "$cur")
+        return
+        ;;
+      10)
+        local words=()
+        _dde_completions_option_seen "--help" "-h" || words+=("--help" "-h")
+        _dde_completions_option_seen "--all" "-a" || words+=("--all" "-a")
+        while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "${words[*]}" -- "$cur")
+        return
+        ;;
+      11)
+        local words=()
+        _dde_completions_option_seen "--help" "-h" || words+=("--help" "-h")
+        while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "${words[*]}" -- "$cur")
+        return
+        ;;
+      12)
+        local words=()
+        _dde_completions_option_seen "--help" "-h" || words+=("--help" "-h")
+        while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "${words[*]}" -- "$cur")
+        return
+        ;;
+      13)
+        local words=()
+        _dde_completions_option_seen "--help" "-h" || words+=("--help" "-h")
+        while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "${words[*]}" -- "$cur")
+        return
+        ;;
+      14)
+        local words=()
+        _dde_completions_option_seen "--help" "-h" || words+=("--help" "-h")
+        _dde_completions_option_seen "--all" "-a" || words+=("--all" "-a")
+        while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "${words[*]}" -- "$cur")
+        return
+        ;;
+      15)
+        local words=()
+        _dde_completions_option_seen "--help" "-h" || words+=("--help" "-h")
+        while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "${words[*]}" -- "$cur")
+        return
+        ;;
+      16)
+        local words=()
+        _dde_completions_option_seen "--help" "-h" || words+=("--help" "-h")
+        while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "${words[*]}" -- "$cur")
+        return
+        ;;
+      17)
+        local words=()
+        _dde_completions_option_seen "--help" "-h" || words+=("--help" "-h")
+        while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "${words[*]}" -- "$cur")
+        return
+        ;;
+      18)
+        local words=()
+        _dde_completions_option_seen "--help" "-h" || words+=("--help" "-h")
+        _dde_completions_option_seen "--short" || words+=("--short")
+        while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "${words[*]}" -- "$cur")
+        return
+        ;;
+      19)
+        local words=()
+        _dde_completions_option_seen "--help" "-h" || words+=("--help" "-h")
         while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "${words[*]}" -- "$cur")
         return
         ;;
     esac
   fi
 
+  if [[ "$node_id" == "1" ]] && (( positional_index >= 0 )); then
+    return
+  fi
+
+  if [[ "$node_id" == "2" ]] && (( positional_index >= 0 )); then
+    return
+  fi
+
+  if [[ "$node_id" == "3" ]] && (( positional_index >= 0 )); then
+    return
+  fi
+
+  if [[ "$node_id" == "4" ]] && (( positional_index >= 0 )); then
+    return
+  fi
+
+  if [[ "$node_id" == "5" ]] && (( positional_index >= 0 )); then
+    return
+  fi
+
+  if [[ "$node_id" == "9" ]] && (( positional_index >= 0 )); then
+    return
+  fi
+
   case "$node_id:$positional_index" in
-    3:0)
+    11:0)
       return
       ;;
-    4:0)
-      return
-      ;;
-    5:0)
-      return
-      ;;
-    7:0)
-      return
-      ;;
-    8:0)
+    13:0)
       return
       ;;
   esac

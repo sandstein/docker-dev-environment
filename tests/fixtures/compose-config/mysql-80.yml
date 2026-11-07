@@ -1,0 +1,8 @@
+name: dev-environment
+services:
+  mysql-80:
+    volumes:
+      - type: volume
+        source: data_mysql_80
+        target: /var/lib/mysql
+        volume: {}

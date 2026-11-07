@@ -1,19 +1,21 @@
-# Docker Development Environment
+# Docker Development Environment (dde)
 
 ## About
 
-[...]
+dde provides versioned service containers (PHP CLI/FPM, MySQL/MariaDB/Percona,
+Apache/nginx, Varnish, Redis, RabbitMQ, Elasticsearch/OpenSearch, Solr, Node,
+Mailpit, ...) from one shared compose file, and the `dde` command to start them
+and to run commands in them for the project you are working on.
 
 ## Prerequisites
 
-In order to use the docker develop environment, you need a proper configured
-docker environment. For now only linux is supported.
+Docker with the compose plugin and bash 4.2 or newer. For now only Linux is
+supported.
 
 ## Getting started
 
-Clone repository, copy `.env.sample` to `.env`, edit `.env` to your needs.
-
-Create any volume missing from this list:
+Clone the repository, copy `.env.sample` to `.env` and edit `.env` to your
+needs. Make sure the directories referenced there exist:
 
 ```bash
 CONFIG_BASE=~/.config
@@ -21,134 +23,121 @@ SSH_BASE=~/.ssh
 COMPOSER_BASE=~/.composer
 ```
 
-then run
-```bash
-bin/dde init
-```
-
-Finish the setup with
-```bash
-source ~/.bashrc
-```
-
-Finally, create a symlink from your
-`${DOCKER_VOLUME_BASE_PATH}/vhosts` to the base directory containing your projects, e.g.:
+Symlink the directory containing your projects to `vhosts` inside the dde
+directory, e.g.:
 
 ```bash
 ln -s ~/workspace vhosts
 ```
 
-The docker develop environment is now ready to go, try it out by creating a
-new project and copying `.env.dde.sample` to the new project directory as `.env.dde`. Then
-add some containers to the variable `DOCKER_CONTAINER`, e.g. `php-cli-82`,  and some containers
-to the `DEFAULT_CONTAINER` variable. Multiple containers can be added to the first by giving a comma separated list,
-only one container is supported for the second variable.
-You can get a list of available services by typing
-```bash
-dde list
-```
-or search for supported PHP-Versions by typing
-```bash
-dde list | grep php
-```
-When changing in your freshly created project directory, type
+Then hook dde into your shell (puts `dde` on the `PATH` and loads the
+completions) and open a new shell:
 
 ```bash
-dde start
+bin/dde init
 ```
 
-to start any of the services defined in the `DOCKER_CONTAINER` variable. Once the image is
-pulled and the container started, type
+To use dde in a project, copy `.env.dde.sample` to the project root as
+`.env.dde` and set
+
+- `DOCKER_CONTAINER`: comma separated list of the services the project needs
+  (see `dde ls`), e.g. `apache-24,mysql-80,php-fpm-83,php-cli-83`
+- `DEFAULT_CONTAINER`: the service `dde exec` and `dde shell` use when no
+  `-s` is given, e.g. `php-cli-83`
+
+dde finds the `.env.dde` in the current directory or any parent directory.
 
 ```bash
-dde bash
+dde up            # start the project's containers
+dde ps            # show them
+dde shell         # interactive shell in the default container
+dde exec bin/magento cache:clean
+dde down          # stop and remove them again (data is kept)
 ```
 
-to start an interactive bash session into that container.
+## Commands
 
+Run `dde list` for an overview and `dde <command> --help` for details.
 
+| Command | Purpose |
+|---|---|
+| `dde up [SERVICE...]` (alias `start`) | Create and start containers; `--build`, `--force-recreate` |
+| `dde stop [SERVICE...]` | Stop containers; `--all` for every dde container |
+| `dde down [SERVICE...]` | Stop and remove containers, never volumes; `--all` for every dde container |
+| `dde restart [SERVICE...]` | Restart containers |
+| `dde build [SERVICE...]` | Build images; `--all`, `--pull`, `--no-cache` |
+| `dde exec [OPTIONS] COMMAND...` | Run a command in a running container |
+| `dde run [OPTIONS] COMMAND...` | Run a command in a new container (`docker compose run --rm`) |
+| `dde shell` | Interactive bash (or sh); `-s`, `-u`, `-w` |
+| `dde logs [SERVICE...]` | Container output; `-f`, `-n LINES` |
+| `dde ps` / `dde get containers` | The project's containers and their state; `--all` for every dde container |
+| `dde ls [FILTER]` / `dde get services` | All services dde can start |
+| `dde compose ARGS...` | Any `docker compose` command against the dde compose file |
+| `dde config` | The resolved settings for the current directory |
+| `dde version` | Version information; `--short` for scripts |
+| `dde init` | Shell integration |
+
+Without service arguments, `up`, `stop`, `down`, `restart`, `build` and `logs`
+act on `DOCKER_CONTAINER`. Services can be given space or comma separated.
+
+`dde exec` and `dde run` take docker style options **before** the command;
+everything after the first non-option is passed on unchanged:
+
+| Option | Default |
+|---|---|
+| `-s, --service SERVICE` | `DEFAULT_CONTAINER` |
+| `-u, --user USER` | `USER_ID` from the dde `.env` |
+| `-w, --workdir DIR` | the current directory, mapped below `/var/www/vhosts` (or `/var/www/vhosts/$PROJECT_ROOT`); left out for services that don't mount the projects, e.g. databases |
+| `-e, --env KEY=VALUE` | |
+| `-T, --no-tty` | automatic when stdin is not a terminal (pipes, cron) |
+
+```bash
+dde exec -s mysql-80 mysql -u root -e 'SHOW DATABASES'
+cat script.php | dde exec php /dev/stdin
+dde exec -u root apt-get update
+```
+
+Scripts can check the major version with `dde version --short`; dde 0.x
+prints `0.1.0` for `dde --version`.
+
+## Upgrading from 0.x to 1.0
+
+dde 1.0 follows the docker command line. The old commands are gone:
+
+| 0.x | 1.0 |
+|---|---|
+| `dde start [-r] a,b` | `dde up a b` / `dde up --force-recreate a b` |
+| `dde restart` | `dde restart` (docker compose restart) |
+| `dde command "cmd args"` / `dde c` | `dde exec cmd args` |
+| `dde command -o ...` | `dde exec -u root ...` |
+| `dde command -r ...` | `dde run ...` |
+| `dde command -d -s mysql-80 ...` | `dde exec -s mysql-80 ...` (working dir handled automatically) |
+| `dde command -w DIR ...` | `dde exec -w DIR ...` |
+| `dde bash [-o] [-s S]` | `dde shell [-u root] [-s S]` |
+| `dde list` | `dde ls` / `dde get services` (`dde list` now lists the commands) |
+| `dde build` (always `--pull --no-cache`) | `dde build --pull --no-cache` |
+
+Also changed:
+
+- A project `.env` is no longer read, only `.env.dde`, which is now also
+  found in parent directories.
+- `PHP_CLI_CONTAINER` and `PHP_FPM_CONTAINER` are no longer supported, use
+  `DEFAULT_CONTAINER` and `DOCKER_CONTAINER`.
+- Run `dde init` again once: it rewrites `~/.docker/.dderc` (fixes loading
+  the completions and adds zsh support).
 
 ## Contributing
-Refactored with bashly
-init with
 
-$ alias bashly='docker run --rm -it --user $(id -u):$(id -g) --volume "$PWD:/app" dannyben/bashly'
-$ bashly generate
-
-
-Your local projects are mounted into the respective containers from the mount point
-`/path/to/this/repo/vhosts`
-
-So ideally you would symlink your projects directory to this location (`./vhosts`).
-
-Apache vhosts are configured in the `.docker/apache/conf/vhosts` directory.
-You can create a new `.conf` file per vhost. They are automatically loaded when starting/restarting your apache container.
-
-If you do not use .localhost under linux, remember to edit your local hosts file when adding new vhosts.
-
-## Initialisation and commands
-
-There are some commands which - together with .env files will facilate your work. Copy `.env.sample` to `.env` and possibly
-make changes according to your system.
-
-Copy `.env.project-sample` to your projects root file (if not under version control) and edit settings therein.
-
-The command `bin/dde-init` will set `DOCKER_DEV_ENVIRONMENT_HOME` in your .bashrc and add `${DOCKER_DEV_ENVIRONMENT_HOME}/bin`
-to your `${PATH}`.
-
-Then you can start all the needed containers by invoking
-```bash
-$ dde-start
-```
-in your project root dir, call
-```bash
-$ dde-cli [some-command]
-```
-to start a (php-)cli container and execute `[some-command]` inside the container. If you need to run some composer actions,
-there ist the command
-```bash
-$ dde-composer [commands and flags]
-```
-
-To rebuild all containers use
-```bash
-$ dde-rebuild
-```
-
-If you need to restart a single or multiple containers (e.g. your apache configuration or php-fpm configuration has
-changed) you can use
-```bash
-$ dde-restart [service or services]
-```
-
-Finally, if all the work is done and you want to save resources, you can just use
+`bin/dde` and `bin/completions.bash` are generated with
+[bashly](https://bashly.dev) from `bin/src`. Don't edit them directly:
 
 ```bash
-$ dde-down
+make generate   # regenerate after changing bin/src
+make check      # what CI runs: generated files up to date, lint, compose check, tests
+make help       # all targets
 ```
 
-to stop all the containers.
-
-
-## Startup (old?)
-
-`docker-compose up`
-
-To individually rebuild a container, run
-
-`docker-compose build containername`
-
-To rebuild all containers, run
-
-`docker-compose up --build`
-
-To kill all containers, run
-
-`docker-compose kill`
-
-To SSH into a specific container, run
-
-`docker exec -it containername /bin/bash`
+All tools run in pinned docker images. See `tests/` for the bats suite.
 
 ## Container communication
 
@@ -224,20 +213,6 @@ SSH_AUTH_SOCK_BASE=/run/user/1000/keyring
 ```
 to your `.env` file. If you are working as another user, please change accordingly.
 
-
-# Rewrite cli
-
-## Some ideas on how to rewrite:
-
-1. mv dde-defines to config/defines
-2. mv dde-xxx to modules/xxx
-3. create dde which behaves "normal"
-
-## List of commands and what they should do
-
-dde help: prints general usage
-dde list: list commands
-dde help <command>:
 
 ## Solr
 Link the cores from Projekt into /opt/solr/server/solr using

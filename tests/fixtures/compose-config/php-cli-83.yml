@@ -1,0 +1,8 @@
+name: dev-environment
+services:
+  php-cli-83:
+    volumes:
+      - type: volume
+        source: vhosts
+        target: /var/www/vhosts
+        volume: {}
