@@ -1,0 +1,14 @@
+{{name}}:
+  container_name: {{name}}
+  build:
+    context: docker/nginx
+  networks:
+    app-tier:
+      aliases:
+        - {{name}}
+  ports:
+    - "${{{env_prefix}}_IP}:${{{env_prefix}}_HTTP_PORT}:80"
+    - "${{{env_prefix}}_IP}:${{{env_prefix}}_HTTPS_PORT}:443"
+  x-binds:
+    - config/{{name}}/etc/nginx/conf.d:/etc/nginx/conf.d
+    - vhosts:/var/www/vhosts

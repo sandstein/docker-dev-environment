@@ -4,3 +4,4 @@
 /.docker/apache/conf/*.conf
 !/.docker/apache/conf/httpd.conf
 !/.docker/apache/conf/macro.conf
+__pycache__/

@@ -1,0 +1,11 @@
+{{name}}:
+  container_name: {{name}}
+  build:
+    context: docker/rabbit
+  networks:
+    app-tier:
+      aliases:
+        - {{name}}
+  ports:
+    - "{{port}}:5672"
+    - "{{admin_port}}:15672"

@@ -30,15 +30,22 @@ DOCKERFILES   := $(sort $(wildcard docker/*/Dockerfile))
 help: ## Show this help
 	@grep -hE '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk -F ':.*## ' '{printf "  \033[36m%-18s\033[0m %s\n", $$1, $$2}'
 
+GENERATED := bin/dde bin/completions.bash docker-compose.yml compose
+
 .PHONY: generate
-generate: ## Regenerate bin/dde and bin/completions.bash from bin/src
+generate: ## Regenerate bin/dde, completions and the compose files
 	$(BASHLY) generate
 	$(BASHLY) add completions_script --force
+	$(PYTHON) tools/generate.py
 
 .PHONY: check-generated
-check-generated: generate ## Fail if the generated files differ from the committed ones
-	@git diff --exit-code -- bin/dde bin/completions.bash \
-		|| { echo "bin/dde or bin/completions.bash is out of date: run 'make generate' and commit the result" >&2; exit 1; }
+check-generated: generate ## Fail if generated files differ from the git index
+	@changes="$$(git status --porcelain -- $(GENERATED) | awk 'substr($$0, 2, 1) != " "')"; \
+	if [[ -n "$${changes}" ]]; then \
+		echo "generated files are out of date (run 'make generate' and git add the result):" >&2; \
+		echo "$${changes}" >&2; \
+		exit 1; \
+	fi
 
 .PHONY: lint
 lint: lint-shell lint-docker ## Run all linters
@@ -56,8 +63,15 @@ check-compose: ## Validate the compose model (names, mounts, ports, variables)
 	$(PYTHON) tools/check-compose.py
 
 .PHONY: test
-test: ## Run the bats test suite
+test: test-bats test-python ## Run all tests
+
+.PHONY: test-bats
+test-bats: ## Run the bats suite (CLI)
 	$(BATS) tests
+
+.PHONY: test-python
+test-python: ## Run the python unit tests (generator)
+	$(PYTHON) -m unittest discover -s tests
 
 .PHONY: check
 check: check-generated lint check-compose test ## Everything CI runs

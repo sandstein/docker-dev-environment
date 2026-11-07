@@ -40,8 +40,10 @@ _dde_completions_node_flag_state() {
     16:--help|16:-h) return 0 ;;
     17:--help|17:-h) return 0 ;;
     18:--help|18:-h) return 0 ;;
-    18:--short) return 0 ;;
+    18:--yes|18:-y) return 0 ;;
     19:--help|19:-h) return 0 ;;
+    19:--short) return 0 ;;
+    20:--help|20:-h) return 0 ;;
   esac
 
   return 1
@@ -130,12 +132,16 @@ _dde_completions_resolve_node() {
         node_id=17
         node_word_count=1
         ;;
-      0:version)
+      0:migrate)
         node_id=18
         node_word_count=1
         ;;
-      0:init)
+      0:version)
         node_id=19
+        node_word_count=1
+        ;;
+      0:init)
+        node_id=20
         node_word_count=1
         ;;
       12:services)
@@ -223,7 +229,7 @@ _dde_completions() {
   if [[ "${cur:0:1}" != "-" ]] && (( positional_index == 0 )); then
     case "$node_id" in
       0)
-        while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "up start stop down restart build exec run shell logs ps ls get compose config list version init" -- "$cur")
+        while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "up start stop down restart build exec run shell logs ps ls get compose config list migrate version init" -- "$cur")
         return
         ;;
       12)
@@ -361,11 +367,18 @@ _dde_completions() {
       18)
         local words=()
         _dde_completions_option_seen "--help" "-h" || words+=("--help" "-h")
-        _dde_completions_option_seen "--short" || words+=("--short")
+        _dde_completions_option_seen "--yes" "-y" || words+=("--yes" "-y")
         while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "${words[*]}" -- "$cur")
         return
         ;;
       19)
+        local words=()
+        _dde_completions_option_seen "--help" "-h" || words+=("--help" "-h")
+        _dde_completions_option_seen "--short" || words+=("--short")
+        while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "${words[*]}" -- "$cur")
+        return
+        ;;
+      20)
         local words=()
         _dde_completions_option_seen "--help" "-h" || words+=("--help" "-h")
         while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "${words[*]}" -- "$cur")

@@ -25,4 +25,4 @@ jobs:
       - name: Install bash and bats
         run: brew install bash bats-core
       - name: bats
-        run: make test BATS=bats
+        run: make test-bats BATS=bats

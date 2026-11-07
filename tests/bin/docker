@@ -58,7 +58,7 @@ if [[ "${args[0]}" == "compose" ]]; then
 elif [[ "${args[0]} ${args[1]:-}" == "volume ls" && -n "${DDE_TEST_VOLUMES:-}" ]]; then
     printf '%s\n' ${DDE_TEST_VOLUMES}
 elif [[ "${args[0]} ${args[1]:-}" == "volume inspect" && -n "${DDE_TEST_VOLUME_INSPECT:-}" ]]; then
-    printf '%s\n' "${DDE_TEST_VOLUME_INSPECT}"
+    printf '%b\n' "${DDE_TEST_VOLUME_INSPECT}"
 fi
 
 exit "${DDE_TEST_EXIT:-0}"

@@ -41,6 +41,7 @@ dde_usage() {
   printf "  %s   Run any docker compose command against the dde compose file\n" "compose"
   printf "  %s   Show the resolved settings for the current directory\n" "config "
   printf "  %s   List the dde commands\n" "list   "
+  printf "  %s   Remove the named volumes dde 0.x used for its bind mounts.\n" "migrate"
   printf "  %s   Show version information\n" "version"
   printf "  %s   Hook dde into your shell (PATH and completions). Run once after cloning.\n" "init   "
   echo
@@ -658,6 +659,39 @@ dde_list_usage() {
 }
 
 # :command.usage
+dde_migrate_usage() {
+  if [[ -n $long_usage ]]; then
+    printf "dde migrate\n\n"
+    printf "  Remove the named volumes dde 0.x used for its bind mounts.\n  \n  dde 1.0 mounts config/, data/ and vhosts directly. The old volumes only\n  pointed at these directories, so removing them does not touch any data.\n  Volumes that are not bind mounts or still in use are never removed.\n\n"
+  else
+    printf "dde migrate - Remove the named volumes dde 0.x used for its bind mounts.\n\n"
+  fi
+
+  printf "%s\n" "Usage:"
+  printf "  dde migrate [OPTIONS]\n"
+  printf "  dde migrate --help | -h\n"
+  echo
+
+  # :command.long_usage
+  if [[ -n "$long_usage" ]]; then
+    # :command.usage_options
+    printf "%s\n" "Options:"
+
+    # :command.usage_flags
+    # :flag.usage
+    printf "  %s\n" "--yes, -y"
+    printf "    Remove without asking\n"
+    echo
+
+    # :command.usage_fixed_flags
+    printf "  %s\n" "--help, -h"
+    printf "    Show this help\n"
+    echo
+
+  fi
+}
+
+# :command.usage
 dde_version_usage() {
   printf "dde version - Show version information\n\n"
 
@@ -857,9 +891,23 @@ project_hint() {
     fi
 }
 
-# Succeeds if the service mounts the projects directory (vhosts).
+# Prints the line of compose/services.tsv (generated) for service $1:
+# service <TAB> mounts vhosts (0|1) <TAB> host dirs (':' separated)
+service_info() {
+    local file="${DDE_HOME}/compose/services.tsv"
+    [[ -f "${file}" ]] || return 1
+    awk -F '\t' -v service="$1" '$1 == service { print; found = 1 } END { exit !found }' "${file}"
+}
+
+# Succeeds if the service mounts the projects directory (vhosts). Services
+# missing in services.tsv are looked up in the resolved compose config.
 service_mounts_vhosts() {
-    compose config "$1" 2>/dev/null | grep -q "target: ${DDE_VHOSTS_TARGET}\$"
+    local info
+    if info="$(service_info "$1")"; then
+        [[ "$(cut -f2 <<< "${info}")" == "1" ]]
+    else
+        compose config "$1" 2>/dev/null | grep -q "target: ${DDE_VHOSTS_TARGET}\$"
+    fi
 }
 
 # Prints the container path of the current directory, or nothing if it is
@@ -1033,11 +1081,46 @@ fail() {
 }
 
 # src/lib/prepare.sh
-# Creates missing configuration files from their samples before a service
-# starts, so the mounted files exist and belong to the user.
+# Runs before a service starts: creates its mount directories and missing
+# configuration files from their samples, so the bind mounts exist and
+# belong to the user (compose is told not to create them as root).
+
+# Directory the compose files mount from (DOCKER_VOLUME_BASE_PATH).
+volume_base() {
+    printf '%s\n' "${DOCKER_VOLUME_BASE_PATH:-${DDE_HOME}}"
+}
+
 prepare_service() {
+    local service="$1"
+    create_mount_dirs "${service}"
+    create_config "${service}"
+}
+
+# Creates the host directories listed for the service in services.tsv.
+# Only possible when the docker daemon runs on this machine.
+create_mount_dirs() {
+    local service="$1" info dirs dir base
+    info="$(service_info "${service}")" || return 0
+    dirs="$(cut -f3 <<< "${info}")"
+    [[ -n "${dirs}" ]] || return 0
+    if [[ -n "${DOCKER_HOST:-}" && "${DOCKER_HOST}" != unix://* ]]; then
+        return 0
+    fi
+    base="$(volume_base)"
+    while IFS= read -r -d ':' dir; do
+        if [[ ! -d "${base}/${dir}" ]]; then
+            note "${service}: creating ${base}/${dir}"
+            mkdir -p "${base}/${dir}" || fail "could not create ${base}/${dir}"
+        fi
+    done <<< "${dirs}:"
+}
+
+# Copies sample configuration into place on first start.
+create_config() {
     local service="$1" config_file=""
-    local config="${DDE_HOME}/config/${service}"
+    local sample="${DDE_HOME}/config/${service}"
+    local config
+    config="$(volume_base)/config/${service}"
 
     case "${service}" in
         php-*) config_file="${config}/etc/php/php.ini" ;;
@@ -1045,6 +1128,7 @@ prepare_service() {
         ssh) config_file="${config}/tunnel.conf" ;;
         nginx-*) config_file="${config}/etc/nginx/conf.d/default.conf" ;;
         varnish-*) config_file="${config}/etc/varnish/default.vcl" ;;
+        opensearch-*) config_file="${config}/config/opensearch.yml" ;;
     esac
 
     if [[ -z "${config_file}" || -f "${config_file}" ]]; then
@@ -1055,16 +1139,23 @@ prepare_service() {
         php-*)
             note "${service}: copying sample php.ini and conf.d/*.ini, adapt them to your needs"
             mkdir -p "${config}/etc/php/conf.d"
-            cp "${config}/sample/conf.d/"*.ini "${config}/etc/php/conf.d/"
-            cp "${config}/sample/php.ini.sample" "${config_file}"
+            cp "${sample}/sample/conf.d/"*.ini "${config}/etc/php/conf.d/"
+            cp "${sample}/sample/php.ini.sample" "${config_file}"
             ;;
         nginx-*)
             note "${service}: copying sample default.conf, adapt it to your needs"
-            cp "${config}/sample/conf.d/default.conf" "${config_file}"
+            mkdir -p "$(dirname "${config_file}")"
+            cp "${sample}/sample/conf.d/default.conf" "${config_file}"
             ;;
         varnish-*)
             note "${service}: copying sample default.vcl, adapt it to your needs"
-            cp "${config}/sample/default.vcl" "${config_file}"
+            mkdir -p "$(dirname "${config_file}")"
+            cp "${sample}/sample/default.vcl" "${config_file}"
+            ;;
+        opensearch-*)
+            note "${service}: copying the sample configuration, adapt it to your needs"
+            mkdir -p "${config}/config"
+            cp -R "${sample}/sample/." "${config}/config/"
             ;;
         *)
             note "${service}: creating empty ${config_file}"
@@ -1305,6 +1396,45 @@ dde_list_command() {
 }
 
 # :command.function
+dde_migrate_command() {
+
+  # src/migrate_command.sh
+  project="$(basename "${DDE_HOME}" | tr '[:upper:]' '[:lower:]' | tr -cd 'a-z0-9_-')"
+
+  mapfile -t volumes < <(docker volume ls -q --filter "label=com.docker.compose.project=${project}")
+  legacy=()
+  if (( ${#volumes[@]} )); then
+      while read -r name option; do
+          [[ "${option}" == "bind" ]] && legacy+=("${name}")
+      done < <(docker volume inspect --format '{{.Name}} {{index .Options "o"}}' "${volumes[@]}")
+  fi
+
+  if (( ${#legacy[@]} == 0 )); then
+      green "nothing to migrate: no dde 0.x bind volumes found"
+      exit 0
+  fi
+
+  echo "dde 0.x bind volumes (the data they point to stays where it is):"
+  printf '  %s\n' "${legacy[@]}"
+
+  if [[ -z "${args[--yes]:-}" ]]; then
+      read -r -p "Remove these ${#legacy[@]} volumes? [y/N] " answer
+      [[ "${answer}" =~ ^[yY] ]] || { echo "aborted"; exit 1; }
+  fi
+
+  failed=0
+  for volume in "${legacy[@]}"; do
+      docker volume rm "${volume}" >/dev/null || failed=1
+  done
+  if (( failed )); then
+      warn "some volumes are still used by old containers: run 'dde down --all' and 'dde migrate' again"
+      exit 1
+  fi
+  green "removed ${#legacy[@]} volumes"
+
+}
+
+# :command.function
 dde_version_command() {
 
   # src/version_command.sh
@@ -1475,6 +1605,13 @@ parse_requirements() {
       action="list"
       shift
       dde_list_parse_requirements "$@"
+      shift $#
+      ;;
+
+    migrate)
+      action="migrate"
+      shift
+      dde_migrate_parse_requirements "$@"
       shift $#
       ;;
 
@@ -2576,6 +2713,60 @@ dde_list_parse_requirements() {
 }
 
 # :command.parse_requirements
+dde_migrate_parse_requirements() {
+  local key
+
+  # :command.fixed_flags_filter
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+      --help | -h)
+        long_usage=yes
+        dde_migrate_usage
+        exit
+        ;;
+
+      *)
+        break
+        ;;
+
+    esac
+  done
+
+  # :command.command_filter
+  action="migrate"
+
+  # :command.parse_requirements_while
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+      # :flag.case
+      --yes | -y)
+
+        # :flag.case_no_arg
+        args['--yes']=1
+        shift
+        ;;
+
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
+
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
+
+        ;;
+
+    esac
+  done
+
+}
+
+# :command.parse_requirements
 dde_version_parse_requirements() {
   local key
 
@@ -2740,6 +2931,7 @@ run() {
     "compose") dde_compose_command ;;
     "config") dde_config_command ;;
     "list") dde_list_command ;;
+    "migrate") dde_migrate_command ;;
     "version") dde_version_command ;;
     "init") dde_init_command ;;
   esac

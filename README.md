@@ -74,6 +74,7 @@ Run `dde list` for an overview and `dde <command> --help` for details.
 | `dde ls [FILTER]` / `dde get services` | All services dde can start |
 | `dde compose ARGS...` | Any `docker compose` command against the dde compose file |
 | `dde config` | The resolved settings for the current directory |
+| `dde migrate` | Remove the named volumes of dde 0.x (data is kept) |
 | `dde version` | Version information; `--short` for scripts |
 | `dde init` | Shell integration |
 
@@ -125,19 +126,53 @@ Also changed:
   `DEFAULT_CONTAINER` and `DOCKER_CONTAINER`.
 - Run `dde init` again once: it rewrites `~/.docker/.dderc` (fixes loading
   the completions and adds zsh support).
+- Containers mount `config/`, `data/`, `lib/` and `vhosts` directly (bind
+  mounts) instead of through named volumes. Your data stays where it is; the
+  next `dde up` recreates the containers with the new mounts. Afterwards
+  `dde migrate` removes the old, now unused volumes (only their docker
+  entries, never the directories they pointed to).
+- Versions of a service family share one build context, e.g. `docker/php-fpm`
+  for all `php-fpm-*`. If you kept personal files in
+  `docker/php-cli-8x/env/` (copied into the home directory of the image),
+  move them to `docker/php-cli/env/` and rebuild.
+- `docker-compose.yml` and `compose/` are generated from `services.yml`, see
+  below. Local changes there are overwritten by `make generate`.
+
+## Services and compose files
+
+All services are defined in `services.yml`. `make generate` renders it with
+the templates in `templates/` into `docker-compose.yml` (which only includes
+the files below `compose/`), one `compose/<family>.yml` per service family
+and `compose/services.tsv`, which tells `dde` which services mount the
+projects and which directories to create before a service starts.
+
+- Every service is on the network `app-tier` and reachable under its name.
+- Images are built from `docker/<family>/Dockerfile`, which takes the base
+  image as build argument `BASE_IMAGE` (set per version in `services.yml`),
+  plus `USER_ID`/`GROUP_ID` so files written in containers belong to you.
+- Mounts are bind mounts below `DOCKER_VOLUME_BASE_PATH` with
+  `create_host_path: false`: compose never creates a missing directory as
+  root, `dde up` creates it as you.
+
+To add a version of an existing family, copy an entry in `services.yml`
+(adjust image tag and host ports, which must stay unique), add its sample
+configuration below `config/<family>-<tag>/` if the family needs one, and
+run `make generate && make check`.
 
 ## Contributing
 
-`bin/dde` and `bin/completions.bash` are generated with
-[bashly](https://bashly.dev) from `bin/src`. Don't edit them directly:
+`bin/dde`, `bin/completions.bash`, `docker-compose.yml` and `compose/` are
+generated. Don't edit them directly:
 
 ```bash
-make generate   # regenerate after changing bin/src
+make generate   # regenerate after changing bin/src, services.yml or templates/
 make check      # what CI runs: generated files up to date, lint, compose check, tests
 make help       # all targets
 ```
 
-All tools run in pinned docker images. See `tests/` for the bats suite.
+The CLI is built with [bashly](https://bashly.dev) from `bin/src`, the compose
+files with `tools/generate.py`. All tools run in pinned docker images. See
+`tests/` for the bats suite (CLI) and the python unit tests (generator).
 
 ## Container communication
 

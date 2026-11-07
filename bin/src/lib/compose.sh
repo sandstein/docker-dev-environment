@@ -45,9 +45,23 @@ project_hint() {
     fi
 }
 
-# Succeeds if the service mounts the projects directory (vhosts).
+# Prints the line of compose/services.tsv (generated) for service $1:
+# service <TAB> mounts vhosts (0|1) <TAB> host dirs (':' separated)
+service_info() {
+    local file="${DDE_HOME}/compose/services.tsv"
+    [[ -f "${file}" ]] || return 1
+    awk -F '\t' -v service="$1" '$1 == service { print; found = 1 } END { exit !found }' "${file}"
+}
+
+# Succeeds if the service mounts the projects directory (vhosts). Services
+# missing in services.tsv are looked up in the resolved compose config.
 service_mounts_vhosts() {
-    compose config "$1" 2>/dev/null | grep -q "target: ${DDE_VHOSTS_TARGET}\$"
+    local info
+    if info="$(service_info "$1")"; then
+        [[ "$(cut -f2 <<< "${info}")" == "1" ]]
+    else
+        compose config "$1" 2>/dev/null | grep -q "target: ${DDE_VHOSTS_TARGET}\$"
+    fi
 }
 
 # Prints the container path of the current directory, or nothing if it is

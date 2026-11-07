@@ -1,0 +1,17 @@
+{{name}}:
+  container_name: {{name}}
+  build:
+    context: docker/elastic
+    args:
+      USER_ID: ${USER_ID}
+      GROUP_ID: ${GROUP_ID}
+  networks:
+    app-tier:
+      aliases:
+        - {{name}}
+  env_file: env/elastic.env
+  ports:
+    - "{{port}}:9200"
+    - "{{transport_port}}:9300"
+  x-binds:
+    - data/{{name}}:/usr/share/elasticsearch/data

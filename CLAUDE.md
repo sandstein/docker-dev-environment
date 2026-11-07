@@ -12,8 +12,8 @@ All tools run in pinned docker images via the `Makefile`; nothing needs to be in
 
 ```bash
 make check            # everything CI runs: check-generated, lint, check-compose, test
-make generate         # regenerate bin/dde + bin/completions.bash from bin/src
-make test             # bats suite (tests/*.bats)
+make generate         # regenerate bin/dde, completions (bashly) and compose files (tools/generate.py)
+make test             # bats suite (tests/*.bats) + python unit tests (tests/test_generate.py)
 make lint             # shellcheck (generated bin/dde) + hadolint (docker/*/Dockerfile)
 make check-compose    # tools/check-compose.py: names, aliases, mounts, ports, .env.sample variables
 docker run --rm -v "$PWD:/work" -w /work bats/bats:1.11.1 tests/cli.bats -f 'exec'   # single file / filter
@@ -28,7 +28,7 @@ docker run --rm -v "$PWD:/work" -w /work bats/bats:1.11.1 tests/cli.bats -f 'exe
 
 - `bin/dde` and `bin/completions.bash` are **generated** — never edit them. Edit `bin/src/bashly.yml` (commands, args, flags, help), `bin/src/*_command.sh` and `bin/src/lib/*.sh`, then `make generate`. `bin/settings.yml` sets `compact_short_flags: false` (keeps `-la` intact for `exec`).
 - `bin/alt/` holds the legacy pre-bashly `dde-*` scripts; not used by `bin/dde`.
-- The CLI mirrors docker: `up`(alias `start`)/`stop`/`down`/`restart`/`build`/`logs` (default: `DOCKER_CONTAINER`), `exec`/`run`/`shell`, `ps` = `get containers`, `ls` = `get services`, `compose` (pass-through), `config`, `list` (commands), `version`, `init`. 0.x commands (`command`, `bash`, `start -r`, …) were removed in 1.0 — see the README migration table. Scripts/skills can branch on `dde version --short` (0.x prints `0.1.0` for `dde --version`).
+- The CLI mirrors docker: `up`(alias `start`)/`stop`/`down`/`restart`/`build`/`logs` (default: `DOCKER_CONTAINER`), `exec`/`run`/`shell`, `ps` = `get containers`, `ls` = `get services`, `compose` (pass-through), `config`, `migrate`, `list` (commands), `version`, `init`. 0.x commands (`command`, `bash`, `start -r`, …) were removed in 1.0 — see the README migration table. Scripts/skills can branch on `dde version --short` (0.x prints `0.1.0` for `dde --version`).
 
 Flow of a command:
 1. `initialize.sh` (before parsing): `DDE_HOME` = parent of the resolved `bin/dde` (not `DOCKER_DEV_ENVIRONMENT_HOME`), `DDE_COMPOSE_FILE`.
@@ -39,18 +39,24 @@ Details that matter when changing behavior:
 - `exec`/`run` use bashly `catch_all` with **no declared flags**; `parse_exec_options` parses docker-style options (`-s -u -w -e -T`) only up to the first non-option, so the command's own flags (`mysql -u root`) pass through. bashly only intercepts `--help` as the very first argument.
 - Working dir: explicit `-w` wins; otherwise only for services whose resolved config mounts `/var/www/vhosts` (`service_mounts_vhosts` greps `compose config <svc>`): `PROJECT_ROOT` or `$PWD` mapped below `vhosts`. `-T` is added automatically when stdin is not a tty (so tests always see `-T` for exec/run).
 - Errors go through `fail` (stderr, exit 1); `warn`/`note` write to stderr so stdout stays pipeable.
-- `dde up` calls `prepare_service` (`lib/prepare.sh`) per service: on first start it copies sample config into place (php: `config/<svc>/sample/conf.d/*.ini` + `php.ini.sample`; nginx: `default.conf`; varnish: `default.vcl`) or creates an empty config (mysql-family `my.cnf`, ssh `tunnel.conf`).
+- `dde up` calls `prepare_service` (`lib/prepare.sh`) per service: creates mount dirs from `services.tsv` below `DOCKER_VOLUME_BASE_PATH`, then on first start copies sample config into place (php: `conf.d/*.ini` + `php.ini.sample`; nginx: `default.conf`; varnish: `default.vcl`; opensearch: whole `sample/`) or creates an empty config (mysql-family `my.cnf`, ssh `tunnel.conf`).
 - `dde down` must never pass `-v`.
 - `dde init` writes `~/.docker/.dderc` (PATH, completions, `bashcompinit` for zsh) and adds `source ~/.docker/.dderc` once to existing `~/.bashrc` / `~/.zshrc`.
 
-## docker-compose.yml conventions
+## Services: catalog -> generated compose files
 
-- Every service has `container_name` = service name = network alias on the single `app-tier` bridge network; containers reach each other by service name.
-- Image sources live in `docker/<service>/Dockerfile`; builds receive `USER_ID`/`GROUP_ID` args so files are owned by the host user. PHP CLI containers run as `$USER_ID:$GROUP_ID` with home `/home/phpcli`.
-- Volumes are **named volumes with local bind `driver_opts`** pointing at `${DOCKER_VOLUME_BASE_PATH}/config/<service>/...` or `${DOCKER_VOLUME_BASE_PATH}/data/<service>`. `vhosts` binds `${DOCKER_VOLUME_BASE_PATH}/vhosts` (a gitignored symlink to the user's projects dir) to `/var/www/vhosts`.
-- Adding a new service version typically means: a `docker/<svc>/Dockerfile`, a service block, its named volumes in the top-level `volumes:` section, a `config/<svc>/` tree (runtime files gitignored, `sample/` committed), and a unique host port (pattern e.g. mysql `33NN`, php-cli `444NN`). Copy the nearest existing version and adjust — the blocks are near-identical.
-- Shared env files for services are in `env/` (e.g. `env/db.env`).
-- Only some containers mount `vhosts` (web servers, php-*, node-*, ssh, python, solr, tomcat, selenium-side-runner); infrastructure containers do not.
+`docker-compose.yml`, `compose/*.yml` and `compose/services.tsv` are **generated** by `tools/generate.py` (`make generate`) — never edit them. Edit:
+- `services.yml`: catalog. `families.<family>.versions.<tag>` -> service `<family>-<tag>`; keys become `{{placeholders}}`; `image` -> build arg `BASE_IMAGE` (must be tagged; omitted for legacy contexts with a fixed `FROM`); `context`, `binds` (extra mounts), `overrides` (deep merge, lists replace). Families without `versions` render their template as is (apache, ssh, solr, tomcat, mail, esadmin, selenium, python). `template:` lets families share one (mysql/percona/mariadb).
+- `templates/<family>.yml`: compose service(s) with placeholders (`{{name}}`, `{{tag}}`, `{{family}}`, `{{env_prefix}}` = `PHP_CLI_83`, plus catalog keys). `x-binds: ["<src>:<target>"]` becomes long-syntax bind mounts with `create_host_path: false`; relative sources are prefixed with `${DOCKER_VOLUME_BASE_PATH}/`, `$VAR`/absolute sources are kept.
+- `docker/<family>/Dockerfile`: shared per family (`ARG BASE_IMAGE` / `FROM ${BASE_IMAGE}` with `# hadolint ignore=DL3006`). Own contexts remain for legacy php-cli 56–81, opensearch-37 (no phonetic plugin) and singletons.
+
+Conventions and gotchas:
+- Root file uses `include` with `project_directory: .`, so relative paths (`env/*.env`, `docker/*`) and the root `.env` resolve from the repo root. The `app-tier` network is defined only in the root file.
+- Every service: `container_name` = service name = network alias on `app-tier`. Host ports must be unique (`tools/check-compose.py` enforces it; intended alternatives such as chrome/chrome-standalone are listed in its `ALTERNATIVES`).
+- `compose/services.tsv` (`service`, mounts vhosts 0/1, host dirs `:`-separated) is read by `bin/dde` (`service_info`) to set the working dir and to `mkdir -p` mount sources on `dde up` (skipped for a remote `DOCKER_HOST`). Services not listed fall back to `compose config <svc>`.
+- Bind mounts never auto-create host dirs (would be root-owned); 0.x used named volumes with bind `driver_opts` — `dde migrate` removes those leftovers (metadata only).
+- Only some services mount `vhosts` (web servers, php-*, node-*, ssh, python, solr, tomcat, selenium-side-runner); databases, caches, search etc. don't.
+- Adding a version: add the catalog entry (unique ports), `config/<name>/sample` if the family seeds config, `make generate && make check`. Verify equivalence-sensitive refactors by diffing `docker compose config --format json` before/after.
 
 ## Config layout
 

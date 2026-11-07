@@ -1,0 +1,19 @@
+python-310:
+  container_name: python-310
+  build:
+    context: docker/python-310
+    args:
+      USER_ID: ${USER_ID}
+      GROUP_ID: ${GROUP_ID}
+  networks:
+    app-tier:
+      aliases:
+        - python-310
+  ports:
+    - "1026:25"
+  x-binds:
+    - vhosts:/var/www/vhosts
+  user: $USER_ID:$GROUP_ID
+  tty: true
+  extra_hosts:
+    - host.docker.internal:host-gateway

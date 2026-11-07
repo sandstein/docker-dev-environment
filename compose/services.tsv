@@ -1,0 +1,91 @@
+mysql-55	0	data/mysql-55:config/mysql-55/etc
+mysql-56	0	data/mysql-56:config/mysql-56/etc
+mysql-57	0	data/mysql-57:config/mysql-57/etc
+mysql-80	0	data/mysql-80:config/mysql-80/etc
+mysql-84	0	data/mysql-84:config/mysql-84/etc
+percona-57	0	data/percona-57:config/percona-57/etc
+percona-80	0	data/percona-80:config/percona-80/etc
+mariadb-55	0	data/mariadb-55:config/mariadb-55/etc
+mariadb-100	0	data/mariadb-100:config/mariadb-100/etc
+mariadb-101	0	data/mariadb-101:config/mariadb-101/etc
+mariadb-102	0	data/mariadb-102:config/mariadb-102/etc
+mariadb-103	0	data/mariadb-103:config/mariadb-103/etc
+mariadb-104	0	data/mariadb-104:config/mariadb-104/etc
+mariadb-106	0	data/mariadb-106:config/mariadb-106/etc
+mariadb-114	0	data/mariadb-114:config/mariadb-114/etc
+mariadb-118	0	data/mariadb-118:config/mariadb-118/etc
+php-fpm-56	1	config/php-fpm-56/etc/php
+php-fpm-70	1	config/php-fpm-70/etc/php
+php-fpm-71	1	config/php-fpm-71/etc/php
+php-fpm-72	1	config/php-fpm-72/etc/php
+php-fpm-73	1	config/php-fpm-73/etc/php
+php-fpm-74	1	config/php-fpm-74/etc/php
+php-fpm-80	1	config/php-fpm-80/etc/php
+php-fpm-81	1	config/php-fpm-81/etc/php
+php-fpm-82	1	config/php-fpm-82/etc/php
+php-fpm-83	1	config/php-fpm-83/etc/php
+php-fpm-84	1	config/php-fpm-84/etc/php
+php-fpm-85	1	config/php-fpm-85/etc/php
+php-cli-56	1	config/php-cli-56/etc/php:config/php-cli-56/composer:config/php-cli-56/bin
+php-cli-70	1	config/php-cli-70/etc/php:config/php-cli-70/composer:config/php-cli-70/bin
+php-cli-71	1	config/php-cli-71/etc/php:config/php-cli-71/composer:config/php-cli-71/bin
+php-cli-72	1	config/php-cli-72/etc/php:config/php-cli-72/composer:config/php-cli-72/bin
+php-cli-73	1	config/php-cli-73/etc/php:config/php-cli-73/composer:config/php-cli-73/bin
+php-cli-74	1	config/php-cli-74/etc/php:config/php-cli-74/composer:config/php-cli-74/bin
+php-cli-80	1	config/php-cli-80/etc/php:config/php-cli-80/composer:config/php-cli-80/bin
+php-cli-81	1	config/php-cli-81/etc/php:config/php-cli-81/composer:config/php-cli-81/bin
+php-cli-82	1	config/php-cli-82/etc/php:config/php-cli-82/composer:config/php-cli-82/bin
+php-cli-83	1	config/php-cli-83/etc/php:config/php-cli-83/composer:config/php-cli-83/bin:config/php-cli-83/local
+php-cli-84	1	config/php-cli-84/etc/php:config/php-cli-84/composer:config/php-cli-84/bin
+php-cli-85	1	config/php-cli-85/etc/php:config/php-cli-85/composer:config/php-cli-85/bin
+ssh	1	config/ssh
+solr-77	1	lib/solr/77
+solr-89	1	lib/solr/89
+tomcat-9	1	data/tomcat-9
+apache-24	1	config/apache-24/conf.d
+redis-5	0	
+redis-6	0	
+redis-7	0	
+rabbit-39	0	
+rabbit-310	0	
+rabbit-311	0	
+rabbit-41	0	
+mailhog	0	
+mailpit	0	
+varnish-60	0	config/varnish-60/etc/varnish
+varnish-65	0	config/varnish-65/etc/varnish
+varnish-66	0	config/varnish-66/etc/varnish
+varnish-71	0	config/varnish-71/etc/varnish
+varnish-72	0	config/varnish-72/etc/varnish
+varnish-73	0	config/varnish-73/etc/varnish
+varnish-77	0	config/varnish-77/etc/varnish
+elastic-56	0	data/elastic-56
+elastic-64	0	data/elastic-64
+elastic-68	0	data/elastic-68
+elastic-71	0	data/elastic-71
+elastic-73	0	data/elastic-73
+elastic-76	0	data/elastic-76
+elastic-710	0	data/elastic-710
+elastic-716	0	data/elastic-716
+elastic-717	0	data/elastic-717
+opensearch-12	0	data/opensearch-12:config/opensearch-12/config
+opensearch-25	0	data/opensearch-25:config/opensearch-25/config
+opensearch-37	0	data/opensearch-37:config/opensearch-37/config
+esadmin	0	
+selenium-hub	0	
+chrome	0	
+edge	0	
+firefox	0	
+chrome-standalone	0	
+edge-standalone	0	
+firefox-standalone	0	
+selenium-side-runner	1	
+python-310	1	
+node-11	1	
+node-12	1	
+node-14	1	
+node-16	1	
+node-17	1	
+node-18	1	
+nginx-122	1	config/nginx-122/etc/nginx/conf.d
+nginx-123	1	config/nginx-123/etc/nginx/conf.d

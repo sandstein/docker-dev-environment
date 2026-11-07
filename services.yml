@@ -1,0 +1,160 @@
+# Catalog of all dde services. `make generate` renders it with templates/
+# into docker-compose.yml and compose/*.yml (see tools/generate.py for the
+# format). Add a version with `dde service add` or by copying an entry.
+#
+# families.<family>.versions.<tag> becomes the service <family>-<tag>.
+# Families without `versions` are rendered from their template as is.
+
+families:
+
+  mysql:
+    versions:
+      "55": {image: "sandstein/mysql:5.5", port: 3355}
+      "56": {image: "sandstein/mysql:5.6", port: 3356}
+      "57": {image: "sandstein/mysql:5.7", port: 3357}
+      "80":
+        image: "sandstein/mysql:8.0"
+        port: 3380
+        overrides:
+          command: mysqld --default-authentication-plugin=mysql_native_password --skip-mysqlx
+      "84": {image: "sandstein/mysql:8.4", port: 3384}
+
+  percona:
+    template: mysql
+    versions:
+      "57": {image: "sandstein/percona:5.7", port: 3457}
+      "80":
+        image: "sandstein/percona:8.0"
+        port: 3480
+        overrides:
+          command: mysqld --default-authentication-plugin=mysql_native_password --skip-mysqlx
+
+  mariadb:
+    template: mysql
+    versions:
+      "55": {image: "sandstein/mariadb:5.5", port: 3555}
+      "100": {image: "sandstein/mariadb:10.0", port: 3500}
+      "101": {image: "sandstein/mariadb:10.1", port: 3501}
+      "102": {image: "sandstein/mariadb:10.2", port: 3502}
+      "103": {image: "sandstein/mariadb:10.3", port: 3503}
+      "104": {image: "sandstein/mariadb:10.4", port: 3504}
+      "106": {image: "sandstein/mariadb:10.6", port: 3506}
+      "114": {image: "sandstein/mariadb:11.4", port: 3514}
+      "118": {image: "sandstein/mariadb:11.8", port: 3518}
+
+  php-fpm:
+    versions:
+      "56": {image: "sandstein/php:fpm-5.6", port: 9056}
+      "70": {image: "sandstein/php:fpm-7.0", port: 9070}
+      "71": {image: "sandstein/php:fpm-7.1", port: 9071}
+      "72": {image: "sandstein/php:fpm-7.2", port: 9072}
+      "73": {image: "sandstein/php:fpm-7.3", port: 9073}
+      "74": {image: "sandstein/php:fpm-7.4", port: 9074}
+      "80": {image: "sandstein/php:fpm-8.0", port: 9080}
+      "81": {image: "sandstein/php:fpm-8.1", port: 9081}
+      "82": {image: "sandstein/php:fpm-8.2", port: 9082}
+      "83": {image: "sandstein/php:fpm-8.3", port: 9083}
+      "84": {image: "sandstein/php:fpm-8.4", port: 9084}
+      "85": {image: "sandstein/php:fpm-8.5", port: 9085}
+
+  php-cli:
+    versions:
+      # legacy versions keep their own build context with a fixed FROM
+      "56": {context: docker/php-cli-56, overrides: {tty: false}}
+      "70": {context: docker/php-cli-70}
+      "71": {context: docker/php-cli-71}
+      "72": {context: docker/php-cli-72}
+      "73": {context: docker/php-cli-73}
+      "74": {context: docker/php-cli-74}
+      "80": {context: docker/php-cli-80}
+      "81": {context: docker/php-cli-81}
+      "82": &php_cli_modern
+        image: "sandstein/php:cli-8.2"
+        context: docker/php-cli
+        binds: ["$NVM_BASE:/home/phpcli/.nvm"]
+        overrides: {ports: ["44482:8082"]}
+      "83":
+        <<: *php_cli_modern
+        image: "sandstein/php:cli-8.3"
+        binds: ["$NVM_BASE:/home/phpcli/.nvm", "config/php-cli-83/local:/home/phpcli/.local"]
+        overrides: {ports: ["44483:8082"]}
+      "84":
+        <<: *php_cli_modern
+        image: "sandstein/php:cli-8.4"
+        overrides: {ports: ["44484:8082"]}
+      "85":
+        <<: *php_cli_modern
+        image: "sandstein/php:cli-8.5"
+        overrides: {ports: ["44485:8082"]}
+
+  ssh:
+
+  solr:
+
+  tomcat:
+
+  apache:
+
+  redis:
+    versions:
+      "5": {image: "redis:5", port: 6379}
+      "6": {image: "redis:6", port: 6380}
+      "7": {image: "redis:7", port: 6381}
+
+  rabbit:
+    versions:
+      "39": {image: "rabbitmq:3.9-management", port: 5609, admin_port: 15609}
+      "310": {image: "rabbitmq:3.10-management", port: 5610, admin_port: 15610}
+      "311": {image: "rabbitmq:3.11-management", port: 5611, admin_port: 15611}
+      "41": {image: "rabbitmq:4.1-management", port: 5701, admin_port: 15701}
+
+  mail:
+
+  varnish:
+    versions:
+      "60": {image: "varnish:6.0"}
+      "65": {image: "varnish:7.1"}  # FIXME: varnish-65 has always used 7.1, should probably be 6.5
+      "66": {image: "varnish:6.6"}
+      "71": {image: "varnish:7.1"}
+      "72": {image: "varnish:7.2"}
+      "73": {image: "varnish:7.3"}
+      "77": {image: "varnish:7.7"}
+
+  elastic:
+    versions:
+      "56": {image: "sandstein/elasticsearch:5.6", port: 9256, transport_port: 9356}
+      "64": {image: "sandstein/elasticsearch:6.4", port: 9264, transport_port: 9364}
+      "68": {image: "sandstein/elasticsearch:6.8", port: 9268, transport_port: 9368}
+      "71": {image: "sandstein/elasticsearch:7.1", port: 9271, transport_port: 9371}
+      "73": {image: "sandstein/elasticsearch:7.3", port: 9273, transport_port: 9373}
+      "76": {image: "sandstein/elasticsearch:7.6", port: 9276, transport_port: 9376}
+      "710": {image: "sandstein/elasticsearch:7.10", port: 9280, transport_port: 9380}
+      "716": {image: "sandstein/elasticsearch:7.16", port: 9286, transport_port: 9386}
+      "717": {image: "sandstein/elasticsearch:7.17", port: 9287, transport_port: 9387}
+
+  opensearch:
+    versions:
+      "12": {image: "opensearchproject/opensearch:1.2.4", port: 9212, transport_port: 9312, env_file: env/opensearch.env}
+      "25": {image: "opensearchproject/opensearch:2.5.0", port: 9225, transport_port: 9325, env_file: env/opensearch.env}
+      # without the phonetic plugin
+      "37": {image: "opensearchproject/opensearch:3.7.0", port: 9237, transport_port: 9337, env_file: env/opensearch-37.env, context: docker/opensearch-37}
+
+  esadmin:
+
+  selenium:
+
+  python:
+
+  node:
+    versions:
+      "11": {image: "sandstein/node:11"}
+      "12": {image: "sandstein/node:12"}
+      "14": {image: "sandstein/node:14"}
+      "16": {image: "sandstein/node:16"}
+      "17": {image: "sandstein/node:17"}
+      "18": {image: "sandstein/node:18"}
+
+  nginx:
+    versions:
+      "122": {image: "nginx:1.22"}
+      "123": {image: "nginx:1.23"}

@@ -1,0 +1,17 @@
+{{name}}:
+  container_name: {{name}}
+  build:
+    context: docker/node
+    args:
+      USER_ID: ${USER_ID}
+      GROUP_ID: ${GROUP_ID}
+  networks:
+    app-tier:
+      aliases:
+        - {{name}}
+  x-binds:
+    - vhosts:/var/www/vhosts
+  user: $USER_ID:$GROUP_ID
+  tty: true
+  extra_hosts:
+    - host.docker.internal:host-gateway

@@ -1,0 +1,30 @@
+solr-77:
+  container_name: solr-77
+  build:
+    context: docker/solr-77
+    args:
+      USER_ID: ${USER_ID}
+      GROUP_ID: ${GROUP_ID}
+  networks:
+    app-tier:
+      aliases:
+        - solr-77
+  ports:
+    - "8977:8983"
+  x-binds:
+    - vhosts:/var/www/vhosts
+    - lib/solr/77:/opt/solr/server/solr/lib
+
+solr-89:
+  container_name: solr-89
+  build:
+    context: docker/solr-89
+  networks:
+    app-tier:
+      aliases:
+        - solr-89
+  ports:
+    - "8989:8983"
+  x-binds:
+    - vhosts:/var/www/vhosts
+    - lib/solr/89:/opt/solr/server/solr/lib

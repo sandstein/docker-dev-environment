@@ -179,6 +179,18 @@ commands:
 - name: list
   help: List the dde commands
 
+- name: migrate
+  help: |-
+    Remove the named volumes dde 0.x used for its bind mounts.
+
+    dde 1.0 mounts config/, data/ and vhosts directly. The old volumes only
+    pointed at these directories, so removing them does not touch any data.
+    Volumes that are not bind mounts or still in use are never removed.
+  flags:
+  - long: --yes
+    short: -y
+    help: Remove without asking
+
 - name: version
   help: Show version information
   flags:
