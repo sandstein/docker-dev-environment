@@ -1,6 +1,5 @@
 FROM sandstein/php:cli-8.1
 
-COPY env/* /home/phpcli/
 
 ARG USER_ID=1000
 ARG GROUP_ID=1000

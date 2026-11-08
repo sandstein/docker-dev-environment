@@ -25,6 +25,7 @@ TEMPLATE = """\
     - vhosts:/var/www/vhosts
     - config/{{name}}/etc:/etc/web
     - $SSH_BASE:/home/web/.ssh
+    - ${SECRETS_BASE:-./config/no-secrets}:/home/web/.secrets:ro
 """
 
 STATIC = """\
@@ -91,6 +92,13 @@ class GenerateTest(unittest.TestCase):
             "bind": {"create_host_path": False},
         })
         self.assertEqual(web10["volumes"][2]["source"], "$SSH_BASE")
+        self.assertEqual(web10["volumes"][3], {
+            "type": "bind",
+            "source": "${SECRETS_BASE:-./config/no-secrets}",
+            "target": "/home/web/.secrets",
+            "read_only": True,
+            "bind": {"create_host_path": False},
+        })
 
         web20 = services["web-20"]
         self.assertEqual(web20["command"], "serve")

@@ -5,11 +5,15 @@ services:
     container_name: php-cli-56
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - DDE_DOTFILES_CORE=${DDE_DOTFILES_CORE:-}
+      - DDE_DOTFILES_LOCAL=${DDE_DOTFILES_LOCAL:-}
     build:
       context: docker/php-cli-56
       args:
         USER_ID: ${USER_ID}
         GROUP_ID: ${GROUP_ID}
+        DDE_CLI_TOOLS: ${DDE_CLI_TOOLS:-}
+        DDE_CLI_NODE: ${DDE_CLI_NODE:-lts/*}
     networks:
       app-tier:
         aliases:
@@ -35,13 +39,19 @@ services:
         bind:
           create_host_path: false
       - type: bind
-        source: $CONFIG_BASE
+        source: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-56/home-config
         target: /home/phpcli/.config
         bind:
           create_host_path: false
       - type: bind
         source: $SSH_BASE
         target: /home/phpcli/.ssh
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${SECRETS_BASE:-./config/no-secrets}
+        target: /home/phpcli/.secrets
+        read_only: true
         bind:
           create_host_path: false
       - type: bind
@@ -59,11 +69,15 @@ services:
     container_name: php-cli-70
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - DDE_DOTFILES_CORE=${DDE_DOTFILES_CORE:-}
+      - DDE_DOTFILES_LOCAL=${DDE_DOTFILES_LOCAL:-}
     build:
       context: docker/php-cli-70
       args:
         USER_ID: ${USER_ID}
         GROUP_ID: ${GROUP_ID}
+        DDE_CLI_TOOLS: ${DDE_CLI_TOOLS:-}
+        DDE_CLI_NODE: ${DDE_CLI_NODE:-lts/*}
     networks:
       app-tier:
         aliases:
@@ -89,13 +103,19 @@ services:
         bind:
           create_host_path: false
       - type: bind
-        source: $CONFIG_BASE
+        source: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-70/home-config
         target: /home/phpcli/.config
         bind:
           create_host_path: false
       - type: bind
         source: $SSH_BASE
         target: /home/phpcli/.ssh
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${SECRETS_BASE:-./config/no-secrets}
+        target: /home/phpcli/.secrets
+        read_only: true
         bind:
           create_host_path: false
       - type: bind
@@ -113,11 +133,15 @@ services:
     container_name: php-cli-71
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - DDE_DOTFILES_CORE=${DDE_DOTFILES_CORE:-}
+      - DDE_DOTFILES_LOCAL=${DDE_DOTFILES_LOCAL:-}
     build:
       context: docker/php-cli-71
       args:
         USER_ID: ${USER_ID}
         GROUP_ID: ${GROUP_ID}
+        DDE_CLI_TOOLS: ${DDE_CLI_TOOLS:-}
+        DDE_CLI_NODE: ${DDE_CLI_NODE:-lts/*}
     networks:
       app-tier:
         aliases:
@@ -143,13 +167,19 @@ services:
         bind:
           create_host_path: false
       - type: bind
-        source: $CONFIG_BASE
+        source: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-71/home-config
         target: /home/phpcli/.config
         bind:
           create_host_path: false
       - type: bind
         source: $SSH_BASE
         target: /home/phpcli/.ssh
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${SECRETS_BASE:-./config/no-secrets}
+        target: /home/phpcli/.secrets
+        read_only: true
         bind:
           create_host_path: false
       - type: bind
@@ -167,11 +197,15 @@ services:
     container_name: php-cli-72
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - DDE_DOTFILES_CORE=${DDE_DOTFILES_CORE:-}
+      - DDE_DOTFILES_LOCAL=${DDE_DOTFILES_LOCAL:-}
     build:
       context: docker/php-cli-72
       args:
         USER_ID: ${USER_ID}
         GROUP_ID: ${GROUP_ID}
+        DDE_CLI_TOOLS: ${DDE_CLI_TOOLS:-}
+        DDE_CLI_NODE: ${DDE_CLI_NODE:-lts/*}
     networks:
       app-tier:
         aliases:
@@ -197,13 +231,19 @@ services:
         bind:
           create_host_path: false
       - type: bind
-        source: $CONFIG_BASE
+        source: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-72/home-config
         target: /home/phpcli/.config
         bind:
           create_host_path: false
       - type: bind
         source: $SSH_BASE
         target: /home/phpcli/.ssh
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${SECRETS_BASE:-./config/no-secrets}
+        target: /home/phpcli/.secrets
+        read_only: true
         bind:
           create_host_path: false
       - type: bind
@@ -221,11 +261,15 @@ services:
     container_name: php-cli-73
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - DDE_DOTFILES_CORE=${DDE_DOTFILES_CORE:-}
+      - DDE_DOTFILES_LOCAL=${DDE_DOTFILES_LOCAL:-}
     build:
       context: docker/php-cli-73
       args:
         USER_ID: ${USER_ID}
         GROUP_ID: ${GROUP_ID}
+        DDE_CLI_TOOLS: ${DDE_CLI_TOOLS:-}
+        DDE_CLI_NODE: ${DDE_CLI_NODE:-lts/*}
     networks:
       app-tier:
         aliases:
@@ -251,13 +295,19 @@ services:
         bind:
           create_host_path: false
       - type: bind
-        source: $CONFIG_BASE
+        source: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-73/home-config
         target: /home/phpcli/.config
         bind:
           create_host_path: false
       - type: bind
         source: $SSH_BASE
         target: /home/phpcli/.ssh
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${SECRETS_BASE:-./config/no-secrets}
+        target: /home/phpcli/.secrets
+        read_only: true
         bind:
           create_host_path: false
       - type: bind
@@ -275,11 +325,15 @@ services:
     container_name: php-cli-74
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - DDE_DOTFILES_CORE=${DDE_DOTFILES_CORE:-}
+      - DDE_DOTFILES_LOCAL=${DDE_DOTFILES_LOCAL:-}
     build:
       context: docker/php-cli-74
       args:
         USER_ID: ${USER_ID}
         GROUP_ID: ${GROUP_ID}
+        DDE_CLI_TOOLS: ${DDE_CLI_TOOLS:-}
+        DDE_CLI_NODE: ${DDE_CLI_NODE:-lts/*}
     networks:
       app-tier:
         aliases:
@@ -305,13 +359,19 @@ services:
         bind:
           create_host_path: false
       - type: bind
-        source: $CONFIG_BASE
+        source: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-74/home-config
         target: /home/phpcli/.config
         bind:
           create_host_path: false
       - type: bind
         source: $SSH_BASE
         target: /home/phpcli/.ssh
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${SECRETS_BASE:-./config/no-secrets}
+        target: /home/phpcli/.secrets
+        read_only: true
         bind:
           create_host_path: false
       - type: bind
@@ -329,11 +389,15 @@ services:
     container_name: php-cli-80
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - DDE_DOTFILES_CORE=${DDE_DOTFILES_CORE:-}
+      - DDE_DOTFILES_LOCAL=${DDE_DOTFILES_LOCAL:-}
     build:
       context: docker/php-cli-80
       args:
         USER_ID: ${USER_ID}
         GROUP_ID: ${GROUP_ID}
+        DDE_CLI_TOOLS: ${DDE_CLI_TOOLS:-}
+        DDE_CLI_NODE: ${DDE_CLI_NODE:-lts/*}
     networks:
       app-tier:
         aliases:
@@ -359,13 +423,19 @@ services:
         bind:
           create_host_path: false
       - type: bind
-        source: $CONFIG_BASE
+        source: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-80/home-config
         target: /home/phpcli/.config
         bind:
           create_host_path: false
       - type: bind
         source: $SSH_BASE
         target: /home/phpcli/.ssh
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${SECRETS_BASE:-./config/no-secrets}
+        target: /home/phpcli/.secrets
+        read_only: true
         bind:
           create_host_path: false
       - type: bind
@@ -383,11 +453,15 @@ services:
     container_name: php-cli-81
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - DDE_DOTFILES_CORE=${DDE_DOTFILES_CORE:-}
+      - DDE_DOTFILES_LOCAL=${DDE_DOTFILES_LOCAL:-}
     build:
       context: docker/php-cli-81
       args:
         USER_ID: ${USER_ID}
         GROUP_ID: ${GROUP_ID}
+        DDE_CLI_TOOLS: ${DDE_CLI_TOOLS:-}
+        DDE_CLI_NODE: ${DDE_CLI_NODE:-lts/*}
     networks:
       app-tier:
         aliases:
@@ -413,13 +487,19 @@ services:
         bind:
           create_host_path: false
       - type: bind
-        source: $CONFIG_BASE
+        source: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-81/home-config
         target: /home/phpcli/.config
         bind:
           create_host_path: false
       - type: bind
         source: $SSH_BASE
         target: /home/phpcli/.ssh
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${SECRETS_BASE:-./config/no-secrets}
+        target: /home/phpcli/.secrets
+        read_only: true
         bind:
           create_host_path: false
       - type: bind
@@ -437,12 +517,16 @@ services:
     container_name: php-cli-82
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - DDE_DOTFILES_CORE=${DDE_DOTFILES_CORE:-}
+      - DDE_DOTFILES_LOCAL=${DDE_DOTFILES_LOCAL:-}
     build:
       context: docker/php-cli
       args:
         BASE_IMAGE: sandstein/php:cli-8.2
         USER_ID: ${USER_ID}
         GROUP_ID: ${GROUP_ID}
+        DDE_CLI_TOOLS: ${DDE_CLI_TOOLS:-}
+        DDE_CLI_NODE: ${DDE_CLI_NODE:-lts/*}
     networks:
       app-tier:
         aliases:
@@ -468,13 +552,19 @@ services:
         bind:
           create_host_path: false
       - type: bind
-        source: $CONFIG_BASE
+        source: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-82/home-config
         target: /home/phpcli/.config
         bind:
           create_host_path: false
       - type: bind
         source: $SSH_BASE
         target: /home/phpcli/.ssh
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${SECRETS_BASE:-./config/no-secrets}
+        target: /home/phpcli/.secrets
+        read_only: true
         bind:
           create_host_path: false
       - type: bind
@@ -487,11 +577,6 @@ services:
         target: /home/phpcli/bin
         bind:
           create_host_path: false
-      - type: bind
-        source: $NVM_BASE
-        target: /home/phpcli/.nvm
-        bind:
-          create_host_path: false
     ports:
       - 44482:8082
 
@@ -499,12 +584,16 @@ services:
     container_name: php-cli-83
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - DDE_DOTFILES_CORE=${DDE_DOTFILES_CORE:-}
+      - DDE_DOTFILES_LOCAL=${DDE_DOTFILES_LOCAL:-}
     build:
       context: docker/php-cli
       args:
         BASE_IMAGE: sandstein/php:cli-8.3
         USER_ID: ${USER_ID}
         GROUP_ID: ${GROUP_ID}
+        DDE_CLI_TOOLS: ${DDE_CLI_TOOLS:-}
+        DDE_CLI_NODE: ${DDE_CLI_NODE:-lts/*}
     networks:
       app-tier:
         aliases:
@@ -530,13 +619,19 @@ services:
         bind:
           create_host_path: false
       - type: bind
-        source: $CONFIG_BASE
+        source: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-83/home-config
         target: /home/phpcli/.config
         bind:
           create_host_path: false
       - type: bind
         source: $SSH_BASE
         target: /home/phpcli/.ssh
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${SECRETS_BASE:-./config/no-secrets}
+        target: /home/phpcli/.secrets
+        read_only: true
         bind:
           create_host_path: false
       - type: bind
@@ -549,16 +644,6 @@ services:
         target: /home/phpcli/bin
         bind:
           create_host_path: false
-      - type: bind
-        source: $NVM_BASE
-        target: /home/phpcli/.nvm
-        bind:
-          create_host_path: false
-      - type: bind
-        source: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-83/local
-        target: /home/phpcli/.local
-        bind:
-          create_host_path: false
     ports:
       - 44483:8082
 
@@ -566,12 +651,16 @@ services:
     container_name: php-cli-84
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - DDE_DOTFILES_CORE=${DDE_DOTFILES_CORE:-}
+      - DDE_DOTFILES_LOCAL=${DDE_DOTFILES_LOCAL:-}
     build:
       context: docker/php-cli
       args:
         BASE_IMAGE: sandstein/php:cli-8.4
         USER_ID: ${USER_ID}
         GROUP_ID: ${GROUP_ID}
+        DDE_CLI_TOOLS: ${DDE_CLI_TOOLS:-}
+        DDE_CLI_NODE: ${DDE_CLI_NODE:-lts/*}
     networks:
       app-tier:
         aliases:
@@ -597,13 +686,19 @@ services:
         bind:
           create_host_path: false
       - type: bind
-        source: $CONFIG_BASE
+        source: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-84/home-config
         target: /home/phpcli/.config
         bind:
           create_host_path: false
       - type: bind
         source: $SSH_BASE
         target: /home/phpcli/.ssh
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${SECRETS_BASE:-./config/no-secrets}
+        target: /home/phpcli/.secrets
+        read_only: true
         bind:
           create_host_path: false
       - type: bind
@@ -616,11 +711,6 @@ services:
         target: /home/phpcli/bin
         bind:
           create_host_path: false
-      - type: bind
-        source: $NVM_BASE
-        target: /home/phpcli/.nvm
-        bind:
-          create_host_path: false
     ports:
       - 44484:8082
 
@@ -628,12 +718,16 @@ services:
     container_name: php-cli-85
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - DDE_DOTFILES_CORE=${DDE_DOTFILES_CORE:-}
+      - DDE_DOTFILES_LOCAL=${DDE_DOTFILES_LOCAL:-}
     build:
       context: docker/php-cli
       args:
         BASE_IMAGE: sandstein/php:cli-8.5
         USER_ID: ${USER_ID}
         GROUP_ID: ${GROUP_ID}
+        DDE_CLI_TOOLS: ${DDE_CLI_TOOLS:-}
+        DDE_CLI_NODE: ${DDE_CLI_NODE:-lts/*}
     networks:
       app-tier:
         aliases:
@@ -659,13 +753,19 @@ services:
         bind:
           create_host_path: false
       - type: bind
-        source: $CONFIG_BASE
+        source: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-85/home-config
         target: /home/phpcli/.config
         bind:
           create_host_path: false
       - type: bind
         source: $SSH_BASE
         target: /home/phpcli/.ssh
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${SECRETS_BASE:-./config/no-secrets}
+        target: /home/phpcli/.secrets
+        read_only: true
         bind:
           create_host_path: false
       - type: bind
@@ -676,11 +776,6 @@ services:
       - type: bind
         source: ${DOCKER_VOLUME_BASE_PATH}/config/php-cli-85/bin
         target: /home/phpcli/bin
-        bind:
-          create_host_path: false
-      - type: bind
-        source: $NVM_BASE
-        target: /home/phpcli/.nvm
         bind:
           create_host_path: false
     ports:

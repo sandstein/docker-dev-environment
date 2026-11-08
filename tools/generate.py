@@ -16,9 +16,10 @@ version plus:
   {{env_prefix}}  the name as variable prefix, e.g. PHP_CLI_83
 
 Template extensions resolved by the generator:
-  x-binds:  ["<source>:<target>", ...] becomes long syntax bind mounts with
-            create_host_path: false. Sources not starting with '$' or '/'
-            are relative to ${DOCKER_VOLUME_BASE_PATH}.
+  x-binds:  ["<source>:<target>[:ro]", ...] becomes long syntax bind mounts
+            with create_host_path: false. Sources not starting with '$' or '/'
+            are relative to ${DOCKER_VOLUME_BASE_PATH}; a source may be
+            '${VAR:-default}'. ':ro' mounts read-only.
 
 Catalog entry keys with a meaning beyond placeholders:
   image      base image, passed as build arg BASE_IMAGE (omitted when unset,
@@ -107,18 +108,21 @@ def expand_binds(service, extra, where):
     volumes = service.setdefault("volumes", [])
     host_dirs = []
     for entry in binds:
-        source, sep, target = entry.partition(":")
-        if not sep or not target.startswith(("/", "$")):
-            raise SystemExit(f"{where}: invalid bind '{entry}', expected <source>:<absolute target>")
+        # a ${VAR:-default} source contains colons itself
+        split_at = entry.find("}") + 1 if entry.startswith("${") else 0
+        source, sep, rest = entry[split_at:].partition(":")
+        source = entry[:split_at] + source
+        target, _, mode = rest.partition(":")
+        if not sep or not target.startswith(("/", "$")) or mode not in ("", "ro"):
+            raise SystemExit(f"{where}: invalid bind '{entry}', expected <source>:<absolute target>[:ro]")
         if not source.startswith(("$", "/")):
             host_dirs.append(source)
             source = "${DOCKER_VOLUME_BASE_PATH}/" + source
-        volumes.append({
-            "type": "bind",
-            "source": source,
-            "target": target,
-            "bind": {"create_host_path": False},
-        })
+        volume = {"type": "bind", "source": source, "target": target}
+        if mode == "ro":
+            volume["read_only"] = True
+        volume["bind"] = {"create_host_path": False}
+        volumes.append(volume)
     return host_dirs
 
 

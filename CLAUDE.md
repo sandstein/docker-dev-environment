@@ -47,7 +47,7 @@ Details that matter when changing behavior:
 
 `docker-compose.yml`, `compose/*.yml` and `compose/services.tsv` are **generated** by `tools/generate.py` (`make generate`) — never edit them. Edit:
 - `services.yml`: catalog. `families.<family>.versions.<tag>` -> service `<family>-<tag>`; keys become `{{placeholders}}`; `image` -> build arg `BASE_IMAGE` (must be tagged; omitted for legacy contexts with a fixed `FROM`); `context`, `binds` (extra mounts), `overrides` (deep merge, lists replace). Families without `versions` render their template as is (apache, ssh, solr, tomcat, mail, esadmin, selenium, python). `template:` lets families share one (mysql/percona/mariadb).
-- `templates/<family>.yml`: compose service(s) with placeholders (`{{name}}`, `{{tag}}`, `{{family}}`, `{{env_prefix}}` = `PHP_CLI_83`, plus catalog keys). `x-binds: ["<src>:<target>"]` becomes long-syntax bind mounts with `create_host_path: false`; relative sources are prefixed with `${DOCKER_VOLUME_BASE_PATH}/`, `$VAR`/absolute sources are kept.
+- `templates/<family>.yml`: compose service(s) with placeholders (`{{name}}`, `{{tag}}`, `{{family}}`, `{{env_prefix}}` = `PHP_CLI_83`, plus catalog keys). `x-binds: ["<src>:<target>[:ro]"]` becomes long-syntax bind mounts with `create_host_path: false`; relative sources are prefixed with `${DOCKER_VOLUME_BASE_PATH}/`, `$VAR`/`${VAR:-default}`/absolute sources are kept.
 - `docker/<family>/Dockerfile`: shared per family (`ARG BASE_IMAGE` / `FROM ${BASE_IMAGE}` with `# hadolint ignore=DL3006`). Own contexts remain for legacy php-cli 56–81, opensearch-37 (no phonetic plugin) and singletons.
 
 Conventions and gotchas:
@@ -56,6 +56,7 @@ Conventions and gotchas:
 - `compose/services.tsv` (`service`, mounts vhosts 0/1, host dirs `:`-separated) is read by `bin/dde` (`service_info`) to set the working dir and to `mkdir -p` mount sources on `dde up` (skipped for a remote `DOCKER_HOST`). Services not listed fall back to `compose config <svc>`.
 - Bind mounts never auto-create host dirs (would be root-owned); 0.x used named volumes with bind `driver_opts` — `dde migrate` removes those leftovers (metadata only).
 - Only some services mount `vhosts` (web servers, php-*, node-*, ssh, python, solr, tomcat, selenium-side-runner); databases, caches, search etc. don't.
+- php-cli 8.2+ (`docker/php-cli`): `install-tools.sh` installs `DDE_CLI_TOOLS` at build time (neovim/lazygit as root; nvm, nanocoder via nvm's npm, and the claude/codex/junie vendor install scripts as phpcli into its home); `entrypoint.sh` checks out `DDE_DOTFILES_CORE`/`_LOCAL` bare into `~/.cfg-core`/`~/.cfg-local` on first start, skipping host-shared `.ssh`/`.secrets`. The `sandstein/php:cli-*` base images declare `VOLUME ~/.config ~/.ssh`, so both must stay bind-mounted (`config/<svc>/home-config`, `$SSH_BASE`) or they become root-owned anonymous volumes.
 - Adding a version: add the catalog entry (unique ports), `config/<name>/sample` if the family seeds config, `make generate && make check`. Verify equivalence-sensitive refactors by diffing `docker compose config --format json` before/after.
 
 ## Config layout

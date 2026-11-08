@@ -71,12 +71,10 @@ families:
       "82": &php_cli_modern
         image: "sandstein/php:cli-8.2"
         context: docker/php-cli
-        binds: ["$NVM_BASE:/home/phpcli/.nvm"]
         overrides: {ports: ["44482:8082"]}
       "83":
         <<: *php_cli_modern
         image: "sandstein/php:cli-8.3"
-        binds: ["$NVM_BASE:/home/phpcli/.nvm", "config/php-cli-83/local:/home/phpcli/.local"]
         overrides: {ports: ["44483:8082"]}
       "84":
         <<: *php_cli_modern

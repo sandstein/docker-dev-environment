@@ -195,8 +195,10 @@ def compose_files():
 
 
 def check_env_sample(report):
-    """Every variable used in a compose file must be defined in .env.sample."""
-    sample = read_env_sample(ROOT / ".env.sample")
+    """Every variable used in a compose file must be documented in .env.sample
+    (optional ones may be commented out, e.g. '# SECRETS_BASE=~/.secrets')."""
+    sample = set(read_env_sample(ROOT / ".env.sample"))
+    sample.update(re.findall(r"^#\s*([A-Z_][A-Z0-9_]*)=", (ROOT / ".env.sample").read_text(), re.M))
     builtin = {"HOME", "PWD", "SSH_AUTH_SOCK"}
     pattern = re.compile(r"\$\{?([A-Z_][A-Z0-9_]*)")
     for path in compose_files():

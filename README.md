@@ -15,13 +15,8 @@ supported.
 ## Getting started
 
 Clone the repository, copy `.env.sample` to `.env` and edit `.env` to your
-needs. Make sure the directories referenced there exist:
-
-```bash
-CONFIG_BASE=~/.config
-SSH_BASE=~/.ssh
-COMPOSER_BASE=~/.composer
-```
+needs. Make sure the directories referenced there exist, e.g.
+`SSH_BASE=~/.ssh` (mounted into the php-cli containers).
 
 Symlink the directory containing your projects to `vhosts` inside the dde
 directory, e.g.:
@@ -132,9 +127,11 @@ Also changed:
   `dde migrate` removes the old, now unused volumes (only their docker
   entries, never the directories they pointed to).
 - Versions of a service family share one build context, e.g. `docker/php-fpm`
-  for all `php-fpm-*`. If you kept personal files in
-  `docker/php-cli-8x/env/` (copied into the home directory of the image),
-  move them to `docker/php-cli/env/` and rebuild.
+  for all `php-fpm-*`.
+- The php-cli containers no longer mount your `~/.config` (`CONFIG_BASE`) and
+  `~/.nvm` (`NVM_BASE`), php-cli-83 no longer mounts `config/php-cli-83/local`,
+  and `docker/php-cli*/env/` is gone. Shell setup, nvm and tools now come from
+  optional dotfiles and `DDE_CLI_TOOLS`, see "php-cli extras" below.
 - `docker-compose.yml` and `compose/` are generated from `services.yml`, see
   below. Local changes there are overwritten by `make generate`.
 
@@ -151,7 +148,8 @@ files are not touched, only the way they are mounted changes.
 2. Check out the new version in the existing dde directory (same directory,
    so the compose project name `dev-environment` stays the same).
 3. Run `bin/dde init` and open a new shell.
-4. Move personal files from `docker/php-cli-8x/env/` to `docker/php-cli/env/`.
+4. If you used `docker/php-cli-8x/env/` or the mounted `~/.config`/`~/.nvm`
+   in the php-cli containers, set up the "php-cli extras" below instead.
 5. `dde down --all` removes the old containers (data is kept).
 6. `dde up` in your projects recreates the containers with the bind mounts.
    Existing images are reused; `dde build` is optional because the effective
@@ -184,6 +182,35 @@ To add a version of an existing family, copy an entry in `services.yml`
 (adjust image tag and host ports, which must stay unique), add its sample
 configuration below `config/<family>-<tag>/` if the family needs one, and
 run `make generate && make check`.
+
+## php-cli extras: tools and dotfiles
+
+The php-cli containers 8.2 and newer can get tools and your dotfiles. All of
+it is optional and set in the dde `.env`:
+
+| Variable | Effect |
+|---|---|
+| `DDE_CLI_TOOLS` | Comma separated, built into the image: `nvm`, `claude`, `codex`, `junie`, `nanocoder`, `neovim`, `lazygit` |
+| `DDE_CLI_NODE` | Node version nvm installs as default (`lts/*`); nanocoder needs 22 or newer |
+| `DDE_DOTFILES_CORE`, `DDE_DOTFILES_LOCAL` | Git URLs of bare dotfiles repositories, checked out on the first start |
+| `SECRETS_BASE` | Directory mounted read-only to `~/.secrets` (e.g. `~/.secrets`) |
+
+- Tools: rebuild after a change, `dde build php-cli-83 && dde up --force-recreate php-cli-83`.
+  claude, codex and junie come from their vendors' install scripts and are
+  installed for the container user (same uid as you) in `~/.local`; a rebuild
+  (`--no-cache`) installs current versions. neovim, lazygit and nvm are pinned
+  in `docker/php-cli/Dockerfile`. nanocoder is installed with npm into nvm's
+  default Node; after switching Node in a project run
+  `npm install -g @nanocollective/nanocoder` again.
+- Dotfiles: cloned with your ssh agent and `~/.ssh/config` into
+  `~/.cfg-core` / `~/.cfg-local` (alias `config` / `config-local` if your
+  dotfiles define them). Files below `.ssh` and `.secrets` come from the host
+  and are skipped; files the image already has (`.bashrc`, `.profile`) are
+  moved to `~/.dotfiles-backup`. Takes effect for new containers:
+  `dde up --force-recreate php-cli-83`.
+- `~/.config` is `config/<service>/home-config` (the base images declare it a
+  volume) and survives recreating the container; the rest of the home
+  directory, including agent logins, does not.
 
 ## Contributing
 

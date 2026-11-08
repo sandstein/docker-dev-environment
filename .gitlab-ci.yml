@@ -26,7 +26,7 @@ shellcheck:
     name: koalaman/shellcheck-alpine:v0.10.0
     entrypoint: [""]
   script:
-    - shellcheck -S warning bin/dde tests/bin/docker
+    - shellcheck -S warning bin/dde tests/bin/docker docker/php-cli/install-tools.sh docker/php-cli/entrypoint.sh
 
 hadolint:
   stage: check

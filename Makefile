@@ -23,7 +23,7 @@ SHELLCHECK ?= $(DOCKER_RUN) $(SHELLCHECK_IMAGE)
 HADOLINT   ?= $(DOCKER_RUN) $(HADOLINT_IMAGE) hadolint
 PYTHON     ?= python3
 
-SHELL_SCRIPTS := bin/dde tests/bin/docker
+SHELL_SCRIPTS := bin/dde tests/bin/docker docker/php-cli/install-tools.sh docker/php-cli/entrypoint.sh
 DOCKERFILES   := $(sort $(wildcard docker/*/Dockerfile))
 
 .PHONY: help
