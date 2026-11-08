@@ -138,6 +138,32 @@ Also changed:
 - `docker-compose.yml` and `compose/` are generated from `services.yml`, see
   below. Local changes there are overwritten by `make generate`.
 
+### Switching an existing installation
+
+Databases and search indexes do **not** need to be dumped or recreated. In
+0.x the named volumes were only pointers (`driver_opts: o: bind`) to
+`data/<service>` below `DOCKER_VOLUME_BASE_PATH`; 1.0 mounts exactly these
+directories at the same container paths, with the same server versions. The
+files are not touched, only the way they are mounted changes.
+
+1. Keep `DOCKER_VOLUME_BASE_PATH` in `.env` unchanged and compare `.env` with
+   `.env.sample` for new variables.
+2. Check out the new version in the existing dde directory (same directory,
+   so the compose project name `dev-environment` stays the same).
+3. Run `bin/dde init` and open a new shell.
+4. Move personal files from `docker/php-cli-8x/env/` to `docker/php-cli/env/`.
+5. `dde down --all` removes the old containers (data is kept).
+6. `dde up` in your projects recreates the containers with the bind mounts.
+   Existing images are reused; `dde build` is optional because the effective
+   Dockerfiles did not change.
+7. Check that your databases are there, then run `dde migrate` to remove the
+   old volume entries.
+
+To go back to 0.x, check out the old version and start the containers with
+it: compose recreates the old volume entries, pointing at the same
+directories. A dump before upgrading is still cheap insurance, but never
+delete `data/` or run `git clean -x` in the dde directory.
+
 ## Services and compose files
 
 All services are defined in `services.yml`. `make generate` renders it with
