@@ -41,7 +41,7 @@ Details that matter when changing behavior:
 - Errors go through `fail` (stderr, exit 1); `warn`/`note` write to stderr so stdout stays pipeable.
 - `dde up` calls `prepare_service` (`lib/prepare.sh`) per service: creates mount dirs from `services.tsv` below `DOCKER_VOLUME_BASE_PATH`, then on first start copies sample config into place (php: `conf.d/*.ini` + `php.ini.sample`; nginx: `default.conf`; varnish: `default.vcl`; opensearch: whole `sample/`) or creates an empty config (mysql-family `my.cnf`, ssh `tunnel.conf`).
 - `dde down` must never pass `-v`.
-- `dde init` writes `~/.docker/.dderc` (PATH, completions, `bashcompinit` for zsh) and adds `source ~/.docker/.dderc` once to existing `~/.bashrc` / `~/.zshrc`.
+- `dde init` writes `~/.docker/.dderc` (PATH, completions, `bashcompinit` for zsh) and adds `source ~/.docker/.dderc` once to existing `~/.bashrc` / `~/.zshrc` — unless `--no-rc` is given or the calling shell already sets up this dde (`DOCKER_DEV_ENVIRONMENT_HOME` resolves to it and its `bin` is on `PATH`, see `shell_has_dde`), so dotfiles-managed rc files stay untouched.
 
 ## Services: catalog -> generated compose files
 

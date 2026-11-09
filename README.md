@@ -32,6 +32,19 @@ completions) and open a new shell:
 bin/dde init
 ```
 
+`dde init` writes `~/.docker/.dderc` and adds `source ~/.docker/.dderc` to
+`~/.bashrc` and `~/.zshrc`. If your shell setup lives elsewhere (e.g. in
+dotfiles), either source `~/.docker/.dderc` from there and run
+`bin/dde init --no-rc`, or set it up yourself; all dde needs is
+
+```bash
+export DOCKER_DEV_ENVIRONMENT_HOME=~/docker/dev-environment
+PATH="$DOCKER_DEV_ENVIRONMENT_HOME/bin:$PATH"
+. "$DOCKER_DEV_ENVIRONMENT_HOME/bin/completions.bash"
+```
+
+Once your shell sets up dde this way, `dde init` leaves your rc files alone.
+
 To use dde in a project, copy `.env.dde.sample` to the project root as
 `.env.dde` and set
 
@@ -119,8 +132,9 @@ Also changed:
   found in parent directories.
 - `PHP_CLI_CONTAINER` and `PHP_FPM_CONTAINER` are no longer supported, use
   `DEFAULT_CONTAINER` and `DOCKER_CONTAINER`.
-- Run `dde init` again once: it rewrites `~/.docker/.dderc` (fixes loading
-  the completions and adds zsh support).
+- If your shell sources `~/.docker/.dderc`, run `dde init` again once: it
+  rewrites the file (fixes loading the completions and adds zsh support).
+  If you set up dde in your own shell files instead, nothing changes.
 - Containers mount `config/`, `data/`, `lib/` and `vhosts` directly (bind
   mounts) instead of through named volumes. Your data stays where it is; the
   next `dde up` recreates the containers with the new mounts. Afterwards
@@ -147,7 +161,8 @@ files are not touched, only the way they are mounted changes.
    `.env.sample` for new variables.
 2. Check out the new version in the existing dde directory (same directory,
    so the compose project name `dev-environment` stays the same).
-3. Run `bin/dde init` and open a new shell.
+3. Run `bin/dde init` and open a new shell. If you set up dde in your own
+   shell files (dotfiles), skip this step, see "Getting started".
 4. If you used `docker/php-cli-8x/env/` or the mounted `~/.config`/`~/.nvm`
    in the php-cli containers, set up the "php-cli extras" below instead.
 5. `dde down --all` removes the old containers (data is kept).

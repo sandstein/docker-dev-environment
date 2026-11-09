@@ -721,10 +721,15 @@ dde_version_usage() {
 
 # :command.usage
 dde_init_usage() {
-  printf "dde init - Hook dde into your shell (PATH and completions). Run once after cloning.\n\n"
+  if [[ -n $long_usage ]]; then
+    printf "dde init\n\n"
+    printf "  Hook dde into your shell (PATH and completions). Run once after cloning.\n  Writes ~/.docker/.dderc and sources it from ~/.bashrc and ~/.zshrc, unless\n  your shell already sets up this dde (e.g. from dotfiles).\n\n"
+  else
+    printf "dde init - Hook dde into your shell (PATH and completions). Run once after cloning.\n\n"
+  fi
 
   printf "%s\n" "Usage:"
-  printf "  dde init\n"
+  printf "  dde init [OPTIONS]\n"
   printf "  dde init --help | -h\n"
   echo
 
@@ -732,6 +737,12 @@ dde_init_usage() {
   if [[ -n "$long_usage" ]]; then
     # :command.usage_options
     printf "%s\n" "Options:"
+
+    # :command.usage_flags
+    # :flag.usage
+    printf "  %s\n" "--no-rc"
+    printf "    Only write ~/.docker/.dderc, do not change ~/.bashrc or ~/.zshrc\n"
+    echo
 
     # :command.usage_fixed_flags
     printf "  %s\n" "--help, -h"
@@ -1016,6 +1027,19 @@ if [ -f "\${DOCKER_DEV_ENVIRONMENT_HOME}/bin/completions.bash" ]; then
     . "\${DOCKER_DEV_ENVIRONMENT_HOME}/bin/completions.bash"
 fi
 EOL
+}
+
+# True if the calling shell already sets up this dde, e.g. from dotfiles
+# instead of ~/.docker/.dderc: DOCKER_DEV_ENVIRONMENT_HOME points to it and
+# its bin directory is on the PATH. Then the rc files are left alone.
+shell_has_dde() {
+    local home="${DOCKER_DEV_ENVIRONMENT_HOME:-}"
+    [[ -n "${home}" && -d "${home}" ]] || return 1
+    [[ "$(readlink -f "${home}")" == "${DDE_HOME}" ]] || return 1
+    case ":${PATH}:" in
+        *":${home}/bin:"* | *":${DDE_HOME}/bin:"*) return 0 ;;
+    esac
+    return 1
 }
 
 # Appends the source line for .dderc to the given rc file once.
@@ -1454,11 +1478,20 @@ dde_init_command() {
 
   # src/init_command.sh
   write_dderc
-  hooked=""
-  for rc_file in "${HOME}/.bashrc" "${HOME}/.zshrc"; do
-      hook_rc_file "${rc_file}" && hooked=1
-  done
-  [[ -n "${hooked}" ]] || warn "neither ~/.bashrc nor ~/.zshrc exists, add 'source ~/.docker/.dderc' to your shell's rc file"
+
+  managed=""
+  if [[ -n "${args[--no-rc]:-}" ]]; then
+      note "left ~/.bashrc and ~/.zshrc unchanged (--no-rc)"
+  elif shell_has_dde; then
+      managed=1
+      note "your shell already sets up dde (DOCKER_DEV_ENVIRONMENT_HOME and PATH), left ~/.bashrc and ~/.zshrc unchanged"
+  else
+      hooked=""
+      for rc_file in "${HOME}/.bashrc" "${HOME}/.zshrc"; do
+          hook_rc_file "${rc_file}" && hooked=1
+      done
+      [[ -n "${hooked}" ]] || warn "neither ~/.bashrc nor ~/.zshrc exists, add 'source ~/.docker/.dderc' to your shell's rc file"
+  fi
 
   if [[ ! -f "${DDE_HOME}/.env" ]]; then
       warn "${DDE_HOME}/.env is missing: copy .env.sample to .env and adapt it"
@@ -1467,7 +1500,11 @@ dde_init_command() {
       warn "${DDE_HOME}/vhosts is missing: symlink it to the directory containing your projects"
   fi
 
-  green "dde is set up in ~/.docker/.dderc. Open a new shell or run: source ~/.docker/.dderc"
+  if [[ -n "${managed}" ]]; then
+      green "dde is set up by your shell, ~/.docker/.dderc is only a fallback"
+  else
+      green "dde is set up in ~/.docker/.dderc. Open a new shell or run: source ~/.docker/.dderc"
+  fi
 
 }
 
@@ -2848,6 +2885,13 @@ dde_init_parse_requirements() {
   while [[ $# -gt 0 ]]; do
     key="$1"
     case "$key" in
+      # :flag.case
+      --no-rc)
+
+        # :flag.case_no_arg
+        args['--no-rc']=1
+        shift
+        ;;
 
       -?*)
         printf "invalid option: %s\n" "$key" >&2

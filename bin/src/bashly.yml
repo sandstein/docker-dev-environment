@@ -198,4 +198,9 @@ commands:
     help: Only print the version number
 
 - name: init
-  help: Hook dde into your shell (PATH and completions). Run once after cloning.
+  help: |-
+    Hook dde into your shell (PATH and completions). Run once after cloning.
+    Writes ~/.docker/.dderc and sources it from ~/.bashrc and ~/.zshrc, unless your shell already sets up this dde (e.g. from dotfiles).
+  flags:
+  - long: --no-rc
+    help: Only write ~/.docker/.dderc, do not change ~/.bashrc or ~/.zshrc

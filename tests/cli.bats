@@ -338,9 +338,38 @@ config_call() {
     grep -qF '"${DOCKER_DEV_ENVIRONMENT_HOME}/bin/completions.bash"' "${HOME}/.docker/.dderc"
 }
 
+@test "init leaves the rc files alone when the shell already sets up dde" {
+    printf 'for f in ~/.config/shell/rc.d/*.sh; do . "$f"; done\n' > "${HOME}/.bashrc"
+    cp "${HOME}/.bashrc" "${BATS_TEST_TMPDIR}/bashrc.orig"
+    # setup_dde exports DOCKER_DEV_ENVIRONMENT_HOME=$DDE_HOME and puts its bin on the PATH
+    run dde init
+    assert_status 0
+    assert_output_contains "already sets up dde"
+    cmp "${HOME}/.bashrc" "${BATS_TEST_TMPDIR}/bashrc.orig"
+    [[ -f "${HOME}/.docker/.dderc" ]]
+}
+
+@test "init hooks the rc files when the shell points to another dde" {
+    touch "${HOME}/.bashrc"
+    export DOCKER_DEV_ENVIRONMENT_HOME="${BATS_TEST_TMPDIR}"
+    run dde init
+    assert_status 0
+    grep -qF "source ~/.docker/.dderc" "${HOME}/.bashrc"
+}
+
+@test "init --no-rc only writes ~/.docker/.dderc" {
+    touch "${HOME}/.bashrc" "${HOME}/.zshrc"
+    unset DOCKER_DEV_ENVIRONMENT_HOME
+    run dde init --no-rc
+    assert_status 0
+    [[ ! -s "${HOME}/.bashrc" && ! -s "${HOME}/.zshrc" ]]
+    [[ -f "${HOME}/.docker/.dderc" ]]
+}
+
 @test "init works without .env and the written rc file puts dde on the PATH" {
     rm "${DDE_HOME}/.env"
     touch "${HOME}/.bashrc"
+    unset DOCKER_DEV_ENVIRONMENT_HOME
     run dde init
     assert_status 0
     assert_output_contains ".env is missing"

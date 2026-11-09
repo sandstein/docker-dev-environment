@@ -44,6 +44,7 @@ _dde_completions_node_flag_state() {
     19:--help|19:-h) return 0 ;;
     19:--short) return 0 ;;
     20:--help|20:-h) return 0 ;;
+    20:--no-rc) return 0 ;;
   esac
 
   return 1
@@ -381,6 +382,7 @@ _dde_completions() {
       20)
         local words=()
         _dde_completions_option_seen "--help" "-h" || words+=("--help" "-h")
+        _dde_completions_option_seen "--no-rc" || words+=("--no-rc")
         while read -r; do COMPREPLY+=("$REPLY"); done < <(compgen -W "${words[*]}" -- "$cur")
         return
         ;;

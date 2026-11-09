@@ -19,6 +19,19 @@ fi
 EOL
 }
 
+# True if the calling shell already sets up this dde, e.g. from dotfiles
+# instead of ~/.docker/.dderc: DOCKER_DEV_ENVIRONMENT_HOME points to it and
+# its bin directory is on the PATH. Then the rc files are left alone.
+shell_has_dde() {
+    local home="${DOCKER_DEV_ENVIRONMENT_HOME:-}"
+    [[ -n "${home}" && -d "${home}" ]] || return 1
+    [[ "$(readlink -f "${home}")" == "${DDE_HOME}" ]] || return 1
+    case ":${PATH}:" in
+        *":${home}/bin:"* | *":${DDE_HOME}/bin:"*) return 0 ;;
+    esac
+    return 1
+}
+
 # Appends the source line for .dderc to the given rc file once.
 hook_rc_file() {
     local rc_file="$1"
