@@ -226,6 +226,10 @@ it is optional and set in the dde `.env`:
 - `~/.config` is `config/<service>/home-config` (the base images declare it a
   volume) and survives recreating the container; the rest of the home
   directory, including agent logins, does not.
+- Every php-cli container sets `DDE_SERVICE` to its service name (e.g.
+  `php-cli-83`), so scripts and coding agents can tell they run inside dde.
+  It is part of the container environment, not of any dotfile; it takes effect
+  after `dde up --force-recreate`.
 
 ## Contributing
 

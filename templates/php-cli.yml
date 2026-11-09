@@ -2,6 +2,8 @@
   container_name: {{name}}
   environment:
     - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+    # lets tools and agents inside the container know where they run
+    - DDE_SERVICE={{name}}
     # optional dotfiles, checked out on the first start (php-cli 8.2 and newer)
     - DDE_DOTFILES_CORE=${DDE_DOTFILES_CORE:-}
     - DDE_DOTFILES_LOCAL=${DDE_DOTFILES_LOCAL:-}

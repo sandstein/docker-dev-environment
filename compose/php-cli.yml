@@ -5,6 +5,7 @@ services:
     container_name: php-cli-56
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - DDE_SERVICE=php-cli-56
       - DDE_DOTFILES_CORE=${DDE_DOTFILES_CORE:-}
       - DDE_DOTFILES_LOCAL=${DDE_DOTFILES_LOCAL:-}
     build:
@@ -69,6 +70,7 @@ services:
     container_name: php-cli-70
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - DDE_SERVICE=php-cli-70
       - DDE_DOTFILES_CORE=${DDE_DOTFILES_CORE:-}
       - DDE_DOTFILES_LOCAL=${DDE_DOTFILES_LOCAL:-}
     build:
@@ -133,6 +135,7 @@ services:
     container_name: php-cli-71
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - DDE_SERVICE=php-cli-71
       - DDE_DOTFILES_CORE=${DDE_DOTFILES_CORE:-}
       - DDE_DOTFILES_LOCAL=${DDE_DOTFILES_LOCAL:-}
     build:
@@ -197,6 +200,7 @@ services:
     container_name: php-cli-72
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - DDE_SERVICE=php-cli-72
       - DDE_DOTFILES_CORE=${DDE_DOTFILES_CORE:-}
       - DDE_DOTFILES_LOCAL=${DDE_DOTFILES_LOCAL:-}
     build:
@@ -261,6 +265,7 @@ services:
     container_name: php-cli-73
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - DDE_SERVICE=php-cli-73
       - DDE_DOTFILES_CORE=${DDE_DOTFILES_CORE:-}
       - DDE_DOTFILES_LOCAL=${DDE_DOTFILES_LOCAL:-}
     build:
@@ -325,6 +330,7 @@ services:
     container_name: php-cli-74
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - DDE_SERVICE=php-cli-74
       - DDE_DOTFILES_CORE=${DDE_DOTFILES_CORE:-}
       - DDE_DOTFILES_LOCAL=${DDE_DOTFILES_LOCAL:-}
     build:
@@ -389,6 +395,7 @@ services:
     container_name: php-cli-80
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - DDE_SERVICE=php-cli-80
       - DDE_DOTFILES_CORE=${DDE_DOTFILES_CORE:-}
       - DDE_DOTFILES_LOCAL=${DDE_DOTFILES_LOCAL:-}
     build:
@@ -453,6 +460,7 @@ services:
     container_name: php-cli-81
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - DDE_SERVICE=php-cli-81
       - DDE_DOTFILES_CORE=${DDE_DOTFILES_CORE:-}
       - DDE_DOTFILES_LOCAL=${DDE_DOTFILES_LOCAL:-}
     build:
@@ -517,6 +525,7 @@ services:
     container_name: php-cli-82
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - DDE_SERVICE=php-cli-82
       - DDE_DOTFILES_CORE=${DDE_DOTFILES_CORE:-}
       - DDE_DOTFILES_LOCAL=${DDE_DOTFILES_LOCAL:-}
     build:
@@ -584,6 +593,7 @@ services:
     container_name: php-cli-83
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - DDE_SERVICE=php-cli-83
       - DDE_DOTFILES_CORE=${DDE_DOTFILES_CORE:-}
       - DDE_DOTFILES_LOCAL=${DDE_DOTFILES_LOCAL:-}
     build:
@@ -651,6 +661,7 @@ services:
     container_name: php-cli-84
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - DDE_SERVICE=php-cli-84
       - DDE_DOTFILES_CORE=${DDE_DOTFILES_CORE:-}
       - DDE_DOTFILES_LOCAL=${DDE_DOTFILES_LOCAL:-}
     build:
@@ -718,6 +729,7 @@ services:
     container_name: php-cli-85
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+      - DDE_SERVICE=php-cli-85
       - DDE_DOTFILES_CORE=${DDE_DOTFILES_CORE:-}
       - DDE_DOTFILES_LOCAL=${DDE_DOTFILES_LOCAL:-}
     build:
