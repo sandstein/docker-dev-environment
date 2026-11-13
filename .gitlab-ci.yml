@@ -1,0 +1,54 @@
+# CI for git.sandstein.de. Each job runs directly in the pinned tool image
+# (the same images the Makefile uses), so no docker-in-docker is needed.
+
+stages:
+  - check
+
+default:
+  interruptible: true
+
+generated:
+  stage: check
+  image:
+    name: dannyben/bashly:1.4.0
+    entrypoint: [""]
+  before_script:
+    - apk add --no-cache git python3 py3-yaml
+  script:
+    - cd bin && bashly generate && bashly add completions_script --force && cd ..
+    - python3 tools/generate.py
+    - git status --porcelain -- bin/dde bin/completions.bash docker-compose.yml compose | tee /tmp/changes
+    - test ! -s /tmp/changes
+
+shellcheck:
+  stage: check
+  image:
+    name: koalaman/shellcheck-alpine:v0.10.0
+    entrypoint: [""]
+  script:
+    - shellcheck -S warning bin/dde tests/bin/docker docker/php-cli/install-tools.sh docker/php-cli/entrypoint.sh
+
+hadolint:
+  stage: check
+  image:
+    name: hadolint/hadolint:v2.12.0-alpine
+    entrypoint: [""]
+  script:
+    - hadolint docker/*/Dockerfile
+
+compose:
+  stage: check
+  image: docker:27-cli
+  before_script:
+    - apk add --no-cache python3 py3-yaml
+  script:
+    - python3 tools/check-compose.py
+    - python3 -m unittest discover -s tests
+
+bats:
+  stage: check
+  image:
+    name: bats/bats:1.11.1
+    entrypoint: [""]
+  script:
+    - bats tests

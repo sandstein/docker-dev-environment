@@ -1,3 +1,4 @@
+# hadolint ignore=DL3006
 FROM sandstein/ssh
 
 ARG USER_ID=1000

@@ -1,0 +1,1 @@
+compose "${other_args[@]}"

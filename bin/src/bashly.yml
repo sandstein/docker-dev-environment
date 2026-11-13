@@ -1,145 +1,206 @@
 name: dde
-help: Docker Desktop Environment
-version: 0.1.0
-
-environment_variables:
+help: Docker dev environment - versioned service containers for local development
+version: 1.0.0
 
 commands:
-- name: init
-  help: "Initializes dde. Only has to be run once from directory docker-dev-environment is installed"
 
-- name: list
-  help: "Lists all available services"
-
-- name: start
-  help: "Starts or restarts (if flag -r is given) one or several \n
-        containers if provided. Use colon seperated list for multiple containers. \n
-        If no containers are given all the containers needed for \n
-        an application are started as defined in the local .env file. \n
-        See .env.project.sample for documentation"
+- name: up
+  alias: start
+  help: Create and start containers (default - DOCKER_CONTAINER from .env.dde)
   args:
-    - name: container
-      help: Name of container(s)
-
+  - name: service
+    repeatable: true
+    help: Services to start, space or comma separated
   flags:
-    - long: --restart
-      short: -r
-      help: "forces restart if container is running"
-
+  - long: --build
+    help: Build images before starting containers
+  - long: --force-recreate
+    help: Recreate containers even if their configuration and image haven't changed
   examples:
-    - "\"dde start\": starts all the containers defined in the variable DOCKER_CONTAINER"
-    - "\"dde start -r\": as above, but containers are stopped first if running"
-    - "\"dde start -r apache-24,php-fpm-81\": restarts the two given containers"
+  - dde up
+  - dde up redis-7 mailpit
+  - dde up --force-recreate apache-24
+
+- name: stop
+  help: Stop containers without removing them (default - DOCKER_CONTAINER from .env.dde)
+  args:
+  - name: service
+    repeatable: true
+    help: Services to stop, space or comma separated
+  flags:
+  - long: --all
+    short: -a
+    help: Stop every running dde container, not only the ones of this project
+
+- name: down
+  help: Stop and remove containers (default - DOCKER_CONTAINER from .env.dde). Never removes data.
+  args:
+  - name: service
+    repeatable: true
+    help: Services to remove, space or comma separated
+  flags:
+  - long: --all
+    short: -a
+    help: Remove every dde container and the dde network, not only the ones of this project
 
 - name: restart
-  help: "Shortcut for dde start -r"
-
+  help: Restart containers (default - DOCKER_CONTAINER from .env.dde)
   args:
-    - name: container
-      help: "Name of container(s), see dde start -h for more help"
+  - name: service
+    repeatable: true
+    help: Services to restart, space or comma separated
 
 - name: build
-  help: "Builds or rebuilds one or multiple containers. \n
-          If multiple container building is desired use colon seperated list.\n
-          If container list is omitted, all containers needed for your\n
-          application (as defined in your local .env file) will be built or \n
-          rebuilt.\n
-          If the --all option is given, all dde containers are built. \n
-          BEWARE: this might take some time. \n
-          If the --restart option is given, the service will be restarted after\n
-          being built. BEWARE: you can not combine the two options,\n
-          as there are too many containers to be run at\n
-          the same time.\n\n
-          The command uses the --force-rm --no-cache --pull options from\n
-         ${DOCKER_COMPOSE_COMMAND} build and therefor takes some time. \n
-          For more fine grained tuning use\n\n
-         ${DOCKER_COMPOSE_COMMAND} build -f ${DOCKER_DEV_ENVIRONMENT_HOME}/docker-compose.yml build\n\n
-          with the options that suite you best."
-
+  help: Build or rebuild images (default - DOCKER_CONTAINER from .env.dde)
   args:
-    - name: container
-      help: "Name of container(s)"
-
+  - name: service
+    repeatable: true
+    help: Services to build, space or comma separated
   flags:
-    - long: --all
-      short: -a
-      help: "Build all containers defined in the dde docker-compose.yml"
+  - long: --all
+    short: -a
+    help: Build every dde service. This takes a while.
+  - long: --no-cache
+    help: Do not use cache when building the image
+  - long: --pull
+    help: Always attempt to pull newer versions of the base images
+  examples:
+  - dde build --pull --no-cache php-cli-83
 
-    - long: --restart
-      short: -r
-      help: "restarts (or starts) the (re)built container"
+- name: exec
+  help: |-
+    Execute a command in a running container
 
-- name: bash
-  help: "Starts bash in default cli container or alternative container if given"
+    Options (docker style, must come before COMMAND):
+      -s, --service SERVICE  Service (default: DEFAULT_CONTAINER)
+      -u, --user USER        User name or uid (default: USER_ID, e.g. root)
+      -w, --workdir DIR      Working directory in the container (default:
+                             current dir below /var/www/vhosts, if mounted)
+      -e, --env KEY=VALUE    Set an environment variable
+      -T, --no-tty           No pseudo-TTY (automatic if stdin is no tty)
+  catch_all:
+    label: command
+    help: The command and its arguments, passed on unchanged
+    required: true
+  examples:
+  - dde exec bin/magento cache:clean
+  - dde exec -s mysql-80 mysql -u root -e 'SELECT 1'
+  - dde exec -u root -s php-cli-83 apt-get update
+  - cat script.php | dde exec php /dev/stdin
 
+- name: run
+  help: |-
+    Run a one-off command in a new container (docker compose run --rm)
+
+    Options are the same as for dde exec (-s, -u, -w, -e, -T).
+  catch_all:
+    label: command
+    help: The command and its arguments, passed on unchanged
+    required: true
+  examples:
+  - dde run -s php-cli-83 php -v
+
+- name: shell
+  help: Open an interactive shell (bash, or sh if bash is missing) in a running container
   flags:
-  - long: --run
-    short: -r
-    help: "Uses docker run instead of docker exec"
-  - long: --root
-    short: -o
-    help: "Starts command as root user"
-  - long: --default-working-dir
-    short: -d
-    help: "Uses default working dir of the container rather than the project root"
-  - long: --working-dir
-    short: -w
-    arg: working_dir
-    help: "The working dir to execute the bash in. If not specified the project root is used."
   - long: --service
     short: -s
     arg: service
-    help: "The service to execute the command in, defaults to the one \n
-            defined in \\$DEFAULT_CONTAINER"
-
+    help: Service to open the shell in (default - DEFAULT_CONTAINER from .env.dde)
+  - long: --user
+    short: -u
+    arg: user
+    help: User name or uid (default - USER_ID from the dde .env)
+  - long: --workdir
+    short: -w
+    arg: dir
+    help: Working directory inside the container
   examples:
-  - "dde bash: Starts ab bash on the running default service"
-  - "dde bash -r -o -s mysql-80: Starts a bash in a newly created mysql-80 service as root"
+  - dde shell
+  - dde shell -s mysql-80 -u root
 
-- name: command
-  help: "Executes a specific command on the default (or given via --service) service"
+- name: logs
+  help: Show container output (default - DOCKER_CONTAINER from .env.dde)
   args:
-    - name: command
-      required: true
-      help: "The command to execute, needs to be quoted if it contains spaces"
-
+  - name: service
+    repeatable: true
+    help: Services to show, space or comma separated
   flags:
-    - long: --run
-      short: -r
-      help: "Uses docker run instead of docker exec"
-    - long: --root
-      short: -o
-      help: "Starts command as root user"
-    - long: --default-working-dir
-      short: -d
-      help: "Uses default working dir of the container rather than the project root"
-    - long: --working-dir
-      short: -w
-      arg: working_dir
-      help: "The working dir to execute the command in. If not specified the project root is used."
-    - long: --service
-      short: -s
-      arg: service
-      help: "The service to execute the command in, defaults to the one \n
-            defined in \\$DEFAULT_CONTAINER"
-    - long: --no-tty
-      short: -T
-      help: "Do not allocate tty while executing command. This is needed for execution of cronjobs.\n
-              See the documentation for more details"
+  - long: --follow
+    short: -f
+    help: Follow log output
+  - long: --tail
+    short: -n
+    arg: lines
+    help: Number of lines to show from the end of the logs
 
+- name: ps
+  help: List the containers of this project and their state (same as dde get containers)
+  flags:
+  - &all_containers
+    long: --all
+    short: -a
+    help: Show every existing dde container, not only the ones of this project
+
+- name: ls
+  help: List all services dde can start (same as dde get services)
+  args:
+  - &filter
+    name: filter
+    help: Only show services containing this text, e.g. php
   examples:
-    - "dde command \"ls -l\": lists the dir content on the running default service"
-    - "dde c -T -s redis-5 redis-cli flushall: flushes the redis cache from a cron job (i.e. without tty)"
+  - dde ls php-cli
 
-- name: test
-  help: Test command for development
-  args:
-    - name: command
-      required: true
-      help: "The command to execute"
+- name: get
+  help: Display resources
+  commands:
+  - name: services
+    help: List all services dde can start
+    args:
+    - *filter
+  - name: containers
+    help: List the containers of this project and their state
+    flags:
+    - *all_containers
 
+- name: compose
+  help: Run any docker compose command against the dde compose file
+  catch_all:
+    label: arguments
+    help: Arguments for docker compose
+    required: true
+  examples:
+  - dde compose top php-cli-83
+  - dde compose config php-cli-83
+
+- name: config
+  help: Show the resolved settings for the current directory
+
+- name: list
+  help: List the dde commands
+
+- name: migrate
+  help: |-
+    Remove the named volumes dde 0.x used for its bind mounts.
+
+    dde 1.0 mounts config/, data/ and vhosts directly. The old volumes only
+    pointed at these directories, so removing them does not touch any data.
+    Volumes that are not bind mounts or still in use are never removed.
   flags:
-    - long: --service
-      short: -s
-      arg: service
-      help: "The service to execute the "
+  - long: --yes
+    short: -y
+    help: Remove without asking
+
+- name: version
+  help: Show version information
+  flags:
+  - long: --short
+    help: Only print the version number
+
+- name: init
+  help: |-
+    Hook dde into your shell (PATH and completions). Run once after cloning.
+    Writes ~/.docker/.dderc and sources it from ~/.bashrc and ~/.zshrc, unless your shell already sets up this dde (e.g. from dotfiles).
+  flags:
+  - long: --no-rc
+    help: Only write ~/.docker/.dderc, do not change ~/.bashrc or ~/.zshrc

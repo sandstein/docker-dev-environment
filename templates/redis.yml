@@ -1,0 +1,10 @@
+{{name}}:
+  container_name: {{name}}
+  build:
+    context: docker/redis
+  networks:
+    app-tier:
+      aliases:
+        - {{name}}
+  ports:
+    - "{{port}}:6379"

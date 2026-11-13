@@ -1,0 +1,20 @@
+# MySQL, Percona and MariaDB (one template, build context per family)
+{{name}}:
+  container_name: {{name}}
+  env_file: env/db.env
+  build:
+    context: docker/{{family}}
+    args:
+      USER_ID: ${USER_ID}
+      GROUP_ID: ${GROUP_ID}
+  networks:
+    app-tier:
+      aliases:
+        - {{name}}
+  ports:
+    - "{{port}}:3306"
+  x-binds:
+    - data/{{name}}:/var/lib/mysql
+    - config/{{name}}/etc:/etc/mysql/conf.d
+  cap_add:
+    - SYS_NICE

@@ -1,0 +1,18 @@
+{{name}}:
+  container_name: {{name}}
+  build:
+    context: docker/php-fpm
+    args:
+      USER_ID: ${USER_ID}
+      GROUP_ID: ${GROUP_ID}
+  networks:
+    app-tier:
+      aliases:
+        - {{name}}
+  ports:
+    - "{{port}}:9000"
+  x-binds:
+    - vhosts:/var/www/vhosts
+    - config/{{name}}/etc/php:/usr/local/etc/php
+  extra_hosts:
+    - host.docker.internal:host-gateway

@@ -1,0 +1,18 @@
+ssh:
+  container_name: ssh
+  environment:
+    - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+  build:
+    context: docker/ssh
+    args:
+      USER_ID: ${USER_ID}
+      GROUP_ID: ${GROUP_ID}
+  networks:
+    app-tier:
+      aliases:
+        - ssh
+  x-binds:
+    - vhosts:/var/www/vhosts
+    - config/ssh:/home/ssh/.tunnel
+    - $SSH_AUTH_SOCK_BASE:$SSH_AUTH_SOCK_BASE
+    - $SSH_BASE:/home/ssh/.ssh

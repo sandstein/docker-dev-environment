@@ -1,0 +1,8 @@
+name: dev-environment
+services:
+  apache-24:
+    volumes:
+      - type: volume
+        source: vhosts
+        target: /var/www/vhosts
+        volume: {}

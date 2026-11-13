@@ -1,0 +1,11 @@
+esadmin:
+  container_name: esadmin
+  build:
+    context: docker/esadmin
+  networks:
+    app-tier:
+      aliases:
+        - esadmin
+  env_file: env/esadmin.env
+  ports:
+    - "8181:8080"

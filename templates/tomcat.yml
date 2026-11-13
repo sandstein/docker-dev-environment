@@ -1,0 +1,13 @@
+tomcat-9:
+  container_name: tomcat-9
+  build:
+    context: docker/tomcat-9
+  networks:
+    app-tier:
+      aliases:
+        - tomcat-9
+  ports:
+    - "8888:8080"
+  x-binds:
+    - data/tomcat-9:/bitnami
+    - vhosts:/var/www/vhosts

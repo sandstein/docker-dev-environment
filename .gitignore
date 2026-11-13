@@ -4,3 +4,6 @@
 /.docker/apache/conf/*.conf
 !/.docker/apache/conf/httpd.conf
 !/.docker/apache/conf/macro.conf
+__pycache__/
+# php-cli home ~/.config (dotfiles, agent settings), user-local
+/config/*/home-config/

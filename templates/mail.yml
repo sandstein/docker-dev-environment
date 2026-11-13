@@ -1,0 +1,24 @@
+# alternatives: both publish the same ports on different IPs
+mailhog:
+  container_name: mailhog
+  build:
+    context: docker/mailhog
+  networks:
+    app-tier:
+      aliases:
+        - mailhog
+  ports:
+    - "${MAILHOG_IP}:1025:1025"
+    - "${MAILHOG_IP}:8025:8025"
+
+mailpit:
+  container_name: mailpit
+  build:
+    context: docker/mailpit
+  networks:
+    app-tier:
+      aliases:
+        - mailpit
+  ports:
+    - "${MAILPIT_IP}:1025:1025"
+    - "${MAILPIT_IP}:8025:8025"

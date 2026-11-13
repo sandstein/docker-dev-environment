@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+#
+# Fake docker binary for the bats test suite.
+#
+# Every invocation is appended to "${DDE_TEST_LOG}" as one line of
+# shell-quoted arguments (printf %q), so tests can assert the exact
+# command line dde would have run.
+#
+# Canned output:
+#   - "compose ... config --services"  prints ${DDE_TEST_SERVICES} (one per line)
+#   - "compose ... config <service>"   prints ${DDE_TEST_CONFIG_DIR}/<service>.yml if present
+#   - "compose ... ps ..."             prints ${DDE_TEST_PS} if set
+#   - "volume ls ..."                  prints ${DDE_TEST_VOLUMES} if set
+#   - "volume inspect ..."             prints ${DDE_TEST_VOLUME_INSPECT} if set
+#   - everything else                  prints nothing
+#
+# Set DDE_TEST_EXIT to make every call fail with that exit code.
+
+{
+    printf '%q ' "$@"
+    printf '\n'
+} | sed 's/ $//' >> "${DDE_TEST_LOG:?DDE_TEST_LOG not set}"
+
+args=("$@")
+
+if [[ "${args[0]}" == "compose" ]]; then
+    # find the sub command after the global compose options
+    i=1
+    while (( i < ${#args[@]} )); do
+        case "${args[i]}" in
+            -f|--file|-p|--project-name|--env-file|--profile)
+                (( i += 2 ))
+                ;;
+            -*)
+                (( i += 1 ))
+                ;;
+            *)
+                break
+                ;;
+        esac
+    done
+    sub="${args[i]:-}"
+    rest=("${args[@]:i+1}")
+    if [[ "${sub}" == "config" ]]; then
+        if [[ " ${rest[*]} " == *" --services "* ]]; then
+            printf '%s\n' ${DDE_TEST_SERVICES:-}
+        elif (( ${#rest[@]} )); then
+            for svc in "${rest[@]}"; do
+                [[ "${svc}" == -* ]] && continue
+                if [[ -f "${DDE_TEST_CONFIG_DIR:-/nonexistent}/${svc}.yml" ]]; then
+                    cat "${DDE_TEST_CONFIG_DIR}/${svc}.yml"
+                fi
+            done
+        fi
+    elif [[ "${sub}" == "ps" && -n "${DDE_TEST_PS:-}" ]]; then
+        printf '%b\n' "${DDE_TEST_PS}"
+    fi
+elif [[ "${args[0]} ${args[1]:-}" == "volume ls" && -n "${DDE_TEST_VOLUMES:-}" ]]; then
+    printf '%s\n' ${DDE_TEST_VOLUMES}
+elif [[ "${args[0]} ${args[1]:-}" == "volume inspect" && -n "${DDE_TEST_VOLUME_INSPECT:-}" ]]; then
+    printf '%b\n' "${DDE_TEST_VOLUME_INSPECT}"
+fi
+
+exit "${DDE_TEST_EXIT:-0}"

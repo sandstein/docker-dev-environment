@@ -1,0 +1,2 @@
+# hadolint configuration, see https://github.com/hadolint/hadolint#configure
+failure-threshold: warning

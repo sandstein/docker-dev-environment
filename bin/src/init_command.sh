@@ -1,47 +1,28 @@
-REQUESTED_DOCKER_DEV_ENVIRONMENT_HOME=$(readlink -f "${MY_PATH}/..")
+write_dderc
 
-#
-# sets DOCKER_DEV_ENVIRONMENT_HOME
-# if it is no set or changed
-#
-if [[ -z "${DOCKER_DEV_ENVIRONMENT_HOME+x}" || "${REQUESTED_DOCKER_DEV_ENVIRONMENT_HOME}" != "${DOCKER_DEV_ENVIRONMENT_HOME}" ]]; then
-
-    BASHRC_FILE="${HOME}/.bashrc"
-    #
-    # check if source command is included in .bashrc if the file exists
-    #
-    if [[ -f $BASHRC_FILE  && "$(grep -c ".docker/.dderc" "${BASHRC_FILE}")" = "0" ]]; then
-        init_rc "${BASHRC_FILE}"
-    fi
-
-    ZSHRC_FILE="${HOME}/.zshrc"
-    #
-    # check if source command is included in .zshrc if the file exists
-    #
-    if [[ -f $ZSHRC_FILE  && "$(grep -c ".docker/.dderc" "${ZSHRC_FILE}")" = "0" ]]; then
-        init_rc "${ZSHRC_FILE}"
-    fi
-
-    #
-    # check if .devenvrc file exists
-    #
-    if [[ ! -d ~/.docker ]]; then
-       mkdir ~/.docker
-    fi
-
-    if [[ ( ! -f ~/.docker/.dderc ) || "${REQUESTED_DOCKER_DEV_ENVIRONMENT_HOME}" != "${DOCKER_DEV_ENVIRONMENT_HOME}" ]]; then
-        init_path
-    fi
-
-    green "docker dev environment initialized or changed, please type"
-    if [[ "$(grep -c "/bash" "${SHELL}")" != "0" ]]; then
-        green "$ source $BASHRC_FILE "
-    elif [[ "$(grep -c "/zsh" "${SHELL}")" != "0" ]]; then
-        green "$ source $ZSHRC_FILE "
-    else
-        green "$ source /pfad/zur/config/datei/der/shell "
-    fi
-    green "to see effects"
+managed=""
+if [[ -n "${args[--no-rc]:-}" ]]; then
+    note "left ~/.bashrc and ~/.zshrc unchanged (--no-rc)"
+elif shell_has_dde; then
+    managed=1
+    note "your shell already sets up dde (DOCKER_DEV_ENVIRONMENT_HOME and PATH), left ~/.bashrc and ~/.zshrc unchanged"
 else
-    magenta "docker dev environment already initialised"
+    hooked=""
+    for rc_file in "${HOME}/.bashrc" "${HOME}/.zshrc"; do
+        hook_rc_file "${rc_file}" && hooked=1
+    done
+    [[ -n "${hooked}" ]] || warn "neither ~/.bashrc nor ~/.zshrc exists, add 'source ~/.docker/.dderc' to your shell's rc file"
+fi
+
+if [[ ! -f "${DDE_HOME}/.env" ]]; then
+    warn "${DDE_HOME}/.env is missing: copy .env.sample to .env and adapt it"
+fi
+if [[ ! -e "${DDE_HOME}/vhosts" ]]; then
+    warn "${DDE_HOME}/vhosts is missing: symlink it to the directory containing your projects"
+fi
+
+if [[ -n "${managed}" ]]; then
+    green "dde is set up by your shell, ~/.docker/.dderc is only a fallback"
+else
+    green "dde is set up in ~/.docker/.dderc. Open a new shell or run: source ~/.docker/.dderc"
 fi

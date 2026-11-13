@@ -1,0 +1,38 @@
+{{name}}:
+  container_name: {{name}}
+  # shown in the prompt instead of the container id
+  hostname: {{name}}
+  environment:
+    - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
+    # lets tools and agents inside the container know where they run
+    - DDE_SERVICE={{name}}
+    # optional dotfiles, checked out on the first start (php-cli 8.2 and newer)
+    - DDE_DOTFILES_CORE=${DDE_DOTFILES_CORE:-}
+    - DDE_DOTFILES_LOCAL=${DDE_DOTFILES_LOCAL:-}
+  build:
+    context: docker/php-cli
+    args:
+      USER_ID: ${USER_ID}
+      GROUP_ID: ${GROUP_ID}
+      # optional tools (php-cli 8.2 and newer)
+      DDE_CLI_TOOLS: ${DDE_CLI_TOOLS:-}
+      DDE_CLI_NODE: ${DDE_CLI_NODE:-lts/*}
+  networks:
+    app-tier:
+      aliases:
+        - {{name}}
+  x-binds:
+    - vhosts:/var/www/vhosts
+    - config/{{name}}/etc/php:/usr/local/etc/php
+    - $SSH_AUTH_SOCK_BASE:$SSH_AUTH_SOCK_BASE
+    # the image declares ~/.config a volume; this keeps it writable and persistent
+    - config/{{name}}/home-config:/home/phpcli/.config
+    - $SSH_BASE:/home/phpcli/.ssh
+    # private env files, loaded by the dotfiles' secrets.sh (empty without SECRETS_BASE)
+    - ${SECRETS_BASE:-./config/no-secrets}:/home/phpcli/.secrets:ro
+    - config/{{name}}/composer:/home/phpcli/.composer
+    - config/{{name}}/bin:/home/phpcli/bin
+  user: $USER_ID:$GROUP_ID
+  tty: true
+  extra_hosts:
+    - host.docker.internal:host-gateway

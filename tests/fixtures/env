@@ -1,0 +1,4 @@
+# .env fixture for the bats suite (mirrors the structure of .env.sample)
+DOCKER_COMPOSE_COMMAND="docker compose"
+USER_ID=1234
+GROUP_ID=5678

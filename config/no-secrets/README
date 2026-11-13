@@ -1,0 +1,1 @@
+# Mounted as ~/.secrets into php-cli containers when SECRETS_BASE is unset. Keep empty.
