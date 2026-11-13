@@ -1,5 +1,7 @@
 {{name}}:
   container_name: {{name}}
+  # shown in the prompt instead of the container id
+  hostname: {{name}}
   environment:
     - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
     # lets tools and agents inside the container know where they run

@@ -136,6 +136,18 @@ parse_exec_options() {
     (( ${#EXEC_COMMAND[@]} )) || fail "no command given"
 }
 
+# Sets TERMINAL_ENV_ARGS to -e options passing the terminal type and locale
+# (TERM, COLORTERM, LANG, LC_*) of an interactive session into the container;
+# docker compose exec would otherwise use TERM=xterm and no locale.
+terminal_env_args() {
+    local var
+    TERMINAL_ENV_ARGS=()
+    for var in TERM COLORTERM LANG LC_ALL LC_CTYPE LC_MESSAGES; do
+        [[ -n "${!var:-}" ]] && TERMINAL_ENV_ARGS+=(-e "${var}=${!var}")
+    done
+    return 0
+}
+
 # Builds the common docker compose exec/run arguments into RUN_ARGS and
 # prints nothing. Uses the EXEC_* variables from parse_exec_options.
 build_run_args() {
@@ -143,9 +155,12 @@ build_run_args() {
     service="$(resolve_service "${EXEC_SERVICE}")" || exit 1
     resolve_workdir_args "${service}" "${EXEC_WORKDIR}"
     RUN_ARGS=()
+    TERMINAL_ENV_ARGS=()
     if (( EXEC_TTY == 0 )) || [[ ! -t 0 ]]; then
         RUN_ARGS+=(-T)
+    else
+        terminal_env_args
     fi
     RUN_ARGS+=(-u "${EXEC_USER:-${USER_ID}}")
-    RUN_ARGS+=("${WORKDIR_ARGS[@]}" "${EXEC_ENV[@]}" "${service}" "${EXEC_COMMAND[@]}")
+    RUN_ARGS+=("${WORKDIR_ARGS[@]}" "${TERMINAL_ENV_ARGS[@]}" "${EXEC_ENV[@]}" "${service}" "${EXEC_COMMAND[@]}")
 }

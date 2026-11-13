@@ -205,7 +205,7 @@ it is optional and set in the dde `.env`:
 
 | Variable | Effect |
 |---|---|
-| `DDE_CLI_TOOLS` | Comma separated, built into the image: `nvm`, `claude`, `codex`, `junie`, `nanocoder`, `neovim`, `lazygit` |
+| `DDE_CLI_TOOLS` | Comma separated, built into the image: `nvm`, `claude`, `codex`, `junie`, `nanocoder`, `neovim` (with the tree-sitter CLI for nvim-treesitter), `lazygit` |
 | `DDE_CLI_NODE` | Node version nvm installs as default (`lts/*`); nanocoder needs 22 or newer |
 | `DDE_DOTFILES_CORE`, `DDE_DOTFILES_LOCAL` | Git URLs of bare dotfiles repositories, checked out on the first start |
 | `SECRETS_BASE` | Directory mounted read-only to `~/.secrets` (e.g. `~/.secrets`) |
@@ -226,8 +226,16 @@ it is optional and set in the dde `.env`:
 - `~/.config` is `config/<service>/home-config` (the base images declare it a
   volume) and survives recreating the container; the rest of the home
   directory, including agent logins, does not.
-- Every php-cli container sets `DDE_SERVICE` to its service name (e.g.
-  `php-cli-83`), so scripts and coding agents can tell they run inside dde.
+- The tools are on the image's `PATH`, so they also work in non-interactive
+  commands such as `dde exec claude`: `~/bin`, `~/.composer/vendor/bin`
+  (`composer global require`), `~/.local/bin` (agents) and `~/.nvm/current/bin`
+  (nvm's active Node; `NVM_SYMLINK_CURRENT=true` keeps the link up to date, so
+  `nvm use` in one shell switches it for the whole container).
+- `dde shell` and `dde exec` with a terminal pass your `TERM`, `COLORTERM`,
+  `LANG` and `LC_*` into the container (colours, UTF-8).
+- Every php-cli container sets `DDE_SERVICE` and its hostname to its service
+  name (e.g. `php-cli-83`), so scripts and coding agents can tell they run
+  inside dde and the prompt shows where you are.
   It is part of the container environment, not of any dotfile; it takes effect
   after `dde up --force-recreate`.
 

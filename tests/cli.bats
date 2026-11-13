@@ -281,6 +281,16 @@ config_call() {
         "$(compose_prefix) exec -u 1234 -w /var/www/vhosts/project php-cli-83 sh -c if\\ command\\ -v\\ bash\\ \\>/dev/null\\ 2\\>\\&1\\;\\ then\\ exec\\ bash\\;\\ else\\ exec\\ sh\\;\\ fi"
 }
 
+@test "exec and shell pass the terminal type and locale only with a tty" {
+    # needs util-linux script for a pseudo terminal; without one (the
+    # non-tty case) no TERM is passed, as the tests above show
+    script -qec true /dev/null > /dev/null 2>&1 || skip "util-linux script not available"
+    project_env "DEFAULT_CONTAINER=mysql-80"
+    env -u LC_ALL -u LC_CTYPE -u LC_MESSAGES TERM=xterm-256color COLORTERM=truecolor LANG=de_DE.UTF-8 \
+        script -qec "dde exec mysql --version; dde shell" /dev/null > /dev/null
+    [[ "$(docker_calls | grep -c -- "-e TERM=xterm-256color -e COLORTERM=truecolor -e LANG=de_DE.UTF-8 mysql-80")" -eq 2 ]]
+}
+
 @test "shell -s -u opens a root shell in another container" {
     project_env "DEFAULT_CONTAINER=php-cli-83"
     run dde shell -s mysql-80 -u root

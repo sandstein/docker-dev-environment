@@ -16,6 +16,13 @@ ARG DDE_CLI_NODE="lts/*"
 ARG NVM_VERSION=0.41.0
 ARG NEOVIM_VERSION=0.12.6
 ARG LAZYGIT_VERSION=0.66.3
+ARG TREE_SITTER_VERSION=0.27.2
+# Tools work in every command, not only in interactive shells: `composer global`
+# tools, the agents' ~/.local/bin and nvm's active Node (~/.nvm/current, kept
+# up to date by nvm use because of NVM_SYMLINK_CURRENT)
+ENV NVM_DIR=/home/phpcli/.nvm \
+    NVM_SYMLINK_CURRENT=true \
+    PATH="/home/phpcli/bin:/home/phpcli/.composer/vendor/bin:/home/phpcli/.local/bin:/home/phpcli/.nvm/current/bin:$PATH"
 COPY install-tools.sh /usr/local/lib/dde/install-tools.sh
 RUN /usr/local/lib/dde/install-tools.sh system
 USER phpcli
@@ -27,7 +34,6 @@ COPY entrypoint.sh /usr/local/bin/dde-cli-entrypoint
 ENTRYPOINT ["dde-cli-entrypoint"]
 CMD ["php", "-a"]
 
-ENV PATH="/home/phpcli/bin:$PATH"
 EXPOSE 8082
 
 VOLUME /usr/local/etc/php /home/phpcli/bin

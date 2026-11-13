@@ -3,6 +3,7 @@
 services:
   php-cli-56:
     container_name: php-cli-56
+    hostname: php-cli-56
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
       - DDE_SERVICE=php-cli-56
@@ -68,6 +69,7 @@ services:
 
   php-cli-70:
     container_name: php-cli-70
+    hostname: php-cli-70
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
       - DDE_SERVICE=php-cli-70
@@ -133,6 +135,7 @@ services:
 
   php-cli-71:
     container_name: php-cli-71
+    hostname: php-cli-71
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
       - DDE_SERVICE=php-cli-71
@@ -198,6 +201,7 @@ services:
 
   php-cli-72:
     container_name: php-cli-72
+    hostname: php-cli-72
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
       - DDE_SERVICE=php-cli-72
@@ -263,6 +267,7 @@ services:
 
   php-cli-73:
     container_name: php-cli-73
+    hostname: php-cli-73
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
       - DDE_SERVICE=php-cli-73
@@ -328,6 +333,7 @@ services:
 
   php-cli-74:
     container_name: php-cli-74
+    hostname: php-cli-74
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
       - DDE_SERVICE=php-cli-74
@@ -393,6 +399,7 @@ services:
 
   php-cli-80:
     container_name: php-cli-80
+    hostname: php-cli-80
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
       - DDE_SERVICE=php-cli-80
@@ -458,6 +465,7 @@ services:
 
   php-cli-81:
     container_name: php-cli-81
+    hostname: php-cli-81
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
       - DDE_SERVICE=php-cli-81
@@ -523,6 +531,7 @@ services:
 
   php-cli-82:
     container_name: php-cli-82
+    hostname: php-cli-82
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
       - DDE_SERVICE=php-cli-82
@@ -591,6 +600,7 @@ services:
 
   php-cli-83:
     container_name: php-cli-83
+    hostname: php-cli-83
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
       - DDE_SERVICE=php-cli-83
@@ -659,6 +669,7 @@ services:
 
   php-cli-84:
     container_name: php-cli-84
+    hostname: php-cli-84
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
       - DDE_SERVICE=php-cli-84
@@ -727,6 +738,7 @@ services:
 
   php-cli-85:
     container_name: php-cli-85
+    hostname: php-cli-85
     environment:
       - SSH_AUTH_SOCK=$SSH_AUTH_SOCK
       - DDE_SERVICE=php-cli-85

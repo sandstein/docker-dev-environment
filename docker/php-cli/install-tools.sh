@@ -2,7 +2,7 @@
 #
 # Installs the optional tools listed in DDE_CLI_TOOLS (see .env.sample).
 #
-#   install-tools.sh system   as root: neovim, lazygit
+#   install-tools.sh system   as root: neovim (with the tree-sitter CLI), lazygit
 #   install-tools.sh user     as phpcli: nvm, nanocoder, claude, codex, junie
 #
 # phpcli has the host user's uid, so everything in its home behaves like on
@@ -56,6 +56,13 @@ arch() {
     esac
 }
 
+ts_arch() {
+    case "$(arch)" in
+        x86_64) echo x64 ;;
+        *) arch ;;
+    esac
+}
+
 install_neovim() {
     want neovim || return 0
     local file
@@ -66,6 +73,10 @@ install_neovim() {
     tar -xzf "/tmp/${file}" -C /opt/nvim --strip-components=1
     rm "/tmp/${file}"
     ln -sf /opt/nvim/bin/nvim /usr/local/bin/nvim
+    # nvim-treesitter (main) builds its parsers with the tree-sitter CLI
+    curl -fsSL "https://github.com/tree-sitter/tree-sitter/releases/download/v${TREE_SITTER_VERSION}/tree-sitter-linux-$(ts_arch).gz" \
+        | gunzip > /usr/local/bin/tree-sitter
+    chmod 755 /usr/local/bin/tree-sitter
 }
 
 install_lazygit() {
@@ -81,12 +92,15 @@ install_lazygit() {
 
 install_nvm() {
     want nvm || return 0
+    mkdir -p "${NVM_DIR}"
     curl -fsSL "https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VERSION}/install.sh" \
         | PROFILE=/dev/null bash
     # shellcheck disable=SC1091
     . "${HOME}/.nvm/nvm.sh"
     nvm install "${DDE_CLI_NODE}"
     nvm alias default "${DDE_CLI_NODE}"
+    # creates ~/.nvm/current (NVM_SYMLINK_CURRENT), which is on the image's PATH
+    nvm use default
     if want nanocoder; then
         npm install --global --no-fund --no-audit @nanocollective/nanocoder
         npm cache clean --force 2> /dev/null
@@ -104,12 +118,8 @@ install_agents() {
 }
 
 write_bashrc() {
-    # For the image's own .bashrc; dotfiles replace it with their own.
-    if want claude || want codex || want junie; then
-        # shellcheck disable=SC2016
-        printf '\ncase ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) PATH="$HOME/.local/bin:$PATH" ;; esac\n' \
-            >> "${HOME}/.bashrc"
-    fi
+    # For the image's own .bashrc; dotfiles replace it with their own. The
+    # PATH (~/.local/bin, ~/.nvm/current/bin) is set in the Dockerfile.
     if want nvm; then
         cat >> "${HOME}/.bashrc" <<'EOF'
 
